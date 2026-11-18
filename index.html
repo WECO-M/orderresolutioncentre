@@ -7,79 +7,97 @@
 <meta name="robots" content="noindex,nofollow">
 <style>
 :root{
-  --bg:#f3f2ee;--card:#ffffff;--ink:#14203a;--mut:#6b7486;--line:rgba(20,32,58,.11);--soft:#f3f2ee;
-  --acc:#3547a8;--acc-soft:#e8ebfa;--on-acc:#fff;
-  --bar:rgba(255,255,255,.78);--blob1:rgba(185,198,242,.75);--blob2:rgba(243,198,214,.55);--blob3:rgba(191,224,212,.6);
-  --disp:"Segoe UI Variable Display","Segoe UI",system-ui,sans-serif;
+  --bg:#f2f3f8;--card:#ffffff;--ink:#141c33;--mut:#687089;--line:rgba(20,28,51,.11);--soft:#f1f2f7;
+  --acc:#3350c4;--acc-soft:#e6ebfb;--on-acc:#fff;--side:#121a35;--side-ink:#c9d0e6;
   --red:#b3261e;--red-soft:#fbe9e7;--amb:#8a5a00;--amb-soft:#fdf1d6;--grn:#1d6b3a;--grn-soft:#e3f3e8;--blu:#1f5a96;--blu-soft:#e4eefa;
-  --shadow:0 18px 40px -32px rgba(40,50,110,.45);
+  --shadow:0 14px 34px -26px rgba(30,40,100,.55);
+  --disp:"Segoe UI Variable Display","Segoe UI",system-ui,sans-serif;
 }
 :root[data-theme="dark"]{
-  --bg:#0d111b;--card:#151a27;--ink:#eef1f7;--mut:#96a0b4;--line:rgba(255,255,255,.11);--soft:#1e2433;
-  --acc:#8e9cf0;--acc-soft:#262c4d;--on-acc:#10131f;
-  --bar:rgba(21,26,39,.8);--blob1:rgba(42,63,143,.55);--blob2:rgba(122,44,78,.4);--blob3:rgba(20,90,80,.4);
+  --bg:#0c101b;--card:#161b2a;--ink:#eef1f8;--mut:#98a1b8;--line:rgba(255,255,255,.11);--soft:#1f2536;
+  --acc:#8fa2f5;--acc-soft:#252d52;--on-acc:#0e1220;--side:#090c16;--side-ink:#b9c1d8;
   --red:#ff9a90;--red-soft:#43211f;--amb:#f2c063;--amb-soft:#3d3015;--grn:#7fd39b;--grn-soft:#17341f;--blu:#8fbdf0;--blu-soft:#1a2f47;
-  --shadow:0 1px 2px rgba(0,0,0,.4);
+  --shadow:0 14px 34px -24px rgba(0,0,0,.9);
 }
 *{box-sizing:border-box}
-body{margin:0;color:var(--ink);font:14px/1.45 "Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;min-height:100vh;
-  background:radial-gradient(700px 520px at -6% -12%,var(--blob1),transparent 70%),radial-gradient(640px 520px at 106% 4%,var(--blob2),transparent 70%),radial-gradient(760px 560px at 50% 118%,var(--blob3),transparent 70%),var(--bg);background-attachment:fixed}
+body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 "Segoe UI Variable Text","Segoe UI",system-ui,-apple-system,Roboto,sans-serif;min-height:100vh}
 button,select,input,textarea{font:inherit;color:inherit}
-.draft{background:var(--amb-soft);color:var(--amb);padding:6px 16px;font-size:13px;display:flex;gap:12px;align-items:center;flex-wrap:wrap;justify-content:center}
-.draft select{background:var(--card);border:1px solid var(--line);border-radius:8px;padding:3px 8px;font-weight:600}
-.top{position:sticky;top:10px;z-index:5;margin:10px auto 0;width:calc(100% - 32px);max-width:1180px;background:var(--bar);border:1px solid var(--line);border-radius:18px;padding:9px 14px;display:flex;align-items:center;gap:12px;flex-wrap:wrap;-webkit-backdrop-filter:blur(18px) saturate(1.3);backdrop-filter:blur(18px) saturate(1.3);box-shadow:0 10px 30px -22px rgba(40,50,110,.5)}
-.logo{display:flex;align-items:center;gap:10px}
-.logo .mark{width:38px;height:38px;border-radius:11px;background:var(--acc);display:grid;place-items:center;flex:none}
-.logo .mark svg{width:22px;height:22px}
-.logo .t1{font:700 16px/1.15 var(--disp);letter-spacing:-.01em}
-.logo .t2{font-size:11.5px;color:var(--mut);letter-spacing:.04em}
+button{cursor:pointer}
+.ribbon{background:#ffe9b0;color:#5c3d00;padding:5px 16px;font-size:12.5px;text-align:center}
+.app{display:grid;grid-template-columns:236px minmax(0,1fr);min-height:calc(100vh - 28px)}
+body.out .side,body.out .topbar{display:none}
+body.out .app{grid-template-columns:1fr}
+/* side menu */
+.side{background:var(--side);color:var(--side-ink);padding:18px 12px;display:flex;flex-direction:column;gap:4px;position:sticky;top:0;height:100vh;overflow:auto}
+.logo{display:flex;align-items:center;gap:10px;padding:2px 8px 16px}
+.logo .mark{width:40px;height:40px;border-radius:12px;background:linear-gradient(140deg,#5b7cf0,#2f49b8);display:grid;place-items:center;flex:none;color:#fff}
+.logo .t1{font:700 15.5px/1.15 var(--disp);color:#fff}
+.logo .t2{font-size:11.5px;letter-spacing:.05em;opacity:.7}
+.side .cap{font-size:11px;letter-spacing:.09em;text-transform:uppercase;opacity:.55;padding:10px 10px 4px}
+.nav{display:flex;align-items:center;gap:10px;border:0;background:none;color:inherit;padding:9px 10px;border-radius:11px;text-align:left;font-weight:600;width:100%}
+.nav:hover{background:rgba(255,255,255,.07);color:#fff}
+.nav.on{background:#fff;color:#141c33}
+.nav .ni{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;flex:none;color:#fff}
+.nav .n{margin-left:auto;min-width:22px;text-align:center;padding:1px 6px;border-radius:10px;background:#e2493f;color:#fff;font-size:12px}
+.side .foot{margin-top:auto;font-size:12px;opacity:.65;padding:12px 10px 0}
+/* top bar */
+.main{min-width:0;padding:0 22px 70px}
+.topbar{display:flex;align-items:center;gap:12px;padding:14px 0;flex-wrap:wrap}
+.topbar .hello{font-weight:600}.topbar .hello span{display:block;font-weight:400;color:var(--mut);font-size:12.5px}
+.sp{flex:1}
+.seg{display:inline-flex;background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:3px}
+.seg button{border:0;background:none;padding:5px 13px;border-radius:9px;color:var(--mut);font-weight:600}
+.seg button.on{background:var(--card);color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.14)}
+.icon{border:1px solid var(--line);background:var(--card);border-radius:11px;width:38px;height:38px}
 .umenu-wrap{position:relative}
-.userchip{display:flex;align-items:center;gap:9px;background:none;border:0;padding:4px 9px 4px 4px;border-radius:11px;text-align:left;cursor:pointer}
-.userchip:hover,.userchip.on{background:var(--soft)}
-.userchip .av{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:12.5px}
+.userchip{display:flex;align-items:center;gap:9px;background:var(--card);border:1px solid var(--line);padding:4px 10px 4px 4px;border-radius:12px;text-align:left}
+.av{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:700;font-size:12.5px;flex:none}
 .userchip .who{display:flex;flex-direction:column;line-height:1.2}
 .userchip .who strong{font-size:13.5px}.userchip .who span,.userchip .caret{font-size:12px;color:var(--mut)}
-.umenu{position:absolute;right:0;top:calc(100% + 8px);min-width:200px;z-index:50;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 34px -14px rgba(20,32,58,.45);padding:6px;display:none;flex-direction:column}
+.umenu{position:absolute;right:0;top:calc(100% + 8px);min-width:210px;z-index:50;background:var(--card);border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 34px -14px rgba(20,32,58,.45);padding:6px;display:none;flex-direction:column}
 .umenu.open{display:flex}
-.umenu button{border:0;background:none;text-align:left;padding:9px 11px;border-radius:8px;font-size:13.5px;cursor:pointer;display:flex;gap:10px}
+.umenu button{border:0;background:none;text-align:left;padding:9px 11px;border-radius:8px;font-size:13.5px}
 .umenu button:hover{background:var(--soft)}
 .umenu button.sep{border-top:1px solid var(--line);border-radius:0 0 8px 8px;margin-top:4px}
-.back{border:0;background:none;color:var(--mut);cursor:pointer;font-weight:600;padding:0;margin-bottom:10px}
-.sw{width:30px;height:30px;border-radius:50%;border:3px solid var(--card);cursor:pointer;box-shadow:0 0 0 1px var(--line)}
-.sw.on{box-shadow:0 0 0 2px var(--ink)}
-.sp{flex:1}
-.seg{display:inline-flex;background:var(--soft);border-radius:999px;padding:3px}
-.seg button{border:0;background:none;padding:5px 14px;border-radius:999px;cursor:pointer;color:var(--mut);font-weight:600}
-.seg button.on{background:var(--card);color:var(--ink);box-shadow:var(--shadow)}
-.icon{border:1px solid var(--line);background:var(--card);border-radius:11px;width:36px;height:36px;cursor:pointer}
-.shell{max-width:1180px;margin:0 auto;padding:22px 16px 60px}
-.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px}
-.tabs button{border:1px solid var(--line);background:var(--card);padding:7px 14px;border-radius:999px;cursor:pointer;font-weight:600;color:var(--mut)}
-.tabs button.on{background:var(--ink);border-color:var(--ink);color:var(--bg)}
-.tabs .n{display:inline-block;min-width:18px;margin-left:6px;padding:0 5px;border-radius:9px;background:var(--red-soft);color:var(--red);font-size:12px;text-align:center}
-.tabs button.on .n{background:rgba(255,255,255,.25);color:inherit}
-h1{font:700 28px/1.15 var(--disp);margin:0 0 4px;letter-spacing:-.03em}
+/* banner: illustration sits in its own column, never over data */
+.banner{display:flex;align-items:center;gap:18px;border-radius:22px;padding:20px 24px;color:#fff;margin-bottom:16px;box-shadow:var(--shadow)}
+.banner h1{font:700 27px/1.15 var(--disp);letter-spacing:-.02em;margin:0 0 4px}
+.banner p{margin:0;opacity:.92}
+.banner .bi{width:54px;height:54px;border-radius:16px;background:rgba(255,255,255,.18);display:grid;place-items:center;flex:none}
+.banner .art{flex:none;margin-left:auto;opacity:.95}
+.how{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.how span{display:inline-flex;align-items:center;gap:7px;background:rgba(255,255,255,.16);border-radius:999px;padding:4px 12px 4px 4px;font-size:12.5px;font-weight:600}
+.how span i{font-style:normal;width:22px;height:22px;border-radius:50%;background:#fff;color:#141c33;display:grid;place-items:center;font-size:12px}
+.g-navy{background:linear-gradient(120deg,#1a2452,#3350c4)}.g-amber{background:linear-gradient(120deg,#7d4300,#c9801a)}
+.g-blue{background:linear-gradient(120deg,#164a86,#2f86d6)}.g-green{background:linear-gradient(120deg,#125a36,#2a9a62)}
+.g-red{background:linear-gradient(120deg,#8a2a22,#d0564a)}.g-slate{background:linear-gradient(120deg,#2a3558,#5a6fb5)}.g-indigo{background:linear-gradient(120deg,#272b68,#4d57c9)}
+.c-navy{background:#3350c4}.c-amber{background:#c9801a}.c-blue{background:#2f86d6}.c-green{background:#2a9a62}.c-red{background:#d0564a}.c-slate{background:#5a6fb5}.c-indigo{background:#4d57c9}.c-grey{background:#7b8499}
+/* general */
 h2{font:700 16px/1.3 var(--disp);margin:22px 0 10px}
-.sub{color:var(--mut);margin:0 0 16px}
-.card{background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:18px}
-.kpi .v,.step .c,.rf .amt{font-family:var(--disp)}
+.sub{color:var(--mut);margin:0 0 14px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);padding:18px}
+.fbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:0 0 14px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:8px 12px}
+.fbar select,.fbar input{padding:6px 9px;border:1px solid var(--line);border-radius:9px;background:var(--card);color:var(--ink)}
 .kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
-.kpi .l{color:var(--mut);font-size:12.5px}
-.kpi .v{font-size:28px;font-weight:700;letter-spacing:-.02em;margin-top:2px}
-.kpi .s{color:var(--mut);font-size:12.5px}
-.flow{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}
-.step{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px}
-.step .k{font-size:11.5px;color:var(--mut);text-transform:uppercase;letter-spacing:.04em}
-.step .t{font-weight:700;margin:2px 0}
-.step .c{font-size:24px;font-weight:700}
-.step .w{font-size:12px;color:var(--mut)}
+.kpi{display:flex;gap:12px;align-items:flex-start;border-top:4px solid var(--kc,var(--acc))}
+.kpi .ki{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;color:#fff;flex:none}
+.kpi .l{color:var(--mut);font-size:12.5px}.kpi .v{font:700 26px/1.15 var(--disp);letter-spacing:-.02em}.kpi .s{color:var(--mut);font-size:12.5px}
+.journey{display:grid;grid-template-columns:repeat(5,1fr);margin-top:12px;padding:20px 8px 16px}
+.jn{text-align:center;position:relative;padding:0 6px}
+.jn:not(:last-child)::after{content:"";position:absolute;top:24px;left:calc(50% + 32px);right:calc(-50% + 32px);border-top:2px dashed var(--mut);opacity:.45}
+.jc{width:50px;height:50px;border-radius:50%;display:inline-grid;place-items:center;position:relative;color:#fff}
+.jc b{position:absolute;top:-7px;right:-12px;min-width:23px;height:23px;border-radius:12px;background:var(--ink);color:var(--bg);font-size:12.5px;display:grid;place-items:center;padding:0 6px}
+.jn .t{font-weight:700;margin-top:7px}.jn .w{font-size:12px;color:var(--mut)}
 .half{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
-.bars{display:grid;grid-template-columns:auto 1fr auto;gap:8px 10px;align-items:center}
-.bars .bar{height:14px;border-radius:7px;background:var(--acc);min-width:3px}
-.bars .bg{background:var(--soft);border-radius:7px}
+.donut{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
+.legend{display:grid;gap:6px;flex:1;min-width:200px}
+.legend div{display:flex;align-items:center;gap:8px}.legend i{width:11px;height:11px;border-radius:3px;flex:none}.legend b{margin-left:auto}
+.bars{display:grid;grid-template-columns:auto 1fr auto;gap:9px 10px;align-items:center}
+.bars .bar{height:14px;border-radius:7px;min-width:3px}.bars .bg{background:var(--soft);border-radius:7px}
 .chip{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:600;white-space:nowrap}
-.c-red{background:var(--red-soft);color:var(--red)}.c-amber{background:var(--amb-soft);color:var(--amb)}
-.c-green{background:var(--grn-soft);color:var(--grn)}.c-blue{background:var(--blu-soft);color:var(--blu)}.c-grey{background:var(--soft);color:var(--mut)}
+.k-red{background:var(--red-soft);color:var(--red)}.k-amber{background:var(--amb-soft);color:var(--amb)}
+.k-green{background:var(--grn-soft);color:var(--grn)}.k-blue{background:var(--blu-soft);color:var(--blu)}.k-grey{background:var(--soft);color:var(--mut)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:7px}
 .tw{overflow-x:auto}
 table{border-collapse:collapse;width:100%}
 th{font-size:12px;color:var(--mut);text-align:left;font-weight:600;padding:8px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
@@ -89,35 +107,31 @@ tr.click{cursor:pointer}tr.click:hover td{background:var(--soft)}
 .num{text-align:right;font-variant-numeric:tabular-nums}.ctr{text-align:center}
 .mono{font-family:Consolas,ui-monospace,monospace;font-size:13px}
 .mut{color:var(--mut)}.small{font-size:12.5px}
-.btn{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 14px;cursor:pointer;font-weight:600}
+.btn{border:1px solid var(--line);background:var(--card);border-radius:10px;padding:8px 14px;font-weight:600}
 .btn:hover{background:var(--soft)}
 .btn.pri{background:var(--acc);border-color:var(--acc);color:var(--on-acc)}
-.btn.ok{background:var(--grn);border-color:var(--grn);color:var(--card)}
-.btn.no{background:var(--red);border-color:var(--red);color:var(--card)}
+.btn.ok{background:#1d7a44;border-color:#1d7a44;color:#fff}
+.btn.no{background:#b3261e;border-color:#b3261e;color:#fff}
 .btn.sm{padding:4px 10px;font-size:13px}
 .btn:disabled{opacity:.45;cursor:not-allowed}
-.btn.big{padding:14px 18px;font-size:16px;border-radius:12px;flex:1}
 .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.two{display:grid;grid-template-columns:300px 1fr;gap:14px;align-items:start}
+.two{display:grid;grid-template-columns:290px minmax(0,1fr);gap:14px;align-items:start}
 .list{display:flex;flex-direction:column;gap:8px}
-.li{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer}
-.li.on{border-color:var(--acc);box-shadow:0 0 0 2px var(--acc-soft)}
+.li{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--line);border-radius:12px;padding:10px 12px;cursor:pointer}
+.li.on{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
 .li .o{font-weight:700}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
 .tile{background:var(--soft);border-radius:12px;padding:10px 12px}
-.tile .l{font-size:12px;color:var(--mut)}.tile .v{font-size:20px;font-weight:700}
-.kv{display:grid;grid-template-columns:150px 1fr;gap:4px 12px;margin:0}
+.tile .l{font-size:12px;color:var(--mut)}.tile .v{font-size:18px;font-weight:700}
+.kv{display:grid;grid-template-columns:140px 1fr;gap:4px 12px;margin:0}
 .kv dt{color:var(--mut)}.kv dd{margin:0}
 .note{background:var(--blu-soft);color:var(--blu);border-radius:10px;padding:9px 12px;margin:10px 0}
 .warn{background:var(--red-soft);color:var(--red);border-radius:10px;padding:9px 12px;margin:10px 0;font-weight:600}
 .clue{background:var(--amb-soft);color:var(--amb);border-radius:10px;padding:10px 12px;margin:10px 0}
-.empty{color:var(--mut);text-align:center;padding:28px}
-.wh{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:12px}
-.whc .sku{font-size:20px;font-weight:700;letter-spacing:-.01em;word-break:break-all}
-.whc .where{background:var(--amb-soft);color:var(--amb);border-radius:10px;padding:8px 10px;margin:10px 0;font-weight:600}
-.whc .do{background:var(--acc-soft);border-radius:10px;padding:10px;margin:10px 0;font-size:15px;font-weight:600}
+.empty{color:var(--mut);text-align:center;padding:26px}
+.empty::before{content:"✓";display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--grn-soft);color:var(--grn);font-weight:700;font-size:20px;margin:0 auto 8px}
 label.f{display:block;font-size:12.5px;color:var(--mut);margin-bottom:10px}
-label.f input,label.f select,label.f textarea{display:block;width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
+label.f input,label.f select,label.f textarea,.inp{display:block;width:100%;margin-top:4px;padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);color:var(--ink)}
 .tl{list-style:none;margin:0;padding:0}
 .tl li{padding:0 0 10px 16px;border-left:2px solid var(--line);position:relative}
 .tl li:before{content:"";position:absolute;left:-5px;top:5px;width:8px;height:8px;border-radius:50%;background:var(--acc)}
@@ -130,32 +144,18 @@ label.f input,label.f select,label.f textarea{display:block;width:100%;margin-to
 .checks li.w{color:var(--red);font-weight:600}
 .rf{margin-bottom:12px}
 .rf .hd{display:flex;gap:12px;align-items:flex-start;flex-wrap:wrap}
-.rf .amt{font-size:26px;font-weight:700;letter-spacing:-.02em}
+.rf .amt{font:700 26px/1.1 var(--disp);letter-spacing:-.02em}
 .cols{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin-top:12px}
 .cols h3{font-size:12px;text-transform:uppercase;letter-spacing:.04em;color:var(--mut);margin:0 0 6px}
-.modal{position:fixed;inset:0;background:rgba(15,18,28,.5);display:grid;place-items:start center;padding:40px 12px;overflow:auto;z-index:20}
-.modal .card{max-width:640px;width:100%}
+.modal{position:fixed;inset:0;background:rgba(10,14,28,.55);display:grid;place-items:start center;padding:40px 12px;overflow:auto;z-index:60}
+.modal .card{max-width:660px;width:100%}
 .oos td{background:var(--red-soft)}
-.login{max-width:380px;margin:60px auto}
-.wt td,.wt th{padding:5px 8px;font-size:13px;vertical-align:middle}
-.wt td:nth-child(6),.wt td:nth-child(1),.wt td:nth-child(2),.wt td:nth-child(3){white-space:nowrap}
-.wt td:nth-child(5){min-width:170px}
-.t-amb{background:var(--amb-soft);color:var(--amb)}.t-blu{background:var(--blu-soft);color:var(--blu)}.t-acc{background:var(--acc-soft);color:var(--acc)}
-.t-grn{background:var(--grn-soft);color:var(--grn)}.t-red{background:var(--red-soft);color:var(--red)}.t-grey{background:var(--soft);color:var(--ink)}
-.tabs button{display:inline-flex;align-items:center;gap:6px}
-.hero{position:relative;overflow:hidden;display:flex;gap:16px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);padding:20px 22px;margin-bottom:16px}
-.hero .sub{margin-bottom:0}
-.hi{width:52px;height:52px;border-radius:15px;display:grid;place-items:center;flex:none}
-.hero .deco{position:absolute;right:-18px;top:-22px;opacity:.09;pointer-events:none;color:var(--ink)}
-.how{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
-.how span{display:inline-flex;align-items:center;gap:7px;background:var(--soft);border-radius:999px;padding:5px 12px 5px 5px;font-size:12.5px;font-weight:600}
-.how span i{font-style:normal;width:22px;height:22px;border-radius:50%;background:var(--ink);color:var(--bg);display:grid;place-items:center;font-size:12px}
-.journey{display:grid;grid-template-columns:repeat(5,1fr);margin-top:12px;padding:20px 8px 16px}
-.jn{text-align:center;position:relative;padding:0 6px}
-.jn:not(:last-child)::after{content:"";position:absolute;top:23px;left:calc(50% + 30px);right:calc(-50% + 30px);border-top:2px dashed var(--mut);opacity:.45}
-.jc{width:48px;height:48px;border-radius:50%;display:inline-grid;place-items:center;position:relative}
-.jc b{position:absolute;top:-7px;right:-12px;min-width:23px;height:23px;border-radius:12px;background:var(--ink);color:var(--bg);font-size:12.5px;display:grid;place-items:center;padding:0 6px}
-.jn .t{font-weight:700;margin-top:7px}.jn .w{font-size:12px;color:var(--mut)}
+.wt td,.wt th{padding:6px 9px;font-size:13px;vertical-align:middle}
+.wt td:nth-child(-n+3),.wt td:last-child{white-space:nowrap}
+.back{border:0;background:none;color:var(--mut);font-weight:600;padding:0;margin-bottom:10px}
+.sw{width:30px;height:30px;border-radius:50%;border:3px solid var(--card);box-shadow:0 0 0 1px var(--line)}
+.sw.on{box-shadow:0 0 0 2px var(--ink)}
+/* loading */
 .boot{position:fixed;inset:0;z-index:100;display:grid;place-items:center;background:var(--bg);transition:opacity .35s}
 .boot.hide{opacity:0;pointer-events:none}
 .boot-in{text-align:center}
@@ -163,72 +163,79 @@ label.f input,label.f select,label.f textarea{display:block;width:100%;margin-to
 .boot-in .t2{font-size:12px;color:var(--mut);letter-spacing:.14em;margin-bottom:4px}
 .track{position:relative;width:250px;height:58px;margin:20px auto 12px}
 .track::before{content:"";position:absolute;left:4px;right:4px;bottom:6px;border-top:3px dotted var(--mut);opacity:.5}
-.track .pk{position:absolute;bottom:13px;left:0;width:40px;height:40px;border-radius:11px;background:var(--acc);color:var(--on-acc);display:grid;place-items:center;animation:slide 1.7s ease-in-out infinite}
-.track .pin{position:absolute;right:0;bottom:13px;color:var(--grn);animation:pop 1.7s ease-in-out infinite}
+.track .pk{position:absolute;bottom:13px;left:0;width:40px;height:40px;border-radius:11px;background:linear-gradient(140deg,#5b7cf0,#2f49b8);color:#fff;display:grid;place-items:center;animation:slide 1.7s ease-in-out infinite}
+.track .pin{position:absolute;right:0;bottom:13px;color:#2a9a62;animation:pop 1.7s ease-in-out infinite}
 @keyframes slide{0%{left:0;transform:rotate(-5deg)}50%{left:176px;transform:rotate(5deg)}100%{left:0;transform:rotate(-5deg)}}
 @keyframes pop{0%,35%,100%{transform:scale(.8);opacity:.35}50%{transform:scale(1.15);opacity:1}}
 @media(prefers-reduced-motion:reduce){.track .pk,.track .pin{animation:none}}
-.lg{display:grid;grid-template-columns:1fr 1.15fr;gap:0;background:var(--card);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow);overflow:hidden;margin-top:26px}
-.lgl{background:linear-gradient(155deg,#27357f,#3547a8 55%,#1f5a96);color:#fff;padding:34px 30px;display:flex;flex-direction:column;gap:12px}
-.lgl h1{font-size:32px;color:#fff}.lgl p{margin:0;opacity:.88;font-size:15px}
+/* sign-in */
+.lgwrap{max-width:1120px;margin:0 auto;padding:26px 0}
+.lg{display:grid;grid-template-columns:1fr 1.15fr;background:var(--card);border:1px solid var(--line);border-radius:26px;box-shadow:var(--shadow);overflow:hidden;min-height:600px}
+.lgl{background:linear-gradient(155deg,#16204c,#3350c4 58%,#2f86d6);color:#fff;padding:34px 30px;display:flex;flex-direction:column;gap:12px}
+.lgl h1{font:700 33px/1.1 var(--disp);letter-spacing:-.02em;margin:4px 0 0}.lgl p{margin:0;opacity:.9;font-size:15px}
+.facts{display:flex;gap:10px;margin-top:8px}
+.facts div{flex:1;background:rgba(255,255,255,.14);border-radius:14px;padding:10px 12px;font-size:12.5px;line-height:1.3}
+.facts b{display:block;font:700 26px/1.1 var(--disp)}
 .lgl .journey{grid-template-columns:repeat(3,1fr);row-gap:20px;padding:22px 0 0;margin-top:auto}
-.lgl .jc{background:rgba(255,255,255,.16);color:#fff}.lgl .jn::after{border-color:#fff!important}
+.lgl .jc{background:rgba(255,255,255,.18)}.lgl .jn::after{border-color:#fff}
 .lgl .jn:nth-child(3)::after{display:none}.lgl .jn .t{font-weight:600;font-size:13px}
 .lgr{padding:30px}
-.lg{min-height:560px;margin-top:10px}
-.lgl{position:relative;overflow:hidden}.lgl>*{position:relative}
-.lgdeco{position:absolute!important;right:-70px;bottom:-60px;opacity:.09;color:#fff}
-.facts{display:flex;gap:10px;margin-top:8px}
-.facts div{flex:1;background:rgba(255,255,255,.13);border-radius:14px;padding:10px 12px;font-size:12.5px;line-height:1.3}
-.facts b{display:block;font:700 26px/1.1 var(--disp)}
-.depc.on{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
-.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
-.feat .card{display:flex;gap:12px;align-items:flex-start}
-@media(max-width:860px){.feat{grid-template-columns:1fr}}
 .dep{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.depc{display:flex;gap:12px;align-items:center;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s}
-.depc:hover{transform:translateY(-2px);border-color:var(--acc);box-shadow:var(--shadow)}
-.depc .hi{width:44px;height:44px;border-radius:13px}
+.depc{display:flex;gap:12px;align-items:center;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:11px;transition:transform .15s,box-shadow .15s,border-color .15s}
+.depc:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.depc.on{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
+.depc .hi{width:42px;height:42px;border-radius:13px;display:grid;place-items:center;color:#fff;flex:none}
 .depc b{display:block}.depc small{color:var(--mut);font-size:12.5px;line-height:1.3;display:block}
-.fbb{position:fixed;right:18px;bottom:18px;z-index:30;border:0;border-radius:999px;background:var(--ink);color:var(--bg);padding:12px 18px;font-weight:700;cursor:pointer;box-shadow:0 10px 30px -10px rgba(0,0,0,.5)}
-.fbp{position:fixed;right:18px;bottom:74px;z-index:30;width:min(370px,calc(100vw - 36px));max-height:72vh;overflow:auto;display:none}
+/* comments */
+.fbb{border:0;border-radius:11px;background:var(--ink);color:var(--bg);padding:9px 14px;font-weight:700}
+.fbp{position:fixed;right:18px;top:104px;z-index:55;width:min(370px,calc(100vw - 36px));max-height:72vh;overflow:auto;display:none}
+.wt td:nth-child(5){white-space:nowrap}.wt td:nth-child(6){min-width:190px}
 .fbp.open{display:block}
 .fbi{border-top:1px solid var(--line);padding:8px 0;font-size:13px}
-.empty::before{content:"✓";display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--grn-soft);color:var(--grn);font-weight:700;font-size:20px;margin:0 auto 8px}
-@media(max-width:860px){.lg{grid-template-columns:1fr}.lgl .journey{display:none}.dep{grid-template-columns:1fr}.jn .w{display:none}.jn .t{font-size:12px}.hero .deco{display:none}.kpis{grid-template-columns:1fr 1fr}.flow{grid-template-columns:1fr 1fr}.two,.half{grid-template-columns:1fr}.cols{grid-template-columns:1fr !important}.kv{grid-template-columns:120px 1fr}}
-@media(max-width:480px){.userchip .who{display:none}.kpis{grid-template-columns:1fr}.btn.big{flex:1 1 100%}}
+@media(max-width:980px){
+  .app{grid-template-columns:1fr}
+  .side{position:static;height:auto;flex-direction:row;align-items:center;overflow-x:auto;padding:8px 10px;gap:6px}
+  .side .cap,.side .foot,.logo>div{display:none}.logo{padding:0 6px 0 0}
+  .nav{width:auto;white-space:nowrap;padding:7px 10px}.nav .n{margin-left:4px}
+  .main{padding:0 12px 70px}
+  .kpis{grid-template-columns:1fr 1fr}.two,.half,.lg{grid-template-columns:1fr}.cols{grid-template-columns:1fr!important}
+  .banner .art,.lgl .journey{display:none}.dep{grid-template-columns:1fr}.jn .w{display:none}.jn .t{font-size:12px}
+}
+@media(max-width:520px){.kpis{grid-template-columns:1fr}.userchip .who,.topbar .hello{display:none}.banner{padding:16px}.banner h1{font-size:22px}}
 </style>
 </head>
-<body>
+<body class="out">
 <div id="boot" class="boot" role="status" aria-live="polite"><div class="boot-in">
   <div class="t2">IORA GROUP</div><div class="t1">Order Resolution Centre</div>
   <div class="track"><span class="pk"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5 12 4l8.5 4.5v8L12 21l-8.5-4.5z"/><path d="M3.5 8.5 12 13l8.5-4.5M12 13v8"/></svg></span><span class="pin"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 3 3 5-6"/></svg></span></div>
   <div class="mut" id="bootMsg">Getting the draft ready…</div>
 </div></div>
-<div class="draft"><b>DRAFT</b> · sample data only, nothing is saved · use the <b>💬 Give comment</b> button to tell us what to add or change</div>
-<header class="top">
-  <div class="logo">
-    <span class="mark"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 8.5 12 4l8.5 4.5v8L12 21l-8.5-4.5z"/><path d="M3.5 8.5 12 13l8.5-4.5M12 13v8"/></svg></span>
-    <div><div class="t1">Order Resolution Centre</div><div class="t2">IORA Group</div></div>
+<div class="ribbon"><b>DRAFT</b> · sample data only, nothing is saved · use the <b>💬 Give comment</b> button to tell us what to add or change</div>
+<div class="app">
+  <aside class="side" id="side"></aside>
+  <div class="main">
+    <header class="topbar">
+      <div class="hello" id="hello"></div>
+      <div class="sp"></div>
+      <button class="fbb" id="fbb" data-fb="toggle">💬 Give comment</button>
+      <div class="seg" id="cty"><button data-cty="SG">Singapore</button><button data-cty="MY">Malaysia</button></div>
+      <button class="icon" data-act="theme" title="Light / dark">◐</button>
+      <div class="umenu-wrap">
+        <button id="userChip" class="userchip" aria-haspopup="menu"><span class="av" id="ini"></span><span class="who"><strong>Sample user</strong><span id="urole"></span></span><span class="caret">▾</span></button>
+        <div class="umenu" id="userMenu" role="menu">
+          <button data-act="goto" data-v="profile" role="menuitem">👤 My profile</button>
+          <button data-act="goto" data-v="settings" role="menuitem" class="adm">⚙ Settings</button>
+          <button data-act="goto" data-v="log" role="menuitem" class="adm">🔒 Activity log</button>
+          <button data-act="reset" role="menuitem">↺ Reset sample data</button>
+          <button data-act="signout" class="sep" role="menuitem">⇄ Switch department</button>
+          <button data-act="signout" role="menuitem">↪ Sign out</button>
+        </div>
+      </div>
+    </header>
+    <main id="app"></main>
   </div>
-  <div class="sp"></div>
-  <div class="seg" id="cty"><button data-cty="SG">Singapore</button><button data-cty="MY">Malaysia</button></div>
-  <button class="icon" data-act="theme" title="Light / dark">◐</button>
-  <div class="umenu-wrap">
-    <button id="userChip" class="userchip" aria-haspopup="menu"><span class="av" id="ini"></span><span class="who"><strong id="uname"></strong><span id="urole"></span></span><span class="caret">▾</span></button>
-    <div class="umenu" id="userMenu" role="menu">
-      <button data-act="goto" data-v="profile" role="menuitem">👤 My profile</button>
-      <button data-act="goto" data-v="settings" role="menuitem" class="adm">⚙ Settings</button>
-      <button data-act="goto" data-v="log" role="menuitem" class="adm">🔒 Activity log</button>
-      <button data-act="reset" role="menuitem">↺ Reset sample data</button>
-      <button data-act="signout" class="sep" role="menuitem">⇄ Switch department</button>
-      <button data-act="signout" role="menuitem">↪ Sign out</button>
-    </div>
-  </div>
-</header>
-<main class="shell" id="app"></main>
+</div>
 <div id="modal"></div>
-<button class="fbb" id="fbb" data-fb="toggle" style="display:none">💬 Give comment</button>
 <div class="card fbp" id="fbp">
   <b>Give a comment on this draft</b>
   <p class="small mut" id="fbctx" style="margin:4px 0 10px"></p>
@@ -240,30 +247,30 @@ label.f input,label.f select,label.f textarea{display:block;width:100%;margin-to
 </div>
 
 <script>
-/* ---------- sample data (all made up) ---------- */
-const IC={box:'<path d="M3.5 8.5 12 4l8.5 4.5v8L12 21l-8.5-4.5z"/><path d="M3.5 8.5 12 13l8.5-4.5M12 13v8"/>',swap:'<path d="M4 8h14l-3.5-3.5M20 16H6l3.5 3.5"/>',search:'<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',chat:'<path d="M5 5h14v10h-9l-4 4v-4H5z"/><path d="M9 9h6M9 12h4"/>',card:'<rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M3 10h18M7 15h4"/>',chart:'<path d="M5 20V11M11 20V5M17 20v-7M21 20H3"/>',shield:'<path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6z"/><path d="m9 12 2.2 2.2L15 10"/>',check:'<path d="m5 12.5 4.5 4.5L19 7.5"/>'};
+/* ============ icons and page details ============ */
+const IC={box:'<path d="M3.5 8.5 12 4l8.5 4.5v8L12 21l-8.5-4.5z"/><path d="M3.5 8.5 12 13l8.5-4.5M12 13v8"/>',swap:'<path d="M4 8h14l-3.5-3.5M20 16H6l3.5 3.5"/>',search:'<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/>',chat:'<path d="M5 5h14v10h-9l-4 4v-4H5z"/><path d="M9 9h6M9 12h4"/>',card:'<rect x="3" y="6" width="18" height="12" rx="2.5"/><path d="M3 10h18M7 15h4"/>',gift:'<rect x="4" y="10" width="16" height="10" rx="2"/><path d="M3 7h18v3H3zM12 7v13M12 7c-1.5-3-5-3-5-1s3 1 5 1zm0 0c1.5-3 5-3 5-1s-3 1-5 1z"/>',chart:'<path d="M5 20V11M11 20V5M17 20v-7M21 20H3"/>',shield:'<path d="M12 3 5 6v6c0 4.5 3 7.5 7 9 4-1.5 7-4.5 7-9V6z"/><path d="m9 12 2.2 2.2L15 10"/>',check:'<path d="m5 12.5 4.5 4.5L19 7.5"/>',clock:'<circle cx="12" cy="12" r="8.5"/><path d="M12 7.5V12l3 2"/>',tag:'<path d="M3.5 12.5V4.5h8l9 9-8 8z"/><circle cx="8" cy="9" r="1.4"/>',stack:'<path d="m12 4 8.5 4.2L12 12.4 3.5 8.2zM3.5 12.2l8.5 4.2 8.5-4.2M3.5 16l8.5 4.2 8.5-4.2"/>'};
 const ico=(k,s=20)=>`<svg viewBox="0 0 24 24" width="${s}" height="${s}" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${IC[k]}</svg>`;
-const RMETA={admin:['shield','grey','See everything, manage users and roles'],warehouse:['box','amb','Report, search and pack parcels'],merch:['swap','blu','Check stock, arrange search or transfer'],inventory:['search','acc','Find out why an item was not found'],cs:['chat','grn','Contact the customer, record their decision'],ecom:['card','red','Issue store credit and refunds safely']};
-const HERO={overview:['chart','grey',[]],
-  warehouse:['box','amb',['Report a parcel you cannot pack','Search when it says SEARCH','Pack when it says PACK']],
-  merch:['swap','blu',['Check stock by location','Ask warehouse to search, or request a transfer','No stock anywhere: send to Customer Service']],
-  cs:['chat','grn',['Contact the customer','Record what they want','Warehouse and E-commerce are told automatically']],
-  refunds:['card','red',['Read the checks','Pay in Shopify','Enter the reference and mark as done']],
-  investigate:['search','acc',['Read the clue and the tag history','Choose why it was not found','Save the action taken']]};
-const hero=(tab,title,sub)=>{const h=HERO[tab];return `<section class="hero"><span class="hi t-${h[1]}">${ico(h[0],26)}</span><div><h1>${title}</h1><p class="sub">${sub}</p>${h[2].length?`<div class="how">${h[2].map((s,i)=>`<span><i>${i+1}</i>${s}</span>`).join('')}</div>`:''}</div><div class="deco">${ico(h[0],170)}</div></section>`};
-const ROLES={
-  admin:{name:'Administrator',ini:'AD',tabs:['overview','warehouse','merch','stock','cs','refund','credit','investigate','epc']},
-  warehouse:{name:'Warehouse',ini:'WH',tabs:['warehouse']},
-  merch:{name:'Merchandiser',ini:'MD',tabs:['merch','stock','overview']},
-  inventory:{name:'Inventory',ini:'IN',tabs:['investigate','epc','overview']},
-  cs:{name:'Customer Service',ini:'CS',tabs:['cs','overview']},
-  ecom:{name:'E-commerce',ini:'EC',tabs:['refund','credit','overview']}
+/* banner illustration: parcels on a dotted route, drawn in its own column */
+const art=k=>`<svg class="art" width="190" height="104" viewBox="0 0 190 104" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 92h178" stroke-dasharray="2 8" opacity=".7"/><rect x="14" y="54" width="40" height="34" rx="6" fill="rgba(255,255,255,.14)"/><path d="M34 54v12M14 66h40" opacity=".8"/><rect x="62" y="38" width="50" height="50" rx="7" fill="rgba(255,255,255,.2)"/><path d="M87 38v16M62 54h50" opacity=".8"/><circle cx="150" cy="50" r="30" fill="rgba(255,255,255,.2)"/><g transform="translate(132 32) scale(1.5)">${IC[k]}</g><circle cx="126" cy="14" r="3" fill="#fff" stroke="none" opacity=".8"/><circle cx="40" cy="30" r="2.5" fill="#fff" stroke="none" opacity=".6"/><circle cx="178" cy="88" r="2.5" fill="#fff" stroke="none" opacity=".6"/></svg>`;
+const PAGE={
+  overview:{t:'Overview',s:'Every order that could not be packed, across all departments.',i:'chart',g:'navy',how:[]},
+  warehouse:{t:'Warehouse',s:'Pending parcels and why each one is pending.',i:'box',g:'amber',how:['Report a parcel you cannot pack','Search when it says SEARCH','Pack when it says PACK']},
+  merch:{t:'Stock check & transfer',s:'See where the stock is, then search the warehouse, order from a store, or mark out of stock.',i:'swap',g:'blue',how:['Check stock by location','Order from the recommended store','No stock anywhere: send to Customer Service']},
+  stock:{t:'Stock search',s:'Where is the stock right now? Search by SKU or EPC, no SWIMS file needed.',i:'stack',g:'blue',how:['Type a SKU or scan an EPC','Results appear as you type','See HQ and every store']},
+  cs:{t:'Customer service',s:'Items confirmed out of stock. Contact the customer and record what they want.',i:'chat',g:'green',how:['Contact the customer','Record their decision and the reason','Warehouse and E-commerce are told automatically']},
+  refund:{t:'Refunds',s:'Created automatically when Customer Service confirms. Amounts come from Shopify.',i:'card',g:'red',how:['Read the checks','Refund in Shopify, upload the picture','If it fails: a Lark request is sent for you']},
+  credit:{t:'Store credit',s:'Created automatically when Customer Service confirms. Amounts come from Shopify.',i:'gift',g:'slate',how:['Read the checks','Issue the store credit, upload the picture','Mark as issued, add a remark if needed']},
+  investigate:{t:'Why not found',s:'The system said the item was there. Find the reason and record it. This does not hold up the order.',i:'search',g:'indigo',how:['Read the clue and tag history','Choose why it was not found','Save the action taken']},
+  epc:{t:'EPC search',s:'Where is this tag now, and where has it been? Looked up from BigQuery.',i:'tag',g:'indigo',how:['Type or scan an EPC','Results appear as you type','Read its full history']}
 };
-const TABS={overview:'Overview',warehouse:'Warehouse',merch:'Stock check & transfer',stock:'Stock search',cs:'Customer service',refund:'Refunds',credit:'Store credit',investigate:'Why not found',epc:'EPC search',settings:'Settings'};
-HERO.refund=['card','red',['Read the checks','Refund in Shopify and upload the picture','If it fails, press Refund failed: a Lark request is sent for you']];
-HERO.credit=['card','blu',['Read the checks','Create the store credit code','Enter the code and mark as issued']];
-HERO.stock=['search','blu',['Type a SKU or scan an EPC','See the stock in HQ and every store','No need to load a file from SWIMS']];
-HERO.epc=['search','acc',['Type or scan an EPC','See where it is now','Read its full history']];
+const ROLES={
+  admin:{name:'Administrator',ini:'AD',i:'shield',g:'navy',blurb:'See everything, manage users and roles',tabs:['overview','warehouse','merch','stock','cs','refund','credit','investigate','epc']},
+  warehouse:{name:'Warehouse',ini:'WH',i:'box',g:'amber',blurb:'Report, search and pack parcels',tabs:['warehouse']},
+  merch:{name:'Merchandiser',ini:'MD',i:'swap',g:'blue',blurb:'Check stock, order from stores',tabs:['merch','stock','overview']},
+  inventory:{name:'Inventory',ini:'IN',i:'search',g:'indigo',blurb:'Find out why an item was not found',tabs:['investigate','epc','overview']},
+  cs:{name:'Customer Service',ini:'CS',i:'chat',g:'green',blurb:'Contact the customer, record their decision',tabs:['cs','overview']},
+  ecom:{name:'E-commerce',ini:'EC',i:'card',g:'red',blurb:'Refunds and store credit, safely',tabs:['refund','credit','overview']}
+};
 const STAGE={
   merch:{t:'Stock check',who:'Merchandiser',c:'blue'},
   search:{t:'Warehouse search',who:'Warehouse',c:'amber'},
@@ -272,118 +279,130 @@ const STAGE={
   action:{t:'Decision confirmed',who:'',c:'amber'},
   done:{t:'Completed',who:'',c:'green'}
 };
+const WHO_C={Warehouse:'#c9801a',Merchandiser:'#2f86d6','Customer Service':'#2a9a62','E-commerce':'#d0564a'};
+const BRAND_C={iORA:'#3350c4','SANS & SANS':'#2a9a62',TRT:'#c9801a',MONOLOQ:'#5a6485'};
 const REASONS=['Cannot find item','No tag on item','Wrong tag on item','Damaged item'];
 const CAUSES=['Transfer not scanned properly','Sold but stock not deducted (sync issue)','Warehouse missed it (human error)','Wrong tag or no tag','Not yet known'];
+const CAUSE_C=['#2f86d6','#d0564a','#c9801a','#2a9a62','#7b8499'];
 const FIXES=['Stock corrected in SWIMS','Reported to IT (sync break log)','Store reminded to scan transfers','Warehouse team briefed','No action needed'];
-const BASE={SG:[9,6,5,4,2],MY:[7,3,6,2,1]}; /* earlier closed investigations, sample */
-const PERMS=['Report a problem parcel','Find item and pack','Stock by location, decide search / transfer / out of stock','Tag (EPC) history, record why not found','Customer contact (masked), record decision','Store credit / refund: full details, mark as done','Overview of all cases','Users, roles and activity log'];
-function seedPerm(){const m=(...on)=>PERMS.map((_,i)=>on.includes(i));return{Administrator:PERMS.map(()=>true),Warehouse:m(0,1),Merchandiser:m(0,2,6),Inventory:m(3,6),'Customer Service':m(4,6),'E-commerce':m(5,6)}}
-function seedUsers(){return[['Sample owner','o***@iora.example','Administrator','SG + MY','Active'],['Sample user 1','w***@iora.example','Warehouse','SG','Active'],['Sample user 2','w***@iora.example','Warehouse','MY','Active'],['Sample user 3','m***@iora.example','Merchandiser','SG + MY','Active'],['Sample user 4','i***@iora.example','Inventory','SG + MY','Active'],['Sample user 5','c***@iora.example','Customer Service','SG','Active'],['Sample user 6','e***@iora.example','E-commerce','SG + MY','Active']].map(u=>({n:u[0],e:u[1],role:u[2],cty:u[3],st:u[4]}))}
+const WHY=['Out of stock','Customer changed their mind','Wrong size or wrong item','Damaged or faulty item','Late delivery','Other'];
+const BASE={SG:[9,6,5,4,2],MY:[7,3,6,2,1]};
+const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],BRANDS=['iORA','SANS & SANS','TRT','MONOLOQ'];
+const PERMS=['Report a problem parcel','Find item and pack','Stock by location, order from stores, mark out of stock','Tag (EPC) search and history, record why not found','Customer contact (masked), record decision and reason','Refunds and store credit: full details, upload picture, mark as done','Overview of all cases','Filter and sort by brand, region and date','Edit or move an order after it was passed on','Users, roles and activity log'];
+
+/* ============ sample data (all made up) ============ */
+function seedPerm(){const m=(...on)=>PERMS.map((_,i)=>on.includes(i));return{Administrator:PERMS.map(()=>true),Warehouse:m(0,1,7),Merchandiser:m(0,2,6,7,8),Inventory:m(3,6,7,8),'Customer Service':m(4,6,7,8),'E-commerce':m(5,6,7,8)}}
+function seedUsers(){return[['Sample owner','o***@iora.example','Administrator','SG + MY','All brands'],['Sample user 1','w***@iora.example','Warehouse','SG','All brands'],['Sample user 2','w***@iora.example','Warehouse','MY','All brands'],['Sample user 3','m***@iora.example','Merchandiser','SG + MY','iORA'],['Sample user 4','m***@iora.example','Merchandiser','SG + MY','TRT'],['Sample user 5','i***@iora.example','Inventory','SG + MY','All brands'],['Sample user 6','c***@iora.example','Customer Service','SG','All brands'],['Sample user 7','e***@iora.example','E-commerce','SG + MY','All brands']].map(u=>({n:u[0],e:u[1],role:u[2],cty:u[3],br:u[4],st:'Active'}))}
 function seed(){
-  let n=0;
-  const H=(w,l,e)=>({w,l,e});
-  const mk=o=>Object.assign({id:++n,stage:'merch',contacts:[],log:[],ship:0,shopify:1,market:0,
-    locs:[['Warehouse (H)',1]],inv:{status:'Open',clue:'No clue yet. Check the tag history.'},
-    epc:{id:'BB00000000000000019'+(10000+n*37),hist:[]}},o);
+  let n=0;const H=(w,l,e)=>({w,l,e});
+  const mk=o=>Object.assign({id:++n,stage:'merch',contacts:[],log:[],ship:0,shopify:1,market:0,channel:'Online store',bad:0,reason:'Cannot find item',
+    locs:[['Warehouse (H)',1]],inv:{status:'Open',clue:'No clue yet. Check the tag history.'},epc:{id:'BB00000000000000019'+(10000+n*37),hist:[]}},o);
   return [
-    mk({cty:'SG',brand:'TRT',order:'#TRTSG90001',date:'16 Nov',age:2,channel:'Online store',cust:'J*** T.',phone:'+65 ****1234',email:'j***@gmail.com',pay:'Visa ending 4411',
-      items:[{sku:'TFKS0099001JS-EME-M',d:'Knit top, emerald, M',q:1,p:39.9,disc:4},{sku:'TFPL0099002AG-BLK-M',d:'Pants, black, M',q:1,p:49.9,disc:5}],bad:0,reason:'Cannot find item',
+    mk({cty:'SG',brand:'TRT',order:'#TRTSG90001',date:'16 Nov',age:2,cust:'J*** T.',phone:'+65 ****1234',email:'j***@gmail.com',pay:'Visa ending 4411',
+      items:[{sku:'TFKS0099001JS-EME-M',d:'Knit top, emerald, M',q:1,p:39.9,disc:4},{sku:'TFPL0099002AG-BLK-M',d:'Pants, black, M',q:1,p:49.9,disc:5}],
       locs:[['Warehouse (H)',1],['Store A',2],['Store B',0],['Store C',4],['Store E',1]],
       inv:{status:'Open',clue:'Tag was seen at H-12-03 on 12 Nov. System shows 1 in the warehouse. No sale and no transfer since then.'},
       epc:{id:'BB0000000000000001900041',hist:[H('12 Nov 14:20','H-12-03 (warehouse active)','Seen in cycle count'),H('3 Nov 09:05','H-12-03 (warehouse active)','Put away'),H('1 Nov 16:40','Receiving','Received from supplier')]},
       log:[{t:'16 Nov 10:12',w:'Warehouse',x:'Reported: cannot find item when packing.'}]}),
-    mk({cty:'SG',brand:'MONOLOQ',order:'#M49001SG',date:'17 Nov',age:1,channel:'Online store',cust:'P*** S.',phone:'+65 ****8821',email:'p***@yahoo.com',pay:'PayNow',
-      items:[{sku:'MFJK0099003FG-TPE-L',d:'Jacket, taupe, L',q:1,p:139,disc:0}],bad:0,reason:'Cannot find item',stage:'search',searchLoc:'H-04-11',
+    mk({cty:'SG',brand:'MONOLOQ',order:'#M49001SG',date:'17 Nov',age:1,cust:'P*** S.',phone:'+65 ****8821',email:'p***@yahoo.com',pay:'PayNow',
+      items:[{sku:'MFJK0099003FG-TPE-L',d:'Jacket, taupe, L',q:1,p:139,disc:0}],stage:'search',searchLoc:'H-04-11',
+      locs:[['Warehouse (H)',1],['Store B',1]],
       inv:{status:'Open',clue:'Tag was seen at H-04-11 in the 14 Nov stock take. Warehouse is searching again.'},
       epc:{id:'BB0000000000000001900078',hist:[H('14 Nov 11:02','H-04-11 (warehouse active)','Seen in stock take, count 2'),H('20 Oct 10:30','H-04-11 (warehouse active)','Put away')]},
-      log:[{t:'17 Nov 09:40',w:'Warehouse',x:'Reported: cannot find item when packing.'},{t:'17 Nov 11:15',w:'Merchandiser',x:'Stock only in the warehouse. Asked warehouse to search H-04-11.'}]}),
-    mk({cty:'SG',brand:'iORA',order:'#iSG190002',date:'17 Nov',age:1,channel:'Online store',cust:'L*** S.',phone:'+65 ****0456',email:'l***@gmail.com',pay:'Mastercard ending 0932',
-      items:[{sku:'AFTS0099004DN-PAQ-L',d:'Tee, aqua, L',q:2,p:19.9,disc:0}],bad:0,reason:'No tag on item',stage:'search',searchLoc:'Z-staging, rack 2',shopify:2,
+      log:[{t:'17 Nov 09:40',w:'Warehouse',x:'Reported: cannot find item when packing.'},{t:'17 Nov 11:15',w:'Merchandiser',x:'Asked warehouse to search H-04-11.'}]}),
+    mk({cty:'SG',brand:'iORA',order:'#iSG190002',date:'17 Nov',age:1,cust:'L*** S.',phone:'+65 ****0456',email:'l***@gmail.com',pay:'Mastercard ending 0932',
+      items:[{sku:'AFTS0099004DN-PAQ-L',d:'Tee, aqua, L',q:2,p:19.9,disc:0}],reason:'No tag on item',stage:'search',searchLoc:'Z-staging, rack 2',shopify:2,
       locs:[['Warehouse (H)',0],['Z-staging',2],['Store A',1]],
       inv:{status:'Open',clue:'Pieces came back from a store on 15 Nov and are still in Z-staging, not yet moved to H.'},
       epc:{id:'BB0000000000000001900102',hist:[H('15 Nov 17:48','Z-staging','Moved from store return'),H('9 Nov 13:10','Store A','Seen in cycle count')]},
       log:[{t:'17 Nov 14:05',w:'Warehouse',x:'Reported: no tag on item.'},{t:'17 Nov 15:30',w:'Merchandiser',x:'2 pieces in Z-staging. Asked warehouse to search Z-staging, rack 2.'}]}),
-    mk({cty:'SG',brand:'SANS & SANS',order:'#SSSG19003',date:'14 Nov',age:4,channel:'Online store',cust:'A*** L.',phone:'+65 ****7730',email:'a***@hotmail.com',pay:'Visa ending 7702',
-      items:[{sku:'SFPL0099005YS-CFF-L',d:'Pants, coffee, L',q:1,p:89,disc:8.9},{sku:'SFBS0099006YH-LGY-S',d:'Blouse, light grey, S',q:1,p:59,disc:5.9}],bad:0,reason:'Cannot find item',stage:'cs',shopify:0,
+    mk({cty:'SG',brand:'SANS & SANS',order:'#SSSG19003',date:'14 Nov',age:4,cust:'A*** L.',phone:'+65 ****7730',email:'a***@hotmail.com',pay:'Visa ending 7702',
+      items:[{sku:'SFPL0099005YS-CFF-L',d:'Pants, coffee, L',q:1,p:89,disc:8.9},{sku:'SFBS0099006YH-LGY-S',d:'Blouse, light grey, S',q:1,p:59,disc:5.9}],stage:'cs',shopify:0,
       inv:{status:'Open',clue:'In the system since 2 Oct, but missing from the 14 Nov count. No sale and no transfer out recorded.'},
       epc:{id:'BB0000000000000001900133',hist:[H('28 Oct 10:15','H-09-02 (warehouse active)','Seen in stock take, count 1'),H('2 Oct 15:00','H-09-02 (warehouse active)','Put away')]},
       contacts:[{t:'16 Nov 15:10',x:'WhatsApp sent, no reply yet'}],
-      log:[{t:'14 Nov 10:02',w:'Warehouse',x:'Reported: cannot find item when packing.'},{t:'14 Nov 13:20',w:'Merchandiser',x:'Stock only in the warehouse. Asked warehouse to search H-09-02.'},{t:'15 Nov 09:45',w:'Warehouse',x:'Searched H-09-02. Not found.'},{t:'15 Nov 11:00',w:'Merchandiser',x:'No stock in any store. Out of stock, sent to Customer Service.'}]}),
+      log:[{t:'14 Nov 10:02',w:'Warehouse',x:'Reported: cannot find item when packing.'},{t:'14 Nov 13:20',w:'Merchandiser',x:'Asked warehouse to search H-09-02.'},{t:'15 Nov 09:45',w:'Warehouse',x:'Searched H-09-02. Not found.'},{t:'15 Nov 11:00',w:'Merchandiser',x:'No stock in any store. Out of stock, sent to Customer Service.'}]}),
     mk({cty:'SG',brand:'iORA',order:'#iSG190007',date:'15 Nov',age:3,channel:'Marketplace',cust:'T*** C.',phone:'+65 ****6688',email:'t***@gmail.com',pay:'Marketplace wallet',
-      items:[{sku:'AFPL0099007AG-GBU-M',d:'Pants, blue, M',q:1,p:39.9,disc:0}],bad:0,reason:'Wrong tag on item',stage:'cs',shopify:0,market:1,
+      items:[{sku:'AFPL0099007AG-GBU-M',d:'Pants, blue, M',q:1,p:39.9,disc:0}],reason:'Wrong tag on item',stage:'cs',shopify:0,market:1,
       inv:{status:'Closed',cause:CAUSES[3],fix:FIXES[0],note:'Tag belongs to another article.',at:'16 Nov'},
       epc:{id:'BB9000000000000000900164',hist:[H('10 Nov 12:00','H-02-07 (warehouse active)','Tag read on a different item')]},
       log:[{t:'15 Nov 11:30',w:'Warehouse',x:'Reported: wrong tag on item.'},{t:'15 Nov 14:00',w:'Merchandiser',x:'No stock in any store. Out of stock, sent to Customer Service.'},{t:'16 Nov 10:00',w:'Inventory',x:'Why not found: wrong tag or no tag. Stock corrected in SWIMS.'}]}),
-    mk({cty:'SG',brand:'TRT',order:'#TRTSG90010',date:'13 Nov',age:5,channel:'Online store',cust:'S*** J.',phone:'+65 ****0972',email:'s***@gmail.com',pay:'Visa ending 1880',
-      items:[{sku:'TFBS0099008YS-LIE-S',d:'Blouse, lilac, S',q:1,p:39.9,disc:0},{sku:'TFSK0099009NW-CLK-S',d:'Skirt, chalk, S',q:1,p:45.9,disc:0}],bad:0,reason:'Cannot find item',stage:'action',shopify:0,
-      needShip:true,whTask:'Send the parcel WITHOUT TFBS0099008YS-LIE-S. Pack the other 1 item.',
+    mk({cty:'SG',brand:'TRT',order:'#TRTSG90010',date:'13 Nov',age:5,cust:'S*** J.',phone:'+65 ****0972',email:'s***@gmail.com',pay:'Visa ending 1880',
+      items:[{sku:'TFBS0099008YS-LIE-S',d:'Blouse, lilac, S',q:1,p:39.9,disc:0},{sku:'TFSK0099009NW-CLK-S',d:'Skirt, chalk, S',q:1,p:45.9,disc:0}],stage:'action',shopify:0,
+      needShip:true,whTask:'Send WITHOUT TFBS0099008YS-LIE-S. Pack the other 1 item.',
       cs:{want:'Remove this item, send the rest',by:'CS (sample user)',at:'17 Nov 16:20',via:'Phone call'},
-      refund:{type:'Store credit',amount:39.9,status:'Pending'},
+      refund:{type:'Store credit',amount:39.9,status:'Pending',reason:'Out of stock'},
       inv:{status:'Open',clue:'Transfer to Store A on 29 Oct: 5 pieces sent, only 4 scanned on receipt. This piece may have left with that transfer unscanned.'},
       epc:{id:'BB0000000000000001900195',hist:[H('30 Oct 09:00','H-07-01 (warehouse active)','Seen in stock take, count 1'),H('29 Oct 15:30','Warehouse dispatch','Transfer to Store A packed (5 pieces)')]},
-      log:[{t:'13 Nov 10:40',w:'Warehouse',x:'Reported: cannot find item when packing.'},{t:'13 Nov 15:05',w:'Merchandiser',x:'Asked warehouse to search H-07-01.'},{t:'14 Nov 10:10',w:'Warehouse',x:'Searched H-07-01. Not found.'},{t:'14 Nov 11:30',w:'Merchandiser',x:'No stock in any store. Out of stock, sent to Customer Service.'},{t:'17 Nov 16:20',w:'Customer Service',x:'Customer agreed by phone: remove this item, send the rest, store credit.'}]}),
-    mk({cty:'SG',brand:'MONOLOQ',order:'#M49014SG',date:'12 Nov',age:6,channel:'Online store',cust:'K*** H.',phone:'+65 ****0002',email:'k***@gmail.com',pay:'Mastercard ending 5521',
-      items:[{sku:'MFBS0099010NW-PAY-M',d:'Blouse, papaya, M',q:1,p:89,disc:8.9}],bad:0,reason:'Cannot find item',stage:'action',shopify:0,
-      needShip:false,
+      log:[{t:'13 Nov 10:40',w:'Warehouse',x:'Reported: cannot find item when packing.'},{t:'14 Nov 10:10',w:'Warehouse',x:'Searched H-07-01. Not found.'},{t:'14 Nov 11:30',w:'Merchandiser',x:'No stock in any store. Out of stock, sent to Customer Service.'},{t:'17 Nov 16:20',w:'Customer Service',x:'Customer agreed by phone: remove this item, send the rest, store credit. Reason: out of stock.'}]}),
+    mk({cty:'SG',brand:'MONOLOQ',order:'#M49014SG',date:'12 Nov',age:6,cust:'K*** H.',phone:'+65 ****0002',email:'k***@gmail.com',pay:'Mastercard ending 5521',
+      items:[{sku:'MFBS0099010NW-PAY-M',d:'Blouse, papaya, M',q:1,p:89,disc:8.9}],stage:'action',shopify:0,needShip:false,
       cs:{want:'Cancel the whole order',by:'CS (sample user)',at:'16 Nov 11:05',via:'Email'},
-      refund:{type:'Refund to original payment',amount:80.1,status:'Pending'},prior:{amount:80.1,when:'16 Nov'},
+      refund:{type:'Refund to original payment',amount:80.1,status:'Pending',reason:'Out of stock'},prior:{amount:80.1,when:'16 Nov'},
       inv:{status:'Open',clue:'This tag was sold at Store B on 21 Oct (POS), but SWIMS still showed 1 piece in the warehouse. The sale was not deducted.'},
       epc:{id:'BB0000000000000001900226',hist:[H('21 Oct 14:30','Store B','Sold (POS)'),H('18 Oct 10:00','Store B','Received by transfer')]},
-      log:[{t:'12 Nov 09:30',w:'Warehouse',x:'Reported: cannot find item when packing.'},{t:'12 Nov 13:00',w:'Merchandiser',x:'No stock in any store. Out of stock, sent to Customer Service.'},{t:'16 Nov 11:05',w:'Customer Service',x:'Customer asked by email to cancel the whole order and refund.'}]}),
-    mk({cty:'SG',brand:'SANS & SANS',order:'#SSSG19020',date:'10 Nov',age:8,channel:'Online store',cust:'F*** E.',phone:'+65 ****6950',email:'f***@gmail.com',pay:'Visa ending 3004',
-      items:[{sku:'SFPL0099011AG-IVR-M',d:'Pants, ivory, M',q:1,p:99,disc:0}],bad:0,reason:'Cannot find item',stage:'done',shopify:0,
-      cs:{want:'Cancel the whole order',by:'CS (sample user)',at:'12 Nov 10:00',via:'WhatsApp'},
-      refund:{type:'Refund to original payment',amount:99,status:'Done',doneAt:'13 Nov',by:'E-commerce (sample user)',ref:'RF-SAMPLE-0113'},
-      inv:{status:'Closed',cause:CAUSES[1],fix:FIXES[1],note:'',at:'14 Nov'},
-      log:[{t:'10 Nov 10:00',w:'Warehouse',x:'Reported: cannot find item.'},{t:'11 Nov 09:00',w:'Merchandiser',x:'Out of stock, sent to Customer Service.'},{t:'12 Nov 10:00',w:'Customer Service',x:'Customer chose to cancel and refund.'},{t:'13 Nov 14:12',w:'E-commerce',x:'Refunded S$99.00 to Visa ending 3004. Ref RF-SAMPLE-0113.'},{t:'14 Nov 09:20',w:'Inventory',x:'Why not found: sold but stock not deducted. Reported to IT.'}]}),
-    mk({cty:'SG',brand:'iORA',order:'#iSG190015',date:'11 Nov',age:7,channel:'Online store',cust:'R*** N.',phone:'+65 ****4410',email:'r***@gmail.com',pay:'Visa ending 2209',
-      items:[{sku:'AFDQ0099019YS-BLK-S',d:'Dress, black, S',q:1,p:69.9,disc:0}],bad:0,reason:'Cannot find item',stage:'action',shopify:0,needShip:false,
+      log:[{t:'12 Nov 09:30',w:'Warehouse',x:'Reported: cannot find item when packing.'},{t:'12 Nov 13:00',w:'Merchandiser',x:'No stock in any store. Out of stock, sent to Customer Service.'},{t:'16 Nov 11:05',w:'Customer Service',x:'Customer asked by email to cancel the whole order and refund. Reason: out of stock.'}]}),
+    mk({cty:'SG',brand:'iORA',order:'#iSG190015',date:'11 Nov',age:7,cust:'R*** N.',phone:'+65 ****4410',email:'r***@gmail.com',pay:'Visa ending 2209',
+      items:[{sku:'AFDQ0099019YS-BLK-S',d:'Dress, black, S',q:1,p:69.9,disc:0}],stage:'action',shopify:0,needShip:false,
       cs:{want:'Cancel the whole order',by:'CS (sample user)',at:'13 Nov 15:00',via:'WhatsApp'},
-      refund:{type:'Refund to original payment',amount:69.9,status:'Failed',failWhy:'Card expired or closed',failAt:'14 Nov 10:20',lark:'LARK-RF-0009'},
+      refund:{type:'Refund to original payment',amount:69.9,status:'Failed',reason:'Out of stock',failWhy:'Card expired or closed',failAt:'14 Nov 10:20',lark:'LARK-RF-0009'},
       inv:{status:'Closed',cause:CAUSES[0],fix:FIXES[2],note:'',at:'13 Nov'},
       epc:{id:'BB0000000000000001900350',hist:[H('5 Nov 11:00','Store A','Received by transfer, not scanned at dispatch')]},
-      log:[{t:'11 Nov 10:00',w:'Warehouse',x:'Reported: cannot find item.'},{t:'11 Nov 14:00',w:'Merchandiser',x:'No stock in any store. Out of stock, sent to Customer Service.'},{t:'13 Nov 15:00',w:'Customer Service',x:'Customer chose to cancel and refund.'},{t:'14 Nov 10:20',w:'E-commerce',x:'Refund failed in Shopify: card expired or closed. Flagged.'},{t:'14 Nov 10:20',w:'System',x:'Refund request LARK-RF-0009 sent to Lark automatically.'}]}),
-    mk({cty:'MY',brand:'iORA',order:'#iMY990001',date:'16 Nov',age:2,channel:'Online store',cust:'N*** A.',phone:'+60 ****5512',email:'n***@gmail.com',pay:'FPX online banking',
-      items:[{sku:'AFBS0099012WR-CRE-S',d:'Blouse, cream, S',q:1,p:59,disc:0},{sku:'AFDQ0099013YS-NVS-M',d:'Dress, navy, M',q:1,p:99,disc:0}],bad:0,reason:'Cannot find item',
+      log:[{t:'11 Nov 10:00',w:'Warehouse',x:'Reported: cannot find item.'},{t:'11 Nov 14:00',w:'Merchandiser',x:'Out of stock, sent to Customer Service.'},{t:'13 Nov 15:00',w:'Customer Service',x:'Customer chose to cancel and refund.'},{t:'14 Nov 10:20',w:'E-commerce',x:'Refund failed in Shopify: card expired or closed. Flagged.'},{t:'14 Nov 10:20',w:'System',x:'Refund request LARK-RF-0009 sent to Lark automatically.'}]}),
+    mk({cty:'SG',brand:'SANS & SANS',order:'#SSSG19020',date:'10 Nov',age:8,cust:'F*** E.',phone:'+65 ****6950',email:'f***@gmail.com',pay:'Visa ending 3004',
+      items:[{sku:'SFPL0099011AG-IVR-M',d:'Pants, ivory, M',q:1,p:99,disc:0}],stage:'done',shopify:0,
+      cs:{want:'Cancel the whole order',by:'CS (sample user)',at:'12 Nov 10:00',via:'WhatsApp'},
+      refund:{type:'Refund to original payment',amount:99,status:'Done',reason:'Out of stock',doneAt:'13 Nov',by:'E-commerce (sample user)',ref:''},
+      inv:{status:'Closed',cause:CAUSES[1],fix:FIXES[1],note:'',at:'14 Nov'},
+      log:[{t:'10 Nov 10:00',w:'Warehouse',x:'Reported: cannot find item.'},{t:'11 Nov 09:00',w:'Merchandiser',x:'Out of stock, sent to Customer Service.'},{t:'12 Nov 10:00',w:'Customer Service',x:'Customer chose to cancel and refund.'},{t:'13 Nov 14:12',w:'E-commerce',x:'Refunded S$99.00 to Visa ending 3004.'},{t:'14 Nov 09:20',w:'Inventory',x:'Why not found: sold but stock not deducted. Reported to IT.'}]}),
+    mk({cty:'MY',brand:'iORA',order:'#iMY990001',date:'16 Nov',age:2,cust:'N*** A.',phone:'+60 ****5512',email:'n***@gmail.com',pay:'FPX online banking',
+      items:[{sku:'AFBS0099012WR-CRE-S',d:'Blouse, cream, S',q:1,p:59,disc:0},{sku:'AFDQ0099013YS-NVS-M',d:'Dress, navy, M',q:1,p:99,disc:0}],
       locs:[['Warehouse (H)',0],['Store C',1],['Store D',2],['Store F',3]],
       inv:{status:'Open',clue:'SWIMS shows 0 in the warehouse but Shopify still shows 1 for sale. The two quantities are not in line.'},
       epc:{id:'BB0000000000000001900257',hist:[H('11 Nov 10:20','Store C','Seen in cycle count'),H('2 Nov 12:00','Store C','Received by transfer')]},
       log:[{t:'16 Nov 11:00',w:'Warehouse',x:'Reported: cannot find item when packing.'}]}),
-    mk({cty:'MY',brand:'iORA',order:'#iMY990004',date:'14 Nov',age:4,channel:'Online store',cust:'W*** L.',phone:'+60 ****3090',email:'w***@gmail.com',pay:'Visa ending 9014',
-      items:[{sku:'AFTX0099014ED-CRE-F',d:'Top, cream, free size',q:3,p:49,disc:0}],bad:0,reason:'Cannot find item',stage:'transfer',transferFrom:'Store D',shopify:3,
+    mk({cty:'MY',brand:'iORA',order:'#iMY990004',date:'14 Nov',age:4,cust:'W*** L.',phone:'+60 ****3090',email:'w***@gmail.com',pay:'Visa ending 9014',
+      items:[{sku:'AFTX0099014ED-CRE-F',d:'Top, cream, free size',q:3,p:49,disc:0}],stage:'transfer',transferFrom:'Store D',shopify:3,
       locs:[['Warehouse (H)',0],['Store D',3]],
       epc:{id:'BB0000000000000001900288',hist:[H('13 Nov 16:00','Store D','Seen in cycle count')]},
-      log:[{t:'14 Nov 09:20',w:'Warehouse',x:'Reported: cannot find item.'},{t:'14 Nov 14:00',w:'Merchandiser',x:'3 pieces at Store D. Outlet transfer requested.'}]}),
-    mk({cty:'MY',brand:'TRT',order:'#TRTMY9003',date:'12 Nov',age:6,channel:'Online store',cust:'H*** R.',phone:'+60 ****7741',email:'h***@gmail.com',pay:'E-wallet',
-      items:[{sku:'TMTS0099015YB-CRE-XL',d:'Tee, cream, XL',q:1,p:69,disc:6.9}],bad:0,reason:'No tag on item',stage:'cs',shopify:0,
+      log:[{t:'14 Nov 09:20',w:'Warehouse',x:'Reported: cannot find item.'},{t:'14 Nov 14:00',w:'Merchandiser',x:'Stock ordered from Store D (outlet transfer).'}]}),
+    mk({cty:'MY',brand:'TRT',order:'#TRTMY9003',date:'12 Nov',age:6,cust:'H*** R.',phone:'+60 ****7741',email:'h***@gmail.com',pay:'E-wallet',
+      items:[{sku:'TMTS0099015YB-CRE-XL',d:'Tee, cream, XL',q:1,p:69,disc:6.9}],reason:'No tag on item',stage:'cs',shopify:0,
       epc:{id:'BB0000000000000001900319',hist:[H('25 Oct 11:11','H-03-05 (warehouse active)','Seen in stock take, count 1')]},
       contacts:[{t:'14 Nov 10:00',x:'Email sent'},{t:'16 Nov 10:00',x:'Called, no answer'}],
       log:[{t:'12 Nov 10:00',w:'Warehouse',x:'Reported: no tag on item.'},{t:'13 Nov 09:00',w:'Warehouse',x:'Searched H-03-05. Not found.'},{t:'13 Nov 10:30',w:'Merchandiser',x:'No stock in any store. Out of stock, sent to Customer Service.'}]}),
-    mk({cty:'MY',brand:'MONOLOQ',order:'#M9901MY',date:'13 Nov',age:5,channel:'Online store',cust:'C*** Y.',phone:'+60 ****2208',email:'c***@gmail.com',pay:'Mastercard ending 6610',
-      items:[{sku:'MFPL0099016SB-NOI-M',d:'Pants, noir, M',q:1,p:159,disc:0},{sku:'MFBL0099017NW-BLU-M',d:'Blouse, blue, M',q:1,p:129,disc:0}],bad:0,reason:'Cannot find item',stage:'action',
+    mk({cty:'MY',brand:'MONOLOQ',order:'#M9901MY',date:'13 Nov',age:5,cust:'C*** Y.',phone:'+60 ****2208',email:'c***@gmail.com',pay:'Mastercard ending 6610',
+      items:[{sku:'MFPL0099016SB-NOI-M',d:'Pants, noir, M',q:1,p:159,disc:0},{sku:'MFBL0099017NW-BLU-M',d:'Blouse, blue, M',q:1,p:129,disc:0}],stage:'action',
       needShip:true,whTask:'Pack exchange item MFPL0099018SB-NOI-L instead of MFPL0099016SB-NOI-M, with the other 1 item.',
       cs:{want:'Exchange for another item',exch:'MFPL0099018SB-NOI-L',by:'CS (sample user)',at:'17 Nov 12:30',via:'WhatsApp'},
       log:[{t:'13 Nov 10:00',w:'Warehouse',x:'Reported: cannot find item.'},{t:'14 Nov 09:00',w:'Merchandiser',x:'Out of stock, sent to Customer Service.'},{t:'17 Nov 12:30',w:'Customer Service',x:'Customer chose size L instead (same price).'}]})
   ];
 }
 let CASES,AUDIT,USERS,RPERM;
-function resetAll(){CASES=seed();USERS=seedUsers();RPERM=seedPerm();
-  AUDIT=[];CASES.forEach(c=>c.log.forEach(l=>AUDIT.push({t:l.t,w:l.w,x:l.x,o:c.order,cty:c.cty})));
-  AUDIT.sort((a,b)=>parseInt(b.t)-parseInt(a.t)||b.t.localeCompare(a.t));}
+function resetAll(){CASES=seed();USERS=seedUsers();RPERM=seedPerm();AUDIT=[];
+  CASES.forEach(c=>c.log.forEach(l=>AUDIT.push({t:l.t,w:l.w,x:l.x,o:c.order,cty:c.cty})));
+  AUDIT.sort((a,b)=>parseInt(b.t)-parseInt(a.t)||b.t.localeCompare(a.t))}
 resetAll();
-const S={role:'admin',cty:'SG',tab:'overview',sel:{},rf:'Pending',rtype:'All',form:false,whf:'all',dep:'warehouse',rec:'qty',sq:'',eq:'',view:null,logOpen:false,color:'#3547a8',set:'Users',invf:'Open',out:false,reg:false};
+const S={role:'admin',dep:'warehouse',cty:'SG',tab:'overview',sel:{},rf:'Pending',form:false,whf:'all',rec:'qty',sq:'',eq:'',
+  f:{brand:'',year:'',month:'',date:'',sort:'new'},view:null,set:'Users',invf:'Open',logOpen:false,reg:false,out:true,color:'#3350c4'};
 
-/* ---------- helpers ---------- */
+/* ============ helpers ============ */
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const $=id=>document.getElementById(id);
+const val=id=>$(id).value.trim();
 const cur=c=>c.cty==='SG'?'S$':'RM';
 const money=(c,v)=>cur(c)+Number(v).toFixed(2);
 const line=it=>it.p*it.q-(it.disc||0);
 const total=c=>c.items.reduce((a,i)=>a+line(i),0)+(c.ship||0);
 const bad=c=>c.items[c.bad];
-const mine=()=>CASES.filter(c=>c.cty===S.cty);
+const iso=c=>{const p=c.date.split(' ');return '2026-'+String(MON.indexOf(p[1])+1).padStart(2,'0')+'-'+p[0].padStart(2,'0')};
+const mine0=()=>CASES.filter(c=>c.cty===S.cty);
+const mine=()=>{const f=S.f;return mine0().filter(c=>(!f.brand||c.brand===f.brand)&&(!f.year||iso(c).startsWith(f.year))&&(!f.month||iso(c).slice(5,7)===f.month)&&(!f.date||iso(c)===f.date))
+  .sort((x,y)=>f.sort==='brand'?x.brand.localeCompare(y.brand)||iso(y).localeCompare(iso(x)):f.sort==='old'?iso(x).localeCompare(iso(y)):iso(y).localeCompare(iso(x)))};
 const now=()=>'18 Nov '+new Date().toTimeString().slice(0,5);
-const chip=(t,c)=>`<span class="chip c-${c}">${esc(t)}</span>`;
+const chip=(t,c)=>`<span class="chip k-${c}">${esc(t)}</span>`;
 const stageChip=c=>chip(STAGE[c.stage].t,STAGE[c.stage].c);
+const brand=c=>`<span class="dot" style="background:${BRAND_C[c.brand]||'#7b8499'}"></span>${esc(c.brand)}`;
 const log=(c,w,x)=>{c.log.push({t:now(),w,x});AUDIT.unshift({t:now(),w,x,o:c.order,cty:c.cty})};
 const sysLog=x=>AUDIT.unshift({t:now(),w:ROLES[S.role].name,x,o:'',cty:''});
 function waiting(c){
@@ -393,37 +412,40 @@ function waiting(c){
 function finish(c){if(c.stage==='action'&&(!c.needShip||c.shipped)&&(!c.refund||c.refund.status==='Done')){c.stage='done';log(c,'System','All steps done. Case completed.')}}
 const whSearch=()=>mine().filter(c=>c.stage==='search');
 const whPack=()=>mine().filter(c=>c.stage==='action'&&c.needShip&&!c.shipped);
-const refunds=()=>mine().filter(c=>c.refund);
-const counts=()=>({warehouse:whSearch().length+whPack().length,merch:mine().filter(c=>c.stage==='merch'||c.stage==='transfer').length,cs:mine().filter(c=>c.stage==='cs').length,refund:refunds().filter(c=>c.refund.type!=='Store credit'&&c.refund.status!=='Done').length,credit:refunds().filter(c=>c.refund.type==='Store credit'&&c.refund.status!=='Done').length,investigate:mine().filter(c=>c.inv.status==='Open').length});
+const pays=sc=>mine().filter(c=>c.refund&&(c.refund.type==='Store credit')===sc);
+const counts=()=>({warehouse:whSearch().length+whPack().length,merch:mine().filter(c=>c.stage==='merch'||c.stage==='transfer').length,cs:mine().filter(c=>c.stage==='cs').length,
+  refund:pays(false).filter(c=>c.refund.status!=='Done').length,credit:pays(true).filter(c=>c.refund.status!=='Done').length,investigate:mine().filter(c=>c.inv.status==='Open').length});
 const canSeeCustomer=()=>['admin','cs','ecom'].includes(S.role);
-const bars=rows=>{const mx=Math.max(1,...rows.map(r=>r[1]));return `<div class="bars">${rows.map(r=>`<div>${esc(r[0])}</div><div class="bg"><div class="bar" style="width:${r[1]/mx*100}%"></div></div><div class="num"><b>${r[1]}</b></div>`).join('')}</div>`};
+const seg=(k,vals)=>`<div class="seg">${vals.map(v=>`<button class="${S[k]===v[0]?'on':''}" data-set="${k}" data-v="${v[0]}">${v[1]}</button>`).join('')}</div>`;
+function fbar(){const f=S.f,sel=(k,o)=>`<select data-f="${k}" aria-label="${k}">${o.map(v=>`<option value="${v[0]}" ${f[k]===v[0]?'selected':''}>${v[1]}</option>`).join('')}</select>`;
+  return `<div class="fbar"><b class="small">Filter</b>${sel('brand',[['','All brands'],...BRANDS.map(b=>[b,b])])}<select data-fcty aria-label="Region"><option value="SG" ${S.cty==='SG'?'selected':''}>Singapore</option><option value="MY" ${S.cty==='MY'?'selected':''}>Malaysia</option></select>${sel('year',[['','All years'],['2026','2026'],['2025','2025']])}${sel('month',[['','All months'],...MON.map((m,i)=>[String(i+1).padStart(2,'0'),m])])}<input type="date" data-f="date" value="${f.date}" title="Exact date" aria-label="Date"><b class="small" style="margin-left:8px">Sort</b>${sel('sort',[['new','Newest first'],['old','Oldest first'],['brand','Brand A to Z']])}${f.brand||f.year||f.month||f.date?'<button class="btn sm" data-act="clearf">Clear filters</button>':''}</div>`}
 
-/* ---------- views ---------- */
+/* ============ pages ============ */
 function vOverview(){
-  const all=mine(),open=all.filter(c=>c.stage!=='done');
-  const pend=refunds().filter(c=>c.refund.status!=='Done');
-  const oldest=open.reduce((a,c)=>Math.max(a,c.age),0);
-  const st=[['merch','1','Stock check','Merchandiser: search, transfer or out of stock'],['search','2','Warehouse search','Go and look for the item'],['cs','3','With customer','Exchange, remove or cancel?'],['action','4','Decision confirmed','Pack, store credit or refund'],['done','5','Completed','']];
+  const all=mine(),open=all.filter(c=>c.stage!=='done'),pend=all.filter(c=>c.refund&&c.refund.status!=='Done');
+  const oldest=open.reduce((a,c)=>Math.max(a,c.age),0),sample={cty:S.cty};
+  const st=[['merch','Stock check','Merchandiser: search, order or out of stock','swap','blue'],['search','Warehouse search','Go and look for the item','box','amber'],['cs','With customer','Exchange, remove or cancel?','chat','green'],['action','Decision confirmed','Pack, store credit or refund','card','red'],['done','Completed','','check','grey']];
   const cnt=k=>all.filter(c=>c.stage===k||(k==='merch'&&c.stage==='transfer')).length;
-  const sample=open[0]||{cty:S.cty};
-  const cause=CAUSES.map((k,i)=>[k,BASE[S.cty][i]+all.filter(c=>c.inv.status==='Closed'&&c.inv.cause===k).length]);
-  const hold={};open.forEach(c=>waiting(c).split(' + ').forEach(w=>hold[w]=(hold[w]||0)+1));
-  return `<h1>Problem parcels</h1><p class="sub">Orders that could not be packed because an item was not found. ${S.cty==='SG'?'Singapore':'Malaysia'} · today 18 Nov 2026</p>
-  <div class="kpis">
-    <div class="card kpi"><div class="l">Open cases</div><div class="v">${open.length}</div><div class="s">${all.length-open.length} completed</div></div>
-    <div class="card kpi"><div class="l">Oldest open case</div><div class="v">${oldest} days</div><div class="s">target: closed within 3 days</div></div>
-    <div class="card kpi"><div class="l">Store credit / refund to do</div><div class="v">${money(sample,pend.reduce((a,c)=>a+c.refund.amount,0))}</div><div class="s">${pend.length} pending, with E-commerce</div></div>
-    <div class="card kpi"><div class="l">"Why not found" still open</div><div class="v">${counts().investigate}</div><div class="s">with Inventory</div></div>
+  const cause=CAUSES.map((k,i)=>BASE[S.cty][i]+all.filter(c=>c.inv.status==='Closed'&&c.inv.cause===k).length),ct=cause.reduce((a,b)=>a+b,0);
+  let off=0;const C=2*Math.PI*42;
+  const donut=`<svg width="150" height="150" viewBox="0 0 110 110" role="img" aria-label="Why items were not found"><g transform="rotate(-90 55 55)">${cause.map((v,i)=>{const l=v/ct*C,s=`<circle cx="55" cy="55" r="42" fill="none" stroke="${CAUSE_C[i]}" stroke-width="15" stroke-dasharray="${Math.max(l-1.5,0)} ${C-Math.max(l-1.5,0)}" stroke-dashoffset="${-off}"/>`;off+=l;return s}).join('')}</g><text x="55" y="53" text-anchor="middle" font-size="19" font-weight="700" fill="currentColor">${ct}</text><text x="55" y="67" text-anchor="middle" font-size="8.5" fill="currentColor" opacity=".65">items</text></svg>`;
+  const hold={};open.forEach(c=>waiting(c).split(' + ').forEach(w=>hold[w]=(hold[w]||0)+1));const hr=Object.entries(hold).sort((a,b)=>b[1]-a[1]),hm=Math.max(1,...hr.map(r=>r[1]));
+  const kpi=(i,c,l,v,s)=>`<div class="card kpi" style="--kc:${c}"><span class="ki" style="background:${c}">${ico(i,22)}</span><div><div class="l">${l}</div><div class="v">${v}</div><div class="s">${s}</div></div></div>`;
+  return `<div class="kpis">
+    ${kpi('box','#3350c4','Open cases',open.length,(all.length-open.length)+' completed')}
+    ${kpi('clock','#c9801a','Oldest open case',oldest+' days','target: closed within 3 days')}
+    ${kpi('card','#d0564a','Refund / store credit to do',money(sample,pend.reduce((a,c)=>a+c.refund.amount,0)),pend.length+' pending, with E-commerce')}
+    ${kpi('search','#4d57c9','"Why not found" still open',counts().investigate,'with Inventory')}
   </div>
-  <div class="card journey">${st.map((s,i)=>`<div class="jn"><span class="jc t-${['blu','amb','grn','red','grey'][i]}">${ico(['swap','box','chat','card','check'][i],22)}<b>${cnt(s[0])}</b></span><div class="t">${s[2]}</div><div class="w">${s[3]}</div></div>`).join('')}</div>
+  <div class="card journey">${st.map(s=>`<div class="jn"><span class="jc c-${s[4]}">${ico(s[3],22)}<b>${cnt(s[0])}</b></span><div class="t">${s[1]}</div><div class="w">${s[2]}</div></div>`).join('')}</div>
   <div class="half">
-    <div class="card"><h2 style="margin-top:0">Why items were not found <span class="mut small">last 30 days, sample</span></h2>${bars(cause)}</div>
-    <div class="card"><h2 style="margin-top:0">Who is holding the open cases</h2>${bars(Object.entries(hold).sort((a,b)=>b[1]-a[1]))||'<p class="mut">None.</p>'}</div>
+    <div class="card"><h2 style="margin-top:0">Why items were not found <span class="mut small">last 30 days, sample</span></h2><div class="donut">${donut}<div class="legend">${CAUSES.map((k,i)=>`<div><i style="background:${CAUSE_C[i]}"></i>${k}<b>${cause[i]}</b></div>`).join('')}</div></div></div>
+    <div class="card"><h2 style="margin-top:0">Who is holding the open cases</h2>${hr.length?`<div class="bars">${hr.map(r=>`<div>${esc(r[0])}</div><div class="bg"><div class="bar" style="width:${r[1]/hm*100}%;background:${WHO_C[r[0]]||'#7b8499'}"></div></div><div class="num"><b>${r[1]}</b></div>`).join('')}</div>`:'<p class="mut">No open cases.</p>'}</div>
   </div>
   <h2>All cases</h2>
   <div class="card tw" style="padding:6px"><table><thead><tr><th>Date</th><th>Order</th><th>Brand</th><th>Item not found</th><th>Problem</th><th>Step</th><th>Waiting for</th><th>Why not found</th><th class="num">Days</th></tr></thead><tbody>
-  ${all.map(c=>`<tr class="click" data-act="open" data-id="${c.id}"><td>${c.date}</td><td><b>${esc(c.order)}</b></td><td>${c.brand}</td><td class="mono">${esc(bad(c).sku)}</td><td>${esc(c.reason)}</td><td>${stageChip(c)}</td><td>${waiting(c)||'<span class="mut">none</span>'}</td><td>${c.inv.status==='Closed'?esc(c.inv.cause):'<span class="mut">checking</span>'}</td><td class="num">${c.stage==='done'?'<span class="mut">closed</span>':c.age}</td></tr>`).join('')||'<tr><td colspan="9" class="empty">No cases.</td></tr>'}
-  </tbody></table></div><p class="small mut">Click a row to see its full history.</p>`;
+  ${all.map(c=>`<tr class="click" data-act="open" data-id="${c.id}"><td style="white-space:nowrap">${c.date}</td><td><b>${esc(c.order)}</b></td><td style="white-space:nowrap">${brand(c)}</td><td class="mono">${esc(bad(c).sku)}</td><td>${esc(c.reason)}</td><td>${stageChip(c)}</td><td>${waiting(c)||'<span class="mut">none</span>'}</td><td>${c.inv.status==='Closed'?esc(c.inv.cause):'<span class="mut">checking</span>'}</td><td class="num">${c.stage==='done'?'<span class="mut">closed</span>':c.age}</td></tr>`).join('')||'<tr><td colspan="9" class="mut ctr" style="padding:22px">No cases match the filters.</td></tr>'}
+  </tbody></table></div><p class="small mut">Click a row to see its full history, or to edit or move the order.</p>`;
 }
 
 function whReason(c){
@@ -435,40 +457,46 @@ function whReason(c){
   return['REFUND','grey','with E-commerce'];
 }
 function vWarehouse(){
-  const a=whSearch(),b=whPack(),oth=mine().filter(c=>['merch','transfer','cs'].includes(c.stage)),others=oth.length;
-  const wait=mine().filter(c=>c.stage==='action'&&!(c.needShip&&!c.shipped));
+  const a=whSearch(),b=whPack(),oth=mine().filter(c=>['merch','transfer','cs'].includes(c.stage)),wait=mine().filter(c=>c.stage==='action'&&!(c.needShip&&!c.shipped));
   const rows=S.whf==='todo'?[...a,...b]:[...a,...b,...oth,...wait];
-  return `<h1>Warehouse</h1><p class="sub">Pending parcels and why each one is pending.</p><div class="row" style="margin-bottom:12px"><button class="btn pri" data-act="form">+ Report a problem parcel</button></div>
-  ${S.form?`<div class="card" style="max-width:520px;margin-bottom:16px"><b>Report a problem parcel</b>
+  return `<div class="row" style="margin-bottom:12px">${seg('whf',[['todo','To do ('+(a.length+b.length)+')'],['all','All pending ('+(a.length+b.length+oth.length+wait.length)+')']])}<span class="sp"></span><button class="btn pri" data-act="form">+ Report a problem parcel</button></div>
+  ${S.form?`<div class="card" style="max-width:520px;margin-bottom:14px"><b>Report a problem parcel</b>
     <label class="f" style="margin-top:10px">Order number<input id="fOrder" placeholder="Scan or type the order number"></label>
     <label class="f">Item code (SKU)<input id="fSku" placeholder="Scan or type the item code"></label>
     <label class="f">What is wrong?<select id="fReason">${REASONS.map(r=>`<option>${r}</option>`).join('')}</select></label>
     <div class="row"><button class="btn pri" data-act="add">Send to Merchandiser</button><button class="btn" data-act="form">Cancel</button></div></div>`:''}
-  <div class="row" style="margin-bottom:10px"><div class="seg">${[['todo','To do ('+(a.length+b.length)+')'],['all','All pending ('+(a.length+b.length+others+wait.length)+')']].map(v=>`<button class="${S.whf===v[0]?'on':''}" data-set="whf" data-v="${v[0]}">${v[1]}</button>`).join('')}</div></div>
-  <div class="card tw" style="padding:4px"><table class="wt"><thead><tr><th>Date</th><th>Order</th><th>Item</th><th class="num">Qty</th><th>Reason pending</th><th>To do</th></tr></thead><tbody>
-  ${rows.map(c=>{const r=whReason(c),mineToDo=c.stage==='search'||(c.stage==='action'&&c.needShip&&!c.shipped);
-    return `<tr><td>${c.date}</td><td><b>${esc(c.order)}</b></td><td class="mono">${esc(bad(c).sku)}</td><td class="num">${bad(c).q}</td><td>${chip(r[0],r[1])}${r[2]?` <span class="small">${esc(r[2])}</span>`:''}</td><td>${c.stage==='search'?`<button class="btn sm ok" data-act="found" data-id="${c.id}">Found</button> <button class="btn sm no" data-act="notfound" data-id="${c.id}">Not found</button>`:mineToDo?`<button class="btn sm ok" data-act="packed" data-id="${c.id}">Done</button>`:'<span class="mut small">wait</span>'}</td></tr>`}).join('')||'<tr><td colspan="6" class="empty">Nothing to do.</td></tr>'}
+  <div class="card tw" style="padding:4px"><table class="wt"><thead><tr><th>Date</th><th>Order</th><th>Item</th><th class="num">Qty</th><th>Brand</th><th>Reason pending</th><th>To do</th></tr></thead><tbody>
+  ${rows.map(c=>{const r=whReason(c);return `<tr><td>${c.date}</td><td><b>${esc(c.order)}</b></td><td class="mono">${esc(bad(c).sku)}</td><td class="num">${bad(c).q}</td><td>${brand(c)}</td><td>${chip(r[0],r[1])}${r[2]?` <span class="small">${esc(r[2])}</span>`:''}</td><td>${c.stage==='search'?`<button class="btn sm ok" data-act="found" data-id="${c.id}">Found</button> <button class="btn sm no" data-act="notfound" data-id="${c.id}">Not found</button>`:r[0]==='PACK'?`<button class="btn sm ok" data-act="packed" data-id="${c.id}">Done</button>`:'<span class="mut small">wait</span>'}</td></tr>`}).join('')||'<tr><td colspan="7" class="mut ctr" style="padding:22px">Nothing here.</td></tr>'}
   </tbody></table></div>`;
 }
 
 function twoPane(tab,list,detail,emptyMsg){
   if(!list.length)return `<div class="card empty">${emptyMsg}</div>`;
-  let sel=list.find(c=>c.id===S.sel[tab])||list[0];
-  return `<div class="two"><div class="list">${list.map(c=>`<div class="li ${c===sel?'on':''}" data-act="sel" data-id="${c.id}"><div class="o">${esc(c.order)}</div><div class="small mut">${c.brand} · ${esc(c.reason)}</div><div class="small">${tab==='investigate'?chip(c.inv.status==='Open'?'To investigate':'Closed',c.inv.status==='Open'?'amber':'green'):stageChip(c)} <span class="mut">${c.age} day${c.age===1?'':'s'}</span></div></div>`).join('')}</div><div class="card">${detail(sel)}<div style="margin-top:16px;border-top:1px solid var(--line);padding-top:12px"><button class="btn sm" data-act="open" data-id="${sel.id}">✎ Edit or move this order</button> <span class="small mut">if plans change after it was passed on</span></div></div></div>`;
+  const sel=list.find(c=>c.id===S.sel[tab])||list[0];
+  return `<div class="two"><div class="list">${list.map(c=>`<div class="li ${c===sel?'on':''}" style="border-left-color:${BRAND_C[c.brand]||'#7b8499'}" data-act="sel" data-id="${c.id}"><div class="o">${esc(c.order)}</div><div class="small mut">${esc(c.brand)} · ${esc(c.reason)}</div><div class="small">${tab==='investigate'?chip(c.inv.status==='Open'?'To investigate':'Closed',c.inv.status==='Open'?'amber':'green'):stageChip(c)} <span class="mut">${c.date} · ${c.age} day${c.age===1?'':'s'}</span></div></div>`).join('')}</div>
+  <div class="card">${detail(sel)}<div style="margin-top:16px;border-top:1px solid var(--line);padding-top:12px"><button class="btn sm" data-act="open" data-id="${sel.id}">✎ Edit or move this order</button> <span class="small mut">if plans change after it was passed on</span></div></div></div>`;
 }
-const epcTable=c=>`<div class="tw"><table><thead><tr><th>When</th><th>Where</th><th>What happened</th></tr></thead><tbody>${c.epc.hist.map(h=>`<tr><td>${h.w}</td><td>${esc(h.l)}</td><td>${esc(h.e)}</td></tr>`).join('')||'<tr><td colspan="3" class="mut">No tag history found.</td></tr>'}</tbody></table></div>`;
+const epcTable=c=>`<div class="tw"><table><thead><tr><th>When</th><th>Where</th><th>What happened</th></tr></thead><tbody>${c.epc.hist.map(h=>`<tr><td style="white-space:nowrap">${h.w}</td><td>${esc(h.l)}</td><td>${esc(h.e)}</td></tr>`).join('')||'<tr><td colspan="3" class="mut">No tag history found.</td></tr>'}</tbody></table></div>`;
 const timeline=c=>`<ul class="tl">${c.log.map(l=>`<li><b>${esc(l.w)}</b> <span class="mut small">${l.t}</span><br>${esc(l.x)}</li>`).join('')}</ul>`;
+
+/* stock by location, with a recommended store */
+const locName=l=>/^Warehouse/.test(l)?'HQ warehouse (H) · shared with the online store':l;
+const sold30=(c,l)=>{let h=0;for(const ch of bad(c).sku+l)h=(h*7+ch.charCodeAt(0))%13;return h};
+function recIdx(c){const need=bad(c).q;let best=-1,bs=null;c.locs.forEach((l,i)=>{if(!/^Store/.test(l[0])||l[1]<1)return;const ok=l[1]>=need?1:0,s=sold30(c,l[0]),sc=S.rec==='sales'?[ok,-s,l[1]]:[ok,l[1],-s];
+  if(!bs){best=i;bs=sc;return}for(let k=0;k<3;k++){if(sc[k]>bs[k]){best=i;bs=sc;break}if(sc[k]<bs[k])break}});return best}
+function distTable(c,btn){const r=recIdx(c);
+  return `<div class="row" style="margin:14px 0 8px"><h2 style="margin:0;flex:1">Stock by location <span class="mut small">from BigQuery</span></h2><span class="small mut">Recommend the store with</span>${seg('rec',[['qty','highest quantity'],['sales','lowest sales']])}</div>
+  <div class="tw"><table><thead><tr><th>Location</th><th class="num">Quantity</th><th class="num">Sold, last 30 days</th><th></th></tr></thead><tbody>${c.locs.map((l,i)=>{const st=/^Store/.test(l[0]);return `<tr><td>${esc(locName(l[0]))} ${i===r?chip('★ Recommended','green'):''}</td><td class="num"><b>${l[1]}</b></td><td class="num">${st?sold30(c,l[0]):'<span class="mut">online orders</span>'}</td><td>${l[1]<1?'<span class="mut">no stock</span>':st?(btn?`<button class="btn sm ${i===r?'pri':''}" data-act="totransfer" data-id="${c.id}" data-loc="${i}">Order from ${esc(l[0])}</button>`:''):'<span class="mut">warehouse search</span>'}</td></tr>`}).join('')}</tbody></table></div>`}
 
 function vMerch(){
   const list=mine().filter(c=>c.stage==='merch'||c.stage==='transfer');
-  return `<h1>Stock check & transfer</h1><p class="sub">Check where the stock is, then choose: search the warehouse again, transfer from a store, or out of stock.</p>`+twoPane('merch',list,c=>{
-    const need=bad(c).q,last=c.epc.hist[0],whLoc=last&&/^[HZ]/.test(last.l)?last.l.replace(/ \(.*/,''):'';
-    return `<div class="row"><h1 style="font-size:18px;flex:1">${esc(c.order)} · <span class="mono">${esc(bad(c).sku)}</span></h1>${stageChip(c)}</div>
-    <p class="mut">${esc(bad(c).d)} · need ${need} · reported: ${esc(c.reason)}</p>
+  return twoPane('merch',list,c=>{
+    const last=c.epc.hist[0],whLoc=last&&/^[HZ]/.test(last.l)?last.l.replace(/ \(.*/,''):'';
+    return `<div class="row"><h2 style="margin:0;flex:1;font-size:18px">${esc(c.order)} · <span class="mono">${esc(bad(c).sku)}</span></h2>${stageChip(c)}</div>
+    <p class="mut" style="margin:4px 0 0">${esc(bad(c).d)} · need ${bad(c).q} · reported: ${esc(c.reason)}</p>
     ${c.notFoundAt?`<div class="warn">Warehouse searched ${esc(c.notFoundAt)} and did not find it.</div>`:''}
-    ${c.stage==='transfer'?`<div class="note">Outlet transfer requested from <b>${esc(c.transferFrom)}</b>. Waiting for the stock to arrive.</div><div class="row"><button class="btn pri" data-act="arrived" data-id="${c.id}">Transfer arrived, send to warehouse to pack</button><button class="btn" data-act="oos" data-id="${c.id}">Transfer failed, out of stock</button></div>`
-    :`
-    ${distTable(c,true)}<div class="tw" style="display:none"><table><thead><tr><th>Location</th><th class="num">Quantity</th><th></th></tr></thead><tbody>${c.locs.map((l,i)=>`<tr><td>${esc(l[0])}</td><td class="num"><b>${l[1]}</b></td><td>${/^Store/.test(l[0])?(l[1]>0?`<button class="btn sm" data-act="totransfer" data-id="${c.id}" data-loc="${i}">Request transfer from ${esc(l[0])}</button>`:'<span class="mut">no stock</span>'):(l[1]>0?'<span class="mut">search below</span>':'<span class="mut">no stock</span>')}</td></tr>`).join('')}</tbody></table></div>
+    ${c.stage==='transfer'?`<div class="note">Stock ordered from <b>${esc(c.transferFrom)}</b>. Waiting for it to arrive.</div><div class="row"><button class="btn pri" data-act="arrived" data-id="${c.id}">Stock arrived, send to warehouse to pack</button><button class="btn" data-act="oos" data-id="${c.id}">Transfer failed, out of stock</button></div>`
+    :`${distTable(c,true)}
     <div class="grid" style="margin-top:10px;max-width:420px"><div class="tile"><div class="l">Shopify quantity</div><div class="v">${c.shopify}</div></div><div class="tile"><div class="l">Marketplace quantity</div><div class="v">${c.market}</div></div></div>
     ${last?`<div class="note">Tag last seen: <b>${esc(last.l)}</b>, ${last.w}.</div>`:''}
     <label class="f" style="max-width:360px;margin-top:12px">Where should the warehouse look?<input id="loc" value="${esc(whLoc)}" placeholder="Warehouse location"></label>
@@ -477,17 +505,28 @@ function vMerch(){
   },'No parcels waiting for a stock check.');
 }
 
+/* live search: results follow the box as you type */
+const FIND={};
+function finderRes(key){const f=FIND[key],q=(S[key]||'').trim().toLowerCase(),hit=q?mine0().find(c=>f.match(c).some(v=>v.toLowerCase().includes(q))):null;
+  return !q?'':hit?`<div class="card">${f.show(hit)}</div>`:'<div class="card"><p class="mut" style="margin:0">Nothing found for that in the sample data. The real version searches all of BigQuery.</p></div>'}
+function finder(key,ph,match,show){FIND[key]={match,show};
+  return `<div class="card" style="margin-bottom:14px"><input class="inp" style="margin:0;padding:11px 12px" id="${key}" data-live="${key}" value="${esc(S[key]||'')}" placeholder="${ph}" autocomplete="off">
+  <div class="row small" style="margin-top:10px"><span class="mut">Results update as you type. Try a sample:</span>${mine0().slice(0,3).map(c=>`<button class="btn sm mono" data-act="find" data-k="${key}" data-v="${esc(match(c)[0])}">${esc(match(c)[0])}</button>`).join('')}</div></div><div id="res-${key}">${finderRes(key)}</div>`}
+function vStock(){return finder('sq','SKU or EPC, for example TFKS0099001JS-EME-M',c=>[bad(c).sku,c.epc.id],c=>`<div class="row"><h2 style="margin:0;flex:1;font-size:18px" class="mono">${esc(bad(c).sku)}</h2>${chip('Total '+c.locs.reduce((a,l)=>a+l[1],0)+' pcs','blue')}</div><p class="mut" style="margin:4px 0 0">${esc(bad(c).d)} · ${esc(c.brand)} · Shopify shows ${c.shopify} · marketplace shows ${c.market}</p>${distTable(c,false)}<p class="small mut" style="margin-bottom:0">To order stock for a customer's order, open the order in "Stock check & transfer".</p>`)}
+function vEpc(){return finder('eq','EPC or SKU, for example BB0000000000000001900041',c=>[c.epc.id,bad(c).sku],c=>{const h=c.epc.hist[0],sold=h&&/Sold/.test(h.e);
+  return `<div class="row"><h2 style="margin:0;flex:1;font-size:18px" class="mono">${c.epc.id}</h2>${chip(sold?'Sold':'In stock (system)',sold?'red':'green')}</div><p class="mut" style="margin:4px 0 12px"><span class="mono">${esc(bad(c).sku)}</span> · ${esc(bad(c).d)} · ${esc(c.brand)}</p>
+  <div class="grid"><div class="tile"><div class="l">Last seen at</div><div class="v" style="font-size:15px">${esc(h?h.l:'unknown')}</div></div><div class="tile"><div class="l">Last seen on</div><div class="v" style="font-size:15px">${h?h.w:'unknown'}</div></div><div class="tile"><div class="l">POS sale found</div><div class="v" style="font-size:15px">${sold?'Yes':'No'}</div></div><div class="tile"><div class="l">Deducted in SWIMS</div><div class="v" style="font-size:15px">${sold?'No ⚑':'n/a'}</div></div></div>
+  <h2>History <span class="mut small">from BigQuery</span></h2>${epcTable(c)}`})}
+
 function vInvestigate(){
   const list=mine().filter(c=>c.inv.status===S.invf);
-  const seg=`<div class="seg" style="margin-bottom:14px">${['Open','Closed'].map(v=>`<button class="${S.invf===v?'on':''}" data-set="invf" data-v="${v}">${v==='Open'?'To investigate':'Closed'}</button>`).join('')}</div>`;
-  return `<h1>Why was it not found?</h1><p class="sub">The system said the item was there. Find the reason and record it. This does not hold up the customer's order.</p>${seg}`+twoPane('investigate',list,c=>{
-    const v=c.inv;
-    return `<div class="row"><h1 style="font-size:18px;flex:1">${esc(c.order)} · <span class="mono">${esc(bad(c).sku)}</span></h1>${stageChip(c)}</div>
-    <p class="mut">${esc(bad(c).d)} · reported: ${esc(c.reason)} · order is now: ${STAGE[c.stage].t.toLowerCase()}</p>
+  return `<div style="margin-bottom:14px">${seg('invf',[['Open','To investigate'],['Closed','Closed']])}</div>`+twoPane('investigate',list,c=>{const v=c.inv;
+    return `<div class="row"><h2 style="margin:0;flex:1;font-size:18px">${esc(c.order)} · <span class="mono">${esc(bad(c).sku)}</span></h2>${stageChip(c)}</div>
+    <p class="mut" style="margin:4px 0 0">${esc(bad(c).d)} · reported: ${esc(c.reason)} · order is now: ${STAGE[c.stage].t.toLowerCase()}</p>
     ${v.clue?`<div class="clue"><b>Clue from the records:</b> ${esc(v.clue)}</div>`:''}
-    <div class="cols" style="grid-template-columns:1fr 1fr"><div><h3>System stock (SWIMS)</h3><dl class="kv">${c.locs.map(l=>`<dt>${esc(l[0])}</dt><dd>${l[1]}</dd>`).join('')}<dt>Shopify</dt><dd>${c.shopify}</dd><dt>Marketplace</dt><dd>${c.market}</dd></dl></div>
+    <div class="cols" style="grid-template-columns:1fr 1fr"><div><h3>System stock</h3><dl class="kv">${c.locs.map(l=>`<dt>${esc(l[0])}</dt><dd>${l[1]}</dd>`).join('')}<dt>Shopify</dt><dd>${c.shopify}</dd><dt>Marketplace</dt><dd>${c.market}</dd></dl></div>
     <div><h3>What the teams did</h3>${timeline(c)}</div></div>
-    <h2>Tag (EPC) history <span class="mono mut small">${c.epc.id}</span> <span class="mut small">· looked up from BigQuery</span></h2>${epcTable(c)}
+    <h2>Tag (EPC) history <span class="mono mut small">${c.epc.id}</span> <span class="mut small">· from BigQuery</span></h2>${epcTable(c)}
     <h2>Finding</h2>
     ${v.status==='Closed'?`<dl class="kv"><dt>Why not found</dt><dd><b>${esc(v.cause)}</b></dd><dt>Action taken</dt><dd>${esc(v.fix)}</dd><dt>Note</dt><dd>${esc(v.note)||'<span class="mut">none</span>'}</dd><dt>Closed</dt><dd>${v.at}</dd></dl><button class="btn sm" style="margin-top:10px" data-act="reopen" data-id="${c.id}">Reopen</button>`
     :`<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
@@ -500,18 +539,17 @@ function vInvestigate(){
 
 const custBlock=c=>`<dl class="kv"><dt>Customer</dt><dd>${c.cust}</dd><dt>Phone</dt><dd>${c.phone}</dd><dt>Email</dt><dd>${c.email}</dd><dt>Paid with</dt><dd>${esc(c.pay)}</dd><dt>Sales channel</dt><dd>${c.channel}</dd></dl>`;
 const itemsTable=c=>`<div class="tw"><table><thead><tr><th>Item</th><th class="num">Qty</th><th class="num">Price</th><th class="num">Discount</th><th class="num">Paid</th><th></th></tr></thead><tbody>${c.items.map((it,i)=>`<tr class="${i===c.bad?'oos':''}"><td><span class="mono">${esc(it.sku)}</span><br><span class="small mut">${esc(it.d)}</span></td><td class="num">${it.q}</td><td class="num">${money(c,it.p)}</td><td class="num">${it.disc?'-'+money(c,it.disc):'0'}</td><td class="num"><b>${money(c,line(it))}</b></td><td>${i===c.bad?chip('Out of stock','red'):chip('In stock','green')}</td></tr>`).join('')}<tr><td colspan="4" class="num mut">Order total paid (from Shopify)</td><td class="num"><b>${money(c,total(c))}</b></td><td></td></tr></tbody></table></div>`;
-function draftAmount(c){const d=c.draft||{};if(d.want==='exch')return 0;return d.want==='cancel'?total(c):line(bad(c))}
+const draftAmount=c=>c.draft.want==='exch'?0:c.draft.want==='cancel'?total(c):line(bad(c));
 
 function vCS(){
   const list=mine().filter(c=>c.stage==='cs');
-  return `<h1>Customer service</h1><p class="sub">Items confirmed out of stock. Contact the customer and record what they want.</p>`+twoPane('cs',list,c=>{
-    c.draft=c.draft||{want:'rest',money:'Store credit',via:'WhatsApp',exch:''};const d=c.draft;
-    const multi=c.items.length>1;
-    return `<div class="row"><h1 style="font-size:18px;flex:1">${esc(c.order)}</h1>${chip(c.age+' days open',c.age>3?'red':'grey')}</div>
+  return twoPane('cs',list,c=>{
+    c.draft=c.draft||{want:'rest',money:'Store credit',via:'WhatsApp',exch:'',why:'Out of stock'};const d=c.draft,multi=c.items.length>1,kind=d.money==='Store credit'?'store credit':'refund';
+    return `<div class="row"><h2 style="margin:0;flex:1;font-size:18px">${esc(c.order)}</h2>${chip(c.age+' days open',c.age>3?'red':'grey')}</div>
     <div class="cols" style="grid-template-columns:1fr 1fr"><div><h3>Customer</h3>${custBlock(c)}</div><div><h3>What happened</h3>${timeline(c)}</div></div>
     <h2>Order items</h2>${itemsTable(c)}
     <h2>Contact log</h2>${c.contacts.length?`<ul class="tl">${c.contacts.map(k=>`<li><span class="mut small">${k.t}</span> ${esc(k.x)}</li>`).join('')}</ul>`:'<p class="mut">No contact attempt yet.</p>'}
-    <div class="row"><select id="cvia"><option>WhatsApp sent</option><option>Called, no answer</option><option>Email sent</option></select><button class="btn" data-act="contact" data-id="${c.id}">Log a contact attempt</button></div>
+    <div class="row"><select id="cvia" class="inp" style="width:auto;margin:0"><option>WhatsApp sent</option><option>Called, no answer</option><option>Email sent</option></select><button class="btn" data-act="contact" data-id="${c.id}">Log a contact attempt</button></div>
     <h2>Customer's decision</h2>
     <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(220px,1fr))">
       <label class="f">The customer wants to<select data-draft="want" data-id="${c.id}">
@@ -519,17 +557,18 @@ function vCS(){
         <option value="rest" ${d.want==='rest'?'selected':''}>${multi?'Remove this item, send the rest':'Remove this item (order has only this item)'}</option>
         <option value="cancel" ${d.want==='cancel'?'selected':''}>Cancel the whole order</option></select></label>
       ${d.want==='exch'?`<label class="f">Exchange item code<input data-draft="exch" data-id="${c.id}" value="${esc(d.exch)}" placeholder="Item code of the new item"></label>`
-      :`<label class="f">Money back as<select data-draft="money" data-id="${c.id}"><option ${d.money==='Store credit'?'selected':''}>Store credit</option><option ${d.money==='Refund to original payment'?'selected':''}>Refund to original payment</option></select></label>`}
+      :`<label class="f">Money back as<select data-draft="money" data-id="${c.id}"><option ${d.money==='Store credit'?'selected':''}>Store credit</option><option ${d.money==='Refund to original payment'?'selected':''}>Refund to original payment</option></select></label>
+        <label class="f">Reason for the ${kind}<select data-draft="why" data-id="${c.id}">${WHY.map(v=>`<option ${d.why===v?'selected':''}>${v}</option>`).join('')}</select></label>`}
       <label class="f">Confirmed by<select data-draft="via" data-id="${c.id}">${['WhatsApp','Phone call','Email'].map(v=>`<option ${d.via===v?'selected':''}>${v}</option>`).join('')}</select></label>
     </div>
     ${d.want==='exch'?'<div class="note">No money back. Warehouse will be told to pack the exchange item.</div>'
-    :`<div class="note">Amount worked out from Shopify: <b>${money(c,draftAmount(c))}</b> as ${d.money.toLowerCase()} ${d.want==='cancel'?'(whole order)':'(price '+money(c,bad(c).p*bad(c).q)+(bad(c).disc?' less discount '+money(c,bad(c).disc):'')+')'}. E-commerce gets this automatically, nobody types the amount.</div>`}
+    :`<div class="note">Amount worked out from Shopify: <b>${money(c,draftAmount(c))}</b> as ${kind} ${d.want==='cancel'?'(whole order)':'(price '+money(c,bad(c).p*bad(c).q)+(bad(c).disc?' less discount '+money(c,bad(c).disc):'')+')'}. Reason: ${d.why.toLowerCase()}. E-commerce gets this automatically, nobody types the amount.</div>`}
     <button class="btn pri" data-act="confirm" data-id="${c.id}">Confirm customer's decision</button>`;
   },'No customers to contact.');
 }
 
 function checks(c){
-  const nf=[...c.log].reverse().find(l=>/Out of stock|out of stock/.test(l.x));
+  const nf=[...c.log].reverse().find(l=>/out of stock/i.test(l.x));
   const r=[['y',`Out of stock confirmed by ${nf?nf.w:'Merchandiser'}${nf?' on '+nf.t:''}`],
     ['y',`Customer decision confirmed by ${c.cs.by} on ${c.cs.at}, by ${c.cs.via}`],
     ['y',`Amount matches Shopify: ${c.cs.want==='Cancel the whole order'?'whole order total':'price of the out-of-stock item less its discount'}`],
@@ -537,56 +576,61 @@ function checks(c){
   r.push(c.prior?['w',`Shopify already shows a refund of ${money(c,c.prior.amount)} on this order (${c.prior.when}). Check before paying again.`]:['y','No earlier refund or store credit on this order']);
   return r;
 }
-function vRefunds(){
-  const all=refunds().filter(c=>(c.refund.status==='Done')===(S.rf==='Done')).filter(c=>S.rtype==='All'||c.refund.type.startsWith(S.rtype));
-  const seg=(k,vals)=>`<div class="seg">${vals.map(v=>`<button class="${S[k]===v?'on':''}" data-set="${k}" data-v="${v}">${v}</button>`).join('')}</div>`;
-  return `<h1>Store credit & refunds</h1><p class="sub">Created automatically when Customer Service confirms the customer's decision. Amounts come from Shopify.</p>
-  <div class="row" style="margin-bottom:14px">${seg('rf',['Pending','Done'])}${seg('rtype',['All','Store credit','Refund'])}</div>
+function vPay(sc){
+  const mk=pays(sc),tv=sc?['Pending','Done']:['Pending','Failed','Done'];if(!tv.includes(S.rf))S.rf='Pending';
+  const all=mk.filter(c=>c.refund.status===S.rf),cnt=v=>mk.filter(c=>c.refund.status===v).length;
+  const up=c=>`<label class="btn" style="cursor:pointer">📎 ${c.refund.proof?'Change picture':'Upload picture'}<input type="file" accept="image/*" hidden data-up="${c.id}"></label>${c.refund.proof?`<a href="${c.refund.proof}" target="_blank" rel="noopener"><img src="${c.refund.proof}" alt="Uploaded picture" style="height:42px;border-radius:8px;border:1px solid var(--line);vertical-align:middle"></a>`:'<span class="mut small">no picture yet</span>'}`;
+  const rem=c=>`<input class="inp" id="ref${c.id}" placeholder="Remark (optional)" style="margin:0;flex:1;min-width:190px;width:auto">`;
+  return `<div style="margin-bottom:14px">${seg('rf',tv.map(v=>[v,(v==='Failed'?'⚑ Failed, sent to Lark':v)+' ('+cnt(v)+')']))}</div>
   ${all.map(c=>{const r=c.refund,ch=checks(c),w=ch.some(x=>x[0]==='w'),b=bad(c),whole=c.cs.want==='Cancel the whole order';
-    return `<div class="card rf"><div class="hd"><div style="flex:1"><b style="font-size:16px">${esc(c.order)}</b> <span class="mut">· ${c.brand} · order date ${c.date}</span><br>${chip(r.type,r.type==='Store credit'?'blue':'amber')} ${r.status==='Done'?chip('Done '+r.doneAt,'green'):chip('Pending','red')}</div><div class="amt">${money(c,r.amount)}</div></div>
+    return `<div class="card rf"><div class="hd"><div style="flex:1"><b style="font-size:16px">${esc(c.order)}</b> <span class="mut">· ${brand(c)} · order date ${c.date}</span><br>${r.status==='Done'?chip('Done '+r.doneAt,'green'):r.status==='Failed'?chip('⚑ Failed, Lark request sent','red'):chip('Pending','amber')} <button class="btn sm" data-act="open" data-id="${c.id}">✎ Edit or move this order</button></div><div class="amt">${money(c,r.amount)}</div></div>
     <div class="cols"><div><h3>Customer and payment</h3>${custBlock(c)}<dl class="kv"><dt>Order total paid</dt><dd>${money(c,total(c))}</dd></dl></div>
-    <div><h3>What to pay back</h3><dl class="kv"><dt>Out of stock</dt><dd class="mono">${esc(b.sku)}</dd><dt>Item price</dt><dd>${money(c,b.p*b.q)}</dd><dt>Discount share</dt><dd>${b.disc?'-'+money(c,b.disc):'none'}</dd><dt>Customer chose</dt><dd>${esc(c.cs.want)}</dd><dt>${r.type==='Store credit'?'Store credit':'Refund'}</dt><dd><b>${money(c,r.amount)}</b>${whole?' (whole order)':''}</dd><dt>Pay to</dt><dd>${r.type==='Store credit'?'Store credit code to '+c.email:esc(c.pay)}</dd></dl></div>
+    <div><h3>What to pay back</h3><dl class="kv"><dt>Out of stock</dt><dd class="mono">${esc(b.sku)}</dd><dt>Item price</dt><dd>${money(c,b.p*b.q)}</dd><dt>Discount share</dt><dd>${b.disc?'-'+money(c,b.disc):'none'}</dd><dt>Customer chose</dt><dd>${esc(c.cs.want)}</dd><dt>Reason</dt><dd>${esc(r.reason||'Out of stock')}</dd><dt>${sc?'Store credit':'Refund'}</dt><dd><b>${money(c,r.amount)}</b>${whole?' (whole order)':''}</dd><dt>Pay to</dt><dd>${sc?'Store credit to '+c.email:esc(c.pay)}</dd></dl></div>
     <div><h3>Checks before paying</h3><ul class="checks">${ch.map(x=>`<li class="${x[0]}">${esc(x[1])}</li>`).join('')}</ul></div></div>
-    ${r.status==='Done'?`<div class="note">Done on ${r.doneAt} by ${esc(r.by)}. Reference: <span class="mono">${esc(r.ref)}</span></div>`
+    ${r.status==='Done'?`<div class="note">Done on ${r.doneAt} by ${esc(r.by)}${r.lark?' through Lark request '+r.lark:''}. Remark: ${esc(r.ref)||'none'}. ${r.proof?`<a href="${r.proof}" target="_blank" rel="noopener">View picture</a>`:'No picture.'}</div>`
+    :r.status==='Failed'?`<div class="warn">⚑ Refund failed in Shopify: ${esc(r.failWhy)}. A refund request was sent to Lark automatically (${r.lark}, ${r.failAt}).</div>
+      <div class="row">${up(c)}${rem(c)}<button class="btn pri" data-act="paid" data-id="${c.id}">Lark refund paid, mark as done</button></div>`
     :`${w?`<div class="warn">Possible double refund. <label style="font-weight:400"><input type="checkbox" data-act="ack" data-id="${c.id}" ${c.ack?'checked':''}> I checked Shopify and this payment is still needed</label></div>`:''}
-    <div class="row"><input id="ref${c.id}" placeholder="${r.type==='Store credit'?'Store credit code':'Shopify refund reference'}" style="padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);flex:1;min-width:200px"><button class="btn pri" data-act="paid" data-id="${c.id}" ${w&&!c.ack?'disabled':''}>Mark as ${r.type==='Store credit'?'issued':'refunded'}</button>${w?`<button class="btn" data-act="dup" data-id="${c.id}">Already refunded, close without paying</button>`:''}</div>`}
+    <div class="row">${up(c)}${rem(c)}<button class="btn pri" data-act="paid" data-id="${c.id}" ${w&&!c.ack?'disabled':''}>Mark as ${sc?'issued':'refunded'}</button></div>
+    ${sc?'':`<div class="row" style="margin-top:10px"><span class="mut small">Refund did not go through?</span><select id="fw${c.id}" class="inp" style="width:auto;margin:0;padding:5px 8px"><option>Payment gateway error</option><option>Card expired or closed</option><option>Past the refund time limit</option><option>Other</option></select><button class="btn no sm" data-act="failed" data-id="${c.id}">Refund failed, send Lark request</button>${w?`<button class="btn sm" data-act="dup" data-id="${c.id}">Already refunded, close without paying</button>`:''}</div>`}`}
     </div>`}).join('')||'<div class="card empty">Nothing here.</div>'}`;
 }
 
 function vSettings(){
-  const seg=`<div class="seg" style="margin-bottom:14px">${['Users','Roles','Activity log'].map(v=>`<button class="${S.set===v?'on':''}" data-set="set" data-v="${v}">${v==='Activity log'?'🔒 ':''}${v}</button>`).join('')}</div>`;
   const roles=Object.keys(RPERM);let body='';
-  if(S.set==='Users')body=`<div class="row" style="margin-bottom:10px"><p class="sub" style="flex:1;margin:0">Each person signs in with their own email and password. Role and country decide what they see.</p><button class="btn pri" data-act="reg">+ Register a user</button></div>
-    ${S.reg?`<div class="card" style="max-width:560px;margin-bottom:14px"><b>Register a user</b><div class="grid" style="margin-top:10px;grid-template-columns:1fr 1fr">
+  if(S.set==='Users')body=`<div class="row" style="margin-bottom:10px"><p class="sub" style="flex:1;margin:0">Each person signs in with their own email and password. Their role, region and brands decide what they see and can filter.</p><button class="btn pri" data-act="reg">+ Register a user</button></div>
+    ${S.reg?`<div class="card" style="max-width:600px;margin-bottom:14px"><b>Register a user</b><div class="grid" style="margin-top:10px;grid-template-columns:1fr 1fr">
       <label class="f">Name<input id="uN"></label><label class="f">Work email<input id="uE" placeholder="name@company"></label>
-      <label class="f">Role<select id="uR">${roles.map(r=>`<option>${esc(r)}</option>`).join('')}</select></label><label class="f">Country<select id="uC"><option>SG</option><option>MY</option><option>SG + MY</option></select></label></div>
+      <label class="f">Role<select id="uR">${roles.map(r=>`<option>${esc(r)}</option>`).join('')}</select></label><label class="f">Region<select id="uC"><option>SG</option><option>MY</option><option>SG + MY</option></select></label>
+      <label class="f">Brands<select id="uB"><option>All brands</option>${BRANDS.map(b=>`<option>${b}</option>`).join('')}</select></label></div>
       <p class="small mut">They get a temporary password and must change it at first sign-in.</p><div class="row"><button class="btn pri" data-act="reguser">Register</button><button class="btn" data-act="reg">Cancel</button></div></div>`:''}
-    <div class="card tw" style="padding:6px"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Country</th><th>Status</th><th></th></tr></thead><tbody>${USERS.map((u,i)=>`<tr><td>${esc(u.n)}</td><td>${esc(u.e)}</td><td><select data-urole="${i}" ${i===0?'disabled':''}>${roles.map(r=>`<option ${u.role===r?'selected':''}>${esc(r)}</option>`).join('')}</select></td><td>${u.cty}</td><td>${chip(u.st,u.st==='Active'?'green':u.st==='Invited'?'blue':'grey')}</td><td>${i===0?'<span class="mut small">owner, locked</span>':`<button class="btn sm" data-act="toggleuser" data-i="${i}">${u.st==='Deactivated'?'Reactivate':'Deactivate'}</button>`}</td></tr>`).join('')}</tbody></table></div>`;
+    <div class="card tw" style="padding:6px"><table><thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Region</th><th>Brands</th><th>Status</th><th></th></tr></thead><tbody>${USERS.map((u,i)=>{const s=(k,opts)=>`<select data-u="${k}" data-i="${i}" ${i===0?'disabled':''}>${opts.map(o=>`<option ${u[k]===o?'selected':''}>${esc(o)}</option>`).join('')}</select>`;
+      return `<tr><td>${esc(u.n)}</td><td>${esc(u.e)}</td><td>${s('role',roles)}</td><td>${s('cty',['SG','MY','SG + MY'])}</td><td>${s('br',['All brands',...BRANDS])}</td><td>${chip(u.st,u.st==='Active'?'green':u.st==='Invited'?'blue':'grey')}</td><td>${i===0?'<span class="mut small">owner, locked</span>':`<button class="btn sm" data-act="toggleuser" data-i="${i}">${u.st==='Deactivated'?'Reactivate':'Deactivate'}</button>`}</td></tr>`}).join('')}</tbody></table></div>`;
   else if(S.set==='Roles')body=`<p class="sub">Tick what each role may do. Access is enforced in the database rules, not only on the page.</p>
     <div class="card tw" style="padding:6px"><table><thead><tr><th>Permission</th>${roles.map(r=>`<th class="ctr">${esc(r)}</th>`).join('')}</tr></thead><tbody>${PERMS.map((p,i)=>`<tr><td>${p}</td>${roles.map(r=>`<td class="ctr"><input type="checkbox" data-perm="${i}" data-r="${esc(r)}" ${RPERM[r][i]?'checked':''} ${r==='Administrator'?'disabled':''}></td>`).join('')}</tr>`).join('')}</tbody></table></div>
-    <div class="row" style="margin-top:12px"><input id="newRole" placeholder="New role name, for example Store viewer" style="padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);min-width:260px"><button class="btn" data-act="addrole">+ Add role</button></div>
-    <p class="small mut">In this draft the ticks are saved to the activity log but the "Preview as" pages stay fixed.</p>`;
-  else if(!S.logOpen)body=`<div class="card" style="max-width:420px"><b>🔒 Activity log</b><p class="mut">Enter the same password you use to sign in to this dashboard.</p><label class="f">Password<input type="password" placeholder="Password" disabled></label><button class="btn pri" data-act="openlog">Open (draft: no password needed)</button></div>`;
+    <div class="row" style="margin-top:12px"><input class="inp" id="newRole" placeholder="New role name, for example Store viewer" style="margin:0;width:280px"><button class="btn" data-act="addrole">+ Add role</button></div>
+    <p class="small mut">In this draft the ticks are recorded in the activity log but the pages stay fixed.</p>`;
+  else if(!S.logOpen)body=`<div class="card" style="max-width:420px"><b>🔒 Activity log</b><p class="mut">Enter the same password you use to sign in to this dashboard.</p><label class="f">Password<input type="password" value="draftdraft" readonly></label><button class="btn pri" data-act="openlog">Open the activity log</button></div>`;
   else body=`<p class="sub">Every change is recorded: who, when, what. Only the owner can open this page, after typing their password again.</p>
-    <div class="card tw" style="padding:6px"><table><thead><tr><th>When</th><th>Who</th><th>Order</th><th>What</th></tr></thead><tbody>${AUDIT.slice(0,60).map(a=>`<tr><td style="white-space:nowrap">${a.t}</td><td>${esc(a.w)}</td><td>${esc(a.o)}${a.cty?' <span class="mut small">'+a.cty+'</span>':''}</td><td>${esc(a.x)}</td></tr>`).join('')}</tbody></table></div>`;
-  return `<button class="back" data-act="goto" data-v="">← Back to the dashboard</button><h1>Settings</h1><p class="sub">Administrator only.</p>${seg}${body}`;
+    <div class="card tw" style="padding:6px"><table><thead><tr><th>When</th><th>Who</th><th>Order</th><th>What</th></tr></thead><tbody>${AUDIT.slice(0,80).map(a=>`<tr><td style="white-space:nowrap">${a.t}</td><td>${esc(a.w)}</td><td style="white-space:nowrap">${esc(a.o)}${a.cty?' <span class="mut small">'+a.cty+'</span>':''}</td><td>${esc(a.x)}</td></tr>`).join('')}</tbody></table></div>`;
+  return `<button class="back" data-act="goto" data-v="">← Back to the dashboard</button><div class="banner g-navy"><span class="bi">${ico('shield',26)}</span><div><h1>Settings</h1><p>Administrator only: users, roles and the activity log.</p></div>${art('shield')}</div>
+  <div style="margin-bottom:14px">${seg('set',[['Users','Users'],['Roles','Roles'],['Activity log','🔒 Activity log']])}</div>${body}`;
 }
-const COLORS=['#3547a8','#1f5a96','#1d6b3a','#8a5a00','#b3261e','#4a5568'];
-function vProfile(){
-  const R=ROLES[S.role];
-  return `<button class="back" data-act="goto" data-v="">← Back to the dashboard</button><h1>My profile</h1><p class="sub">Your own details. Role and country are set by the administrator.</p>
-  <div class="card" style="max-width:560px"><div class="row" style="margin-bottom:14px"><span class="userchip" style="padding:0"><span class="av" style="width:56px;height:56px;font-size:19px;background:${S.color}">${R.ini}</span></span><div><b style="font-size:16px">Sample user</b><br><span class="mut">s***@iora.example</span></div></div>
-  <dl class="kv"><dt>Role</dt><dd>${R.name} <span class="mut small">(locked)</span></dd><dt>Country</dt><dd>Singapore + Malaysia <span class="mut small">(locked)</span></dd></dl>
+const COLORS=['#3350c4','#2f86d6','#2a9a62','#c9801a','#d0564a','#5a6485'];
+function vProfile(){const R=ROLES[S.role];
+  return `<button class="back" data-act="goto" data-v="">← Back to the dashboard</button><div class="banner g-${R.g}"><span class="bi">${ico(R.i,26)}</span><div><h1>My profile</h1><p>Your own details. Role, region and brands are set by the administrator.</p></div>${art(R.i)}</div>
+  <div class="card" style="max-width:560px"><div class="row" style="margin-bottom:14px"><span class="av" style="width:56px;height:56px;font-size:19px;background:${S.color}">${R.ini}</span><div><b style="font-size:16px">Sample user</b><br><span class="mut">${S.role}@draft.example</span></div></div>
+  <dl class="kv"><dt>Role</dt><dd>${R.name} <span class="mut small">(locked)</span></dd><dt>Region</dt><dd>Singapore + Malaysia <span class="mut small">(locked)</span></dd><dt>Brands</dt><dd>All brands <span class="mut small">(locked)</span></dd></dl>
   <label class="f" style="margin-top:14px">Display name<input value="Sample user"></label>
   <div class="small mut" style="margin-bottom:6px">Profile colour</div><div class="row">${COLORS.map(c=>`<button class="sw ${S.color===c?'on':''}" style="background:${c}" data-act="color" data-v="${c}" title="Use this colour"></button>`).join('')}</div>
   <div class="row" style="margin-top:16px"><button class="btn pri" data-act="saveprofile">Save</button><button class="btn" disabled>Change password</button></div></div>`;
 }
 
 function detailModal(c){
-  return `<div class="modal" data-act="close"><div class="card"><div class="row"><h1 style="flex:1;font-size:19px">${esc(c.order)}</h1>${stageChip(c)}<button class="btn" data-act="close">Close</button></div>
-  <p class="mut">${c.brand} · ${c.channel} · reported ${c.date} · ${esc(c.reason)}${waiting(c)?' · waiting for <b>'+waiting(c)+'</b>':''}</p>
+  return `<div class="modal" data-act="close"><div class="card"><div class="row"><h2 style="flex:1;font-size:19px;margin:0">${esc(c.order)}</h2>${stageChip(c)}<button class="btn" data-act="close">Close</button></div>
+  <p class="mut">${brand(c)} · ${c.channel} · reported ${c.date} · ${esc(c.reason)}${waiting(c)?' · waiting for <b>'+waiting(c)+'</b>':''}</p>
   ${canSeeCustomer()?`<h2>Customer</h2>${custBlock(c)}<h2>Order items</h2>${itemsTable(c)}`:`<h2>Item not found</h2><p><span class="mono">${esc(bad(c).sku)}</span> · ${esc(bad(c).d)} · quantity ${bad(c).q}</p>`}
-  ${c.refund&&canSeeCustomer()?`<h2>${c.refund.type}</h2><p><b>${money(c,c.refund.amount)}</b> · ${c.refund.status==='Done'?'done '+c.refund.doneAt+', ref '+esc(c.refund.ref):'pending with E-commerce'}</p>`:''}
+  ${c.refund&&canSeeCustomer()?`<h2>${c.refund.type}</h2><p><b>${money(c,c.refund.amount)}</b> · reason: ${esc(c.refund.reason||'Out of stock')} · ${c.refund.status==='Done'?'done '+c.refund.doneAt:c.refund.status==='Failed'?'failed, Lark request '+c.refund.lark:'pending with E-commerce'}</p>`:''}
   <h2>Why not found</h2><p>${c.inv.status==='Closed'?`<b>${esc(c.inv.cause)}</b> · ${esc(c.inv.fix)}`:'<span class="mut">Inventory is still checking.</span>'}</p>
   ${S.role==='warehouse'?'':`<h2>Edit or move this order</h2><p class="small mut" style="margin-top:0">Plans change: the customer changes their mind, a store finds the item, stock must come from another store, a refund fails. Move the order to the right step. Every change is logged.</p>
   <div class="grid" style="grid-template-columns:1fr 1fr"><label class="f">Move to<select id="mvStep"><option value="">Choose a step</option><option value="merch">Stock check (Merchandiser)</option><option value="search">Warehouse search</option><option value="cs">Customer Service, ask the customer again</option></select></label>
@@ -595,95 +639,67 @@ function detailModal(c){
   <h2>History</h2>${timeline(c)}</div></div>`;
 }
 
-/* ---------- render + events ---------- */
-/* ---------- refunds / store credit as two pages ---------- */
-function vPay(kind){
-  const sc=kind==='Store credit',mk=refunds().filter(c=>(c.refund.type==='Store credit')===sc);
-  const tv=sc?['Pending','Done']:['Pending','Failed','Done'];if(!tv.includes(S.rf))S.rf='Pending';
-  const all=mk.filter(c=>c.refund.status===S.rf),cnt=v=>mk.filter(c=>c.refund.status===v).length;
-  const inp='padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);flex:1;min-width:190px';
-  const up=c=>`<label class="btn" style="cursor:pointer">📎 ${c.refund.proof?'Change picture':'Upload picture'}<input type="file" accept="image/*" hidden data-up="${c.id}"></label>${c.refund.proof?`<a href="${c.refund.proof}" target="_blank" rel="noopener"><img src="${c.refund.proof}" alt="Uploaded proof" style="height:44px;border-radius:8px;border:1px solid var(--line);vertical-align:middle"></a>`:'<span class="mut small">no picture yet</span>'}`;
-  return `<h1>${sc?'Store credit':'Refunds'}</h1><p class="sub">Created automatically when Customer Service confirms the customer's decision. Amounts come from Shopify.</p>
-  <div class="seg" style="margin-bottom:14px">${tv.map(v=>`<button class="${S.rf===v?'on':''}" data-set="rf" data-v="${v}">${v==='Failed'?'⚑ Failed, sent to Lark':v} (${cnt(v)})</button>`).join('')}</div>
-  ${all.map(c=>{const r=c.refund,ch=checks(c),w=ch.some(x=>x[0]==='w'),b=bad(c),whole=c.cs.want==='Cancel the whole order';
-    return `<div class="card rf"><div class="hd"><div style="flex:1"><b style="font-size:16px">${esc(c.order)}</b> <span class="mut">· ${c.brand} · order date ${c.date}</span><br>${r.status==='Done'?chip('Done '+r.doneAt,'green'):r.status==='Failed'?chip('⚑ Failed, Lark request sent','red'):chip('Pending','amber')} <button class="btn sm" data-act="open" data-id="${c.id}">✎ Edit or move this order</button></div><div class="amt">${money(c,r.amount)}</div></div>
-    <div class="cols"><div><h3>Customer and payment</h3>${custBlock(c)}<dl class="kv"><dt>Order total paid</dt><dd>${money(c,total(c))}</dd></dl></div>
-    <div><h3>What to pay back</h3><dl class="kv"><dt>Out of stock</dt><dd class="mono">${esc(b.sku)}</dd><dt>Item price</dt><dd>${money(c,b.p*b.q)}</dd><dt>Discount share</dt><dd>${b.disc?'-'+money(c,b.disc):'none'}</dd><dt>Customer chose</dt><dd>${esc(c.cs.want)}</dd><dt>${sc?'Store credit':'Refund'}</dt><dd><b>${money(c,r.amount)}</b>${whole?' (whole order)':''}</dd><dt>Pay to</dt><dd>${sc?'Store credit code to '+c.email:esc(c.pay)}</dd></dl></div>
-    <div><h3>Checks before paying</h3><ul class="checks">${ch.map(x=>`<li class="${x[0]}">${esc(x[1])}</li>`).join('')}</ul></div></div>
-    ${r.status==='Done'?`<div class="note">Done on ${r.doneAt} by ${esc(r.by)}${r.lark?' through Lark request '+r.lark:''}. Reference: <span class="mono">${esc(r.ref)}</span> ${r.proof?`<a href="${r.proof}" target="_blank" rel="noopener">view picture</a>`:''}</div>`
-    :r.status==='Failed'?`<div class="warn">⚑ Refund failed in Shopify: ${esc(r.failWhy)}. A refund request was sent to Lark automatically (${r.lark}, ${r.failAt}). Customer Service can see this flag.</div>
-      <div class="row">${up(c)}<input id="ref${c.id}" placeholder="Lark approval or bank reference" style="${inp}"><button class="btn pri" data-act="paid" data-id="${c.id}">Lark refund paid, mark as done</button></div>`
-    :`${w?`<div class="warn">Possible double refund. <label style="font-weight:400"><input type="checkbox" data-act="ack" data-id="${c.id}" ${c.ack?'checked':''}> I checked Shopify and this payment is still needed</label></div>`:''}
-    <div class="row">${up(c)}<input id="ref${c.id}" placeholder="${sc?'Store credit code':'Shopify refund reference'}" style="${inp}"><button class="btn pri" data-act="paid" data-id="${c.id}" ${w&&!c.ack?'disabled':''}>Mark as ${sc?'issued':'refunded'}</button></div>
-    ${sc?'':`<div class="row" style="margin-top:10px"><span class="mut small">Refund did not go through?</span><select id="fw${c.id}"><option>Payment gateway error</option><option>Card expired or closed</option><option>Past the refund time limit</option><option>Other</option></select><button class="btn no sm" data-act="failed" data-id="${c.id}">Refund failed, send Lark request</button>${w?`<button class="btn sm" data-act="dup" data-id="${c.id}">Already refunded, close without paying</button>`:''}</div>`}`}
-    </div>`}).join('')||'<div class="card empty">Nothing here.</div>'}`;
+function loginHtml(){
+  const J=[['box','Warehouse reports'],['swap','Stock check'],['search','Search or transfer'],['chat','Customer decides'],['card','Credit or refund'],['check','Resolved']],d=S.dep;
+  return `<div class="lgwrap"><div class="lg"><div class="lgl"><span><span class="chip" style="background:#ffe9b0;color:#5c3d00">DRAFT FOR REVIEW</span></span><h1>Order Resolution Centre</h1><p>One place for every order that cannot be packed, from the missing item to the customer's store credit or refund.</p>
+    <div class="facts"><div><b>5</b>departments working on one list</div><div><b>6</b>steps from report to resolved</div><div><b>0</b>files to load from SWIMS</div></div>
+    <div class="journey">${J.map(j=>`<div class="jn"><span class="jc">${ico(j[0],22)}</span><div class="t">${j[1]}</div></div>`).join('')}</div></div>
+  <div class="lgr"><h2 style="margin-top:0;font-size:22px">Sign in</h2><p class="sub">Draft login: pick your department. The email and password are filled in for you, then press Sign in.</p>
+    <div class="small mut" style="margin-bottom:6px;font-weight:600">1. Your department</div>
+    <div class="dep">${Object.keys(ROLES).filter(k=>k!=='admin').concat('admin').map(k=>`<button class="depc ${d===k?'on':''}" data-act="dep" data-v="${k}"><span class="hi c-${ROLES[k].g}">${ico(ROLES[k].i,20)}</span><span><b>${ROLES[k].name}</b><small>${ROLES[k].blurb}</small></span></button>`).join('')}</div>
+    <div class="small mut" style="margin:16px 0 6px;font-weight:600">2. Email and password</div>
+    <div class="grid" style="grid-template-columns:1fr 1fr"><label class="f" style="margin:0">Email<input value="${d}@draft.example" readonly></label><label class="f" style="margin:0">Password<input type="password" value="draftdraft" readonly></label></div>
+    <button class="btn pri" style="width:100%;margin-top:14px;padding:12px;font-size:15px" data-act="signin">Sign in as ${ROLES[d].name}</button>
+    <p class="small mut" style="margin:12px 0 0">In the real version everyone has their own email and password, registered by the administrator. All orders, names and amounts in this draft are made up.</p></div></div></div>`;
 }
-/* ---------- stock distribution (merchandiser) ---------- */
-const locName=l=>/^Warehouse/.test(l)?'HQ warehouse (H) · shared with the online store':l;
-const sold30=(c,l)=>{let h=0;for(const ch of bad(c).sku+l)h=(h*7+ch.charCodeAt(0))%13;return h};
-function recIdx(c){const need=bad(c).q;let best=-1;c.locs.forEach((l,i)=>{if(!/^Store/.test(l[0])||l[1]<1)return;const ok=l[1]>=need,s=sold30(c,l[0]);
-  const score=S.rec==='sales'?[ok?1:0,-s,l[1]]:[ok?1:0,l[1],-s];if(best<0){best=i;recIdx.s=score;return}
-  for(let k=0;k<3;k++){if(score[k]>recIdx.s[k]){best=i;recIdx.s=score;break}if(score[k]<recIdx.s[k])break}});return best}
-function distTable(c,btn){const r=recIdx(c);
-  return `<div class="row" style="margin-bottom:8px"><h2 style="margin:0;flex:1">Stock by location <span class="mut small">looked up from BigQuery, no SWIMS file needed</span></h2><span class="small mut">Recommend the store with</span><div class="seg">${[['qty','highest quantity'],['sales','lowest sales']].map(v=>`<button class="${S.rec===v[0]?'on':''}" data-set="rec" data-v="${v[0]}">${v[1]}</button>`).join('')}</div></div>
-  <div class="tw"><table><thead><tr><th>Location</th><th class="num">Quantity</th><th class="num">Sold, last 30 days</th><th></th></tr></thead><tbody>${c.locs.map((l,i)=>{const st=/^Store/.test(l[0]);return `<tr><td>${esc(locName(l[0]))} ${i===r?chip('★ Recommended','green'):''}</td><td class="num"><b>${l[1]}</b></td><td class="num">${st?sold30(c,l[0]):'<span class="mut">online orders</span>'}</td><td>${l[1]<1?'<span class="mut">no stock</span>':st?(btn?`<button class="btn sm ${i===r?'pri':''}" data-act="totransfer" data-id="${c.id}" data-loc="${i}">Order from ${esc(l[0])}</button>`:''):'<span class="mut">warehouse search</span>'}</td></tr>`}).join('')}</tbody></table></div>`}
-function finder(tab,key,ph,match,show){
-  const q=(S[key]||'').toLowerCase(),hit=q?mine().find(c=>match(c).some(v=>v.toLowerCase().includes(q))):null;
-  return `<div class="card" style="margin-bottom:14px"><div class="row"><input id="${key}" value="${esc(S[key]||'')}" placeholder="${ph}" style="padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);flex:1;min-width:220px"><button class="btn pri" data-act="find" data-k="${key}">Search</button></div>
-  <div class="row small" style="margin-top:10px"><span class="mut">Try a sample:</span>${mine().slice(0,3).map(c=>`<button class="btn sm mono" data-act="find" data-k="${key}" data-v="${esc(match(c)[0])}">${esc(match(c)[0])}</button>`).join('')}</div></div>
-  ${!q?'':hit?`<div class="card">${show(hit)}</div>`:'<div class="card"><p class="mut" style="margin:0">Nothing found for that in the sample data. In the real version this searches all of BigQuery.</p></div>'}`}
-function vStock(){return `<h1>Stock search</h1><p class="sub">Where is the stock right now? Search by SKU or EPC.</p>`+finder('stock','sq','SKU or EPC, for example TFKS0099001JS-EME-M',c=>[bad(c).sku,c.epc.id],c=>`<div class="row"><h1 style="font-size:18px;flex:1" class="mono">${esc(bad(c).sku)}</h1>${chip('Total '+c.locs.reduce((a,l)=>a+l[1],0)+' pcs','blue')}</div><p class="mut">${esc(bad(c).d)} · Shopify shows ${c.shopify} · marketplace shows ${c.market}</p>${distTable(c,false)}<p class="small mut" style="margin-bottom:0">To order stock for a customer's order, open the order in "Stock check & transfer".</p>`)}
-function vEpc(){return `<h1>EPC search</h1><p class="sub">Where is this tag now, and where has it been? Looked up from BigQuery.</p>`+finder('epc','eq','EPC or SKU, for example BB0000000000000001900041',c=>[c.epc.id,bad(c).sku],c=>{const h=c.epc.hist[0],sold=h&&/Sold/.test(h.e);
-  return `<div class="row"><h1 style="font-size:18px;flex:1" class="mono">${c.epc.id}</h1>${chip(sold?'Sold':'In stock (system)',sold?'red':'green')}</div><p class="mut"><span class="mono">${esc(bad(c).sku)}</span> · ${esc(bad(c).d)}</p>
-  <div class="grid"><div class="tile"><div class="l">Last seen at</div><div class="v" style="font-size:16px">${esc(h?h.l:'unknown')}</div></div><div class="tile"><div class="l">Last seen on</div><div class="v" style="font-size:16px">${h?h.w:'unknown'}</div></div><div class="tile"><div class="l">POS sale found</div><div class="v" style="font-size:16px">${sold?'Yes':'No'}</div></div><div class="tile"><div class="l">Deducted in SWIMS</div><div class="v" style="font-size:16px">${sold?'No ⚑':'n/a'}</div></div></div>
-  <h2>History</h2>${epcTable(c)}`})}
-const VIEWS={overview:vOverview,warehouse:vWarehouse,merch:vMerch,stock:vStock,cs:vCS,refund:()=>vPay('Refund'),credit:()=>vPay('Store credit'),investigate:vInvestigate,epc:vEpc,settings:vSettings};
+
+/* ============ render ============ */
+const VIEWS={overview:vOverview,warehouse:vWarehouse,merch:vMerch,stock:vStock,cs:vCS,refund:()=>vPay(false),credit:()=>vPay(true),investigate:vInvestigate,epc:vEpc};
 function render(){
   const R=ROLES[S.role];if(!R.tabs.includes(S.tab))S.tab=R.tabs[0];
-  document.querySelector('.top').style.display=S.out?'none':'';
-  document.getElementById('fbb').style.display=S.out?'none':'';
-  if(S.out){document.getElementById('fbp').classList.remove('open');document.getElementById('app').innerHTML=loginHtml();return;
-    const J=[['box','Warehouse reports'],['swap','Stock check'],['search','Search or transfer'],['chat','Customer decides'],['card','Credit or refund'],['check','Resolved']];
-    document.getElementById('app').innerHTML=`<div class="lg"><div class="lgl"><span><span class="chip c-amber">DRAFT</span></span><h1>Order Resolution Centre</h1><p>One place for every order that cannot be packed, from the missing item to the customer's store credit or refund.</p><div class="journey">${J.map(j=>`<div class="jn"><span class="jc">${ico(j[0],22)}</span><div class="t">${j[1]}</div></div>`).join('')}</div></div>
-    <div class="lgr"><h2 style="margin-top:0;font-size:20px">Choose your department to sign in</h2><p class="sub">This is a draft: one click signs you in, no password. In the real version everyone signs in with their own email and password.</p>
-    <div class="dep">${Object.keys(ROLES).filter(k=>k!=='admin').concat('admin').map(k=>`<button class="depc" data-act="signin" data-v="${k}"><span class="hi t-${RMETA[k][1]}">${ico(RMETA[k][0],22)}</span><span><b>${ROLES[k].name}</b><small>${RMETA[k][2]}</small></span></button>`).join('')}</div>
-    <p class="small mut" style="margin:14px 0 0">All orders, names and amounts in this draft are made up.</p></div></div>`;return}
-  if(S.out){document.getElementById('app').innerHTML=`<div class="card login"><div class="logo" style="margin-bottom:14px"><div><div class="t1" style="font-size:19px">Order Resolution Centre</div><div class="t2">IORA Group</div></div></div><label class="f">Email<input placeholder="Work email" disabled></label><label class="f">Password<input type="password" placeholder="Password" disabled></label><button class="btn pri" style="width:100%" data-act="signin">Sign in (draft: no password needed)</button><p class="small mut" style="margin-top:12px">New users are registered by the administrator and get a temporary password.</p></div>`;return}
-  const ini=document.getElementById('ini');ini.textContent=R.ini;ini.style.background=S.color;
-  document.getElementById('uname').textContent='Sample user';document.getElementById('urole').textContent=R.name;
+  document.body.classList.toggle('out',S.out);$('fbb').style.display=S.out?'none':'';
+  if(S.out){$('fbp').classList.remove('open');$('app').innerHTML=loginHtml();return}
+  const n=counts();
+  $('side').innerHTML=`<div class="logo"><span class="mark">${ico('box',22)}</span><div><div class="t1">Order Resolution Centre</div><div class="t2">IORA GROUP · DRAFT</div></div></div><div class="cap">${R.name}</div>`
+    +R.tabs.map(t=>`<button class="nav ${!S.view&&S.tab===t?'on':''}" data-tab="${t}"><span class="ni c-${PAGE[t].g}">${ico(PAGE[t].i,16)}</span>${PAGE[t].t}${n[t]?`<span class="n">${n[t]}</span>`:''}</button>`).join('')
+    +`<div class="foot">Sample data only.<br>Nothing is saved.</div>`;
+  $('hello').innerHTML=`${R.name}<span>${S.cty==='SG'?'Singapore':'Malaysia'} · 18 Nov 2026</span>`;
+  const ini=$('ini');ini.textContent=R.ini;ini.style.background=S.color;$('urole').textContent=R.name;
   document.querySelectorAll('#userMenu .adm').forEach(b=>b.style.display=S.role==='admin'?'':'none');
   document.querySelectorAll('#cty button').forEach(b=>b.classList.toggle('on',b.dataset.cty===S.cty));
-  document.getElementById('cty').style.display=S.view?'none':'';
-  if(S.view&&(S.view==='profile'||S.role==='admin')){document.getElementById('app').innerHTML=S.view==='profile'?vProfile():vSettings();return}
-  S.view=null;
-  const n=counts();
-  const tabs=R.tabs.length>1?`<nav class="tabs">${R.tabs.map(t=>`<button class="${S.tab===t?'on':''}" data-tab="${t}">${ico(HERO[t][0],15)}${TABS[t]}${n[t]?`<span class="n">${n[t]}</span>`:''}</button>`).join('')}</nav>`:'';
-  document.getElementById('app').innerHTML=tabs+VIEWS[S.tab]().replace(/<h1>([\s\S]*?)<\/h1><p class="sub">([\s\S]*?)<\/p>/,(m,a,b)=>hero(S.tab,a,b));
-  document.getElementById('fbctx').textContent='Department: '+R.name+' · Page: '+TABS[S.tab];
+  if(S.view&&(S.view==='profile'||S.role==='admin')){$('app').innerHTML=S.view==='profile'?vProfile():vSettings();$('fbctx').textContent='Department: '+R.name+' · Page: '+(S.view==='profile'?'My profile':'Settings');return}
+  S.view=null;const p=PAGE[S.tab];
+  $('app').innerHTML=`<section class="banner g-${p.g}"><span class="bi">${ico(p.i,26)}</span><div><h1>${p.t}</h1><p>${p.s}</p>${p.how.length?`<div class="how">${p.how.map((s,i)=>`<span><i>${i+1}</i>${s}</span>`).join('')}</div>`:''}</div>${art(p.i)}</section>`
+    +(['stock','epc'].includes(S.tab)?'':fbar())+VIEWS[S.tab]();
+  $('fbctx').textContent='Department: '+R.name+' · Page: '+p.t;
 }
+
+/* ============ actions ============ */
 const get=id=>CASES.find(c=>c.id===+id);
-const val=id=>document.getElementById(id).value.trim();
+function boot(msg,ms){const b=$('boot');$('bootMsg').textContent=msg;b.classList.remove('hide');setTimeout(()=>b.classList.add('hide'),ms)}
 const ACT={
   theme(){const r=document.documentElement;r.dataset.theme=r.dataset.theme==='dark'?'light':'dark'},
   reset(){resetAll();S.sel={}},
+  dep(_,t){S.dep=t.dataset.v},
+  signin(_,t){S.role=t.dataset.v||S.dep;S.tab=ROLES[S.role].tabs[0];S.out=false;S.view=null;boot('Signing you in…',900);sysLog('Signed in.')},
   signout(){sysLog('Signed out.');S.out=true;S.view=null;S.logOpen=false},
   goto(_,t){const v=t.dataset.v;if(v==='log'){S.view='settings';S.set='Activity log'}else{S.view=v||null;if(v==='settings')S.set='Users'}},
   openlog(){S.logOpen=true;sysLog('Opened the activity log.')},
   color(_,t){S.color=t.dataset.v},
   saveprofile(){sysLog('Updated own profile.')},
-  dep(_,t){S.dep=t.dataset.v},
-  signin(_,t){S.role=t.dataset.v||S.dep;S.tab=ROLES[S.role].tabs[0];S.out=false;S.view=null;boot('Signing you in…',900);sysLog('Signed in.')},
+  clearf(){Object.assign(S.f,{brand:'',year:'',month:'',date:''})},
   form(){S.form=!S.form},
   reg(){S.reg=!S.reg},
+  find(_,t){S[t.dataset.k]=t.dataset.v},
   add(){const o=val('fOrder'),s=val('fSku'),r=val('fReason');if(!o||!s)return false;
-    const c={id:Date.now(),cty:S.cty,brand:'(from Shopify)',order:o,date:'18 Nov',age:0,channel:'Online store',cust:'(from Shopify)',phone:'(from Shopify)',email:'(from Shopify)',pay:'(from Shopify)',items:[{sku:s,d:'Details come from Shopify',q:1,p:0,disc:0}],bad:0,reason:r,stage:'merch',contacts:[],ship:0,shopify:0,market:0,locs:[['Warehouse (H)',0]],inv:{status:'Open',clue:''},epc:{id:'(looked up from SWIMS)',hist:[]},log:[]};
+    const c={id:Date.now(),cty:S.cty,brand:'iORA',order:o,date:'18 Nov',age:0,channel:'Online store',cust:'(from Shopify)',phone:'(from Shopify)',email:'(from Shopify)',pay:'(from Shopify)',items:[{sku:s,d:'Details come from Shopify',q:1,p:0,disc:0}],bad:0,reason:r,stage:'merch',contacts:[],ship:0,shopify:0,market:0,locs:[['Warehouse (H)',0]],inv:{status:'Open',clue:''},epc:{id:'(looked up from BigQuery)',hist:[]},log:[]};
     CASES.unshift(c);log(c,'Warehouse','Reported: '+r.toLowerCase()+'.');S.form=false},
-  open(c){document.getElementById('modal').innerHTML=detailModal(c);return false},
-  close(){document.getElementById('modal').innerHTML='';return false},
+  open(c){$('modal').innerHTML=detailModal(c);return false},
+  close(){$('modal').innerHTML='';return false},
   sel(c){S.sel[S.tab]=c.id},
-  tosearch(c){const l=val('loc');if(!l){document.getElementById('loc').focus();return false}c.searchLoc=l;c.stage='search';log(c,'Merchandiser','Asked warehouse to search '+l+'.')},
+  tosearch(c){const l=val('loc');if(!l){$('loc').focus();return false}c.searchLoc=l;c.stage='search';log(c,'Merchandiser','Asked warehouse to search '+l+'.')},
   totransfer(c,t){c.transferFrom=c.locs[+t.dataset.loc][0];c.stage='transfer';log(c,'Merchandiser','Stock ordered from '+c.transferFrom+' (outlet transfer).')},
-  arrived(c){c.stage='action';c.needShip=true;c.cs={at:now()};c.whTask='Transfer stock has arrived. Pack the full order.';log(c,'Merchandiser','Transfer arrived. Sent to warehouse to pack.')},
+  arrived(c){c.stage='action';c.needShip=true;c.cs={at:now()};c.whTask='Stock has arrived. Pack the full order.';log(c,'Merchandiser','Stock arrived. Sent to warehouse to pack.')},
   oos(c){c.stage='cs';log(c,'Merchandiser','Out of stock. Sent to Customer Service.')},
   found(c){c.stage='done';c.inv.guess=CAUSES[2];c.inv.clue='Warehouse found it at '+c.searchLoc+' on the second search. It was probably missed when picking.';log(c,'Warehouse','Item found at '+c.searchLoc+'. Packed and sent.')},
   notfound(c){c.stage='merch';c.notFoundAt=c.searchLoc;log(c,'Warehouse','Searched '+c.searchLoc+'. Not found.')},
@@ -691,85 +707,71 @@ const ACT={
   contact(c){const x=val('cvia');c.contacts.push({t:now(),x});log(c,'Customer Service','Contact attempt: '+x.toLowerCase()+'.')},
   confirm(c){const d=c.draft,b=bad(c),rest=c.items.length-1;
     if(d.want==='exch'){if(!d.exch.trim())return false;c.cs={want:'Exchange for another item',exch:d.exch};c.needShip=true;c.whTask=`Pack exchange item ${d.exch} instead of ${b.sku}${rest?`, with the other ${rest} item${rest>1?'s':''}`:''}.`}
-    else if(d.want==='rest'){c.cs={want:'Remove this item, send the rest'};c.needShip=rest>0;c.whTask=`Send the parcel WITHOUT ${b.sku}. Pack the other ${rest} item${rest>1?'s':''}.`;c.refund={type:d.money,amount:line(b),status:'Pending'}}
-    else{c.cs={want:'Cancel the whole order'};c.needShip=rest>0;c.whTask='Order cancelled. Do not send. Put the other item'+(rest>1?'s':'')+' back to stock.';c.refund={type:d.money,amount:total(c),status:'Pending'}}
+    else if(d.want==='rest'){c.cs={want:'Remove this item, send the rest'};c.needShip=rest>0;c.whTask=`Send WITHOUT ${b.sku}. Pack the other ${rest} item${rest>1?'s':''}.`;c.refund={type:d.money,amount:line(b),status:'Pending',reason:d.why}}
+    else{c.cs={want:'Cancel the whole order'};c.needShip=rest>0;c.whTask='Order cancelled. Do not send. Put the other item'+(rest>1?'s':'')+' back to stock.';c.refund={type:d.money,amount:total(c),status:'Pending',reason:d.why}}
     Object.assign(c.cs,{by:'CS (sample user)',at:now(),via:d.via});c.stage='action';
-    log(c,'Customer Service',`Customer confirmed by ${d.via}: ${c.cs.want.toLowerCase()}${c.refund?', '+c.refund.type.toLowerCase()+' '+money(c,c.refund.amount):''}.`);finish(c)},
+    log(c,'Customer Service',`Customer confirmed by ${d.via}: ${c.cs.want.toLowerCase()}${c.refund?', '+c.refund.type.toLowerCase()+' '+money(c,c.refund.amount)+'. Reason: '+d.why.toLowerCase():''}.`);finish(c)},
   ack(c){c.ack=!c.ack},
-  find(_,t){S[t.dataset.k]=t.dataset.v??val(t.dataset.k)},
+  paid(c){const ref=val('ref'+c.id),r=c.refund;Object.assign(r,{status:'Done',doneAt:'18 Nov',by:'E-commerce (sample user)',ref});
+    log(c,'E-commerce',`${r.type} ${money(c,r.amount)} done${r.lark?' through Lark request '+r.lark:''}.${ref?' Remark: '+ref+'.':''}${r.proof?' Picture attached.':''}`);S.rf='Done';finish(c)},
   failed(c){const r=c.refund;Object.assign(r,{status:'Failed',failWhy:val('fw'+c.id),failAt:now(),lark:'LARK-RF-'+String(c.id).slice(-4).padStart(4,'0')});log(c,'E-commerce','Refund failed in Shopify: '+r.failWhy.toLowerCase()+'. Flagged.');log(c,'System','Refund request '+r.lark+' sent to Lark automatically.');S.rf='Failed'},
-  move(c){const s=val('mvStep');if(!s){document.getElementById('mvStep').focus();return false}const why=val('mvWhy'),n=val('mvNote');
-    if(c.refund&&c.refund.status!=='Done')delete c.refund;delete c.cs;c.draft=null;c.needShip=false;c.shipped=false;c.whTask='';c.notFoundAt='';
-    if(s==='search')c.searchLoc=c.searchLoc||'HQ warehouse';c.stage=s;log(c,ROLES[S.role].name,`Order edited: moved to ${STAGE[s].t.toLowerCase()}. Reason: ${why.toLowerCase()}${n?'. '+n:''}.`);document.getElementById('modal').innerHTML=''},
-  paid(c){const ref=val('ref'+c.id);if(!ref){document.getElementById('ref'+c.id).focus();return false}
-    Object.assign(c.refund,{status:'Done',doneAt:'18 Nov',by:'E-commerce (sample user)',ref});log(c,'E-commerce',`${c.refund.type} ${money(c,c.refund.amount)} done${c.refund.lark?' through Lark request '+c.refund.lark:''}. Ref ${ref}.${c.refund.proof?' Picture attached.':''}`);S.rf='Done';finish(c)},
-  dup(c){Object.assign(c.refund,{status:'Done',doneAt:'18 Nov',by:'E-commerce (sample user)',ref:'Already refunded earlier, not paid again'});log(c,'E-commerce','Found an earlier refund in Shopify. Closed without paying again.');finish(c)},
+  dup(c){Object.assign(c.refund,{status:'Done',doneAt:'18 Nov',by:'E-commerce (sample user)',ref:'Already refunded earlier, not paid again'});log(c,'E-commerce','Found an earlier refund in Shopify. Closed without paying again.');S.rf='Done';finish(c)},
   closeinv(c){Object.assign(c.inv,{status:'Closed',cause:val('iCause'),fix:val('iFix'),note:val('iNote'),at:'18 Nov'});log(c,'Inventory',`Why not found: ${c.inv.cause.toLowerCase()}. ${c.inv.fix}.`)},
   reopen(c){c.inv.status='Open';log(c,'Inventory','Finding reopened.')},
-  reguser(){const n=val('uN'),e=val('uE');if(!n||!e)return false;const m=e[0]+'***@'+(e.split('@')[1]||'company');USERS.push({n,e:m,role:val('uR'),cty:val('uC'),st:'Invited'});sysLog(`Registered user ${m} as ${val('uR')} (${val('uC')}).`);S.reg=false},
+  move(c){const s=val('mvStep');if(!s){$('mvStep').focus();return false}const why=val('mvWhy'),nt=val('mvNote');
+    if(c.refund&&c.refund.status!=='Done')delete c.refund;delete c.cs;c.draft=null;c.needShip=false;c.shipped=false;c.whTask='';c.notFoundAt='';
+    if(s==='search')c.searchLoc=c.searchLoc||'HQ warehouse';c.stage=s;log(c,ROLES[S.role].name,`Order edited: moved to ${STAGE[s].t.toLowerCase()}. Reason: ${why.toLowerCase()}${nt?'. '+nt:''}.`);$('modal').innerHTML=''},
+  reguser(){const nm=val('uN'),e=val('uE');if(!nm||!e)return false;const m=e[0]+'***@'+(e.split('@')[1]||'company');USERS.push({n:nm,e:m,role:val('uR'),cty:val('uC'),br:val('uB'),st:'Invited'});sysLog(`Registered user ${m} as ${val('uR')} (${val('uC')}, ${val('uB')}).`);S.reg=false},
   toggleuser(_,t){const u=USERS[+t.dataset.i];u.st=u.st==='Deactivated'?'Active':'Deactivated';sysLog(`${u.st==='Active'?'Reactivated':'Deactivated'} user ${u.e}.`)},
   addrole(){const r=val('newRole');if(!r||RPERM[r])return false;RPERM[r]=PERMS.map(()=>false);sysLog(`Added role "${r}".`)}
 };
-function loginHtml(){
-  const J=[['box','Warehouse reports'],['swap','Stock check'],['search','Search or transfer'],['chat','Customer decides'],['card','Credit or refund'],['check','Resolved']];
-  const F=[['chart','Everyone sees the same status','No more separate sheets per team. One list, always up to date.'],['card','Amounts worked out for you','Store credit and refund amounts come from Shopify, with checks against double refunds.'],['shield','Every change is logged','Who did what and when, with access set per department and country.']];
-  const d=S.dep;
-  return `<div class="lg"><div class="lgl"><div class="lgdeco">${ico('box',300)}</div><span><span class="chip c-amber">DRAFT FOR REVIEW</span></span><h1>Order Resolution Centre</h1><p>One place for every order that cannot be packed, from the missing item to the customer's store credit or refund.</p>
-    <div class="facts"><div><b>5</b>departments working on one list</div><div><b>6</b>steps from report to resolved</div><div><b>0</b>files to load from SWIMS</div></div>
-    <div class="journey">${J.map(j=>`<div class="jn"><span class="jc">${ico(j[0],22)}</span><div class="t">${j[1]}</div></div>`).join('')}</div></div>
-  <div class="lgr"><h2 style="margin-top:0;font-size:22px">Sign in</h2><p class="sub">Draft login: pick your department, the email and password are filled in for you, then press Sign in.</p>
-    <div class="small mut" style="margin-bottom:6px;font-weight:600">1. Your department</div>
-    <div class="dep">${Object.keys(ROLES).filter(k=>k!=='admin').concat('admin').map(k=>`<button class="depc ${d===k?'on':''}" data-act="dep" data-v="${k}"><span class="hi t-${RMETA[k][1]}">${ico(RMETA[k][0],20)}</span><span><b>${ROLES[k].name}</b><small>${RMETA[k][2]}</small></span></button>`).join('')}</div>
-    <div class="small mut" style="margin:16px 0 6px;font-weight:600">2. Email and password</div>
-    <div class="grid" style="grid-template-columns:1fr 1fr"><label class="f" style="margin:0">Email<input value="${d}@draft.example" readonly></label><label class="f" style="margin:0">Password<input type="password" value="draftdraft" readonly></label></div>
-    <button class="btn pri" style="width:100%;margin-top:14px;padding:12px;font-size:15px" data-act="signin">Sign in as ${ROLES[d].name}</button>
-    <p class="small mut" style="margin:12px 0 0">In the real version everyone has their own email and password, registered by the administrator. All orders, names and amounts in this draft are made up.</p></div></div>
-  <div class="feat">${F.map(f=>`<div class="card"><span class="hi t-acc" style="width:42px;height:42px;border-radius:12px">${ico(f[0],20)}</span><div><b>${f[1]}</b><div class="small mut">${f[2]}</div></div></div>`).join('')}</div>
-  <p class="small mut" style="text-align:center;margin-top:18px">IORA Group · internal draft · tell us what to add with the 💬 Give comment button after you sign in</p>`;
-}
-function boot(msg,ms){const b=document.getElementById('boot');document.getElementById('bootMsg').textContent=msg;b.classList.remove('hide');setTimeout(()=>b.classList.add('hide'),ms)}
-/* ---------- comments (kept on this device) ---------- */
+
+/* comments, kept on this device */
 let FB=[];try{FB=JSON.parse(localStorage.getItem('orc.comments')||'[]')}catch(e){}
 const fbSave=()=>{try{localStorage.setItem('orc.comments',JSON.stringify(FB))}catch(e){}};
-const fbList=()=>{document.getElementById('fbl').innerHTML=FB.length?`<p class="small" style="margin:10px 0 2px"><b>My comments (${FB.length})</b></p>`+FB.map((c,i)=>`<div class="fbi"><span class="mut small">${esc(c.where)}</span><br>${esc(c.text)} <button class="btn sm" data-fb="del" data-i="${i}" style="float:right">Remove</button></div>`).join(''):''};
-function fbClick(t){const k=t.dataset.fb,p=document.getElementById('fbp'),msg=document.getElementById('fbmsg');
-  if(k==='toggle'){p.classList.toggle('open');fbList()}
-  else if(k==='add'){const x=document.getElementById('fbt').value.trim();if(!x)return;const n=document.getElementById('fbn').value.trim();FB.push({where:document.getElementById('fbctx').textContent+(n?' · From: '+n:''),text:x});document.getElementById('fbt').value='';fbSave();fbList();msg.textContent='Added. Press "Copy all my comments" when you are done.'}
+const fbList=()=>{$('fbl').innerHTML=FB.length?`<p class="small" style="margin:10px 0 2px"><b>My comments (${FB.length})</b></p>`+FB.map((c,i)=>`<div class="fbi"><span class="mut small">${esc(c.where)}</span><br>${esc(c.text)} <button class="btn sm" data-fb="del" data-i="${i}" style="float:right">Remove</button></div>`).join(''):''};
+function fbClick(t){const k=t.dataset.fb,msg=$('fbmsg');
+  if(k==='toggle'){$('fbp').classList.toggle('open');fbList()}
+  else if(k==='add'){const x=val('fbt');if(!x)return;const nm=val('fbn');FB.push({where:$('fbctx').textContent+(nm?' · From: '+nm:''),text:x});$('fbt').value='';fbSave();fbList();msg.textContent='Added. Press "Copy all my comments" when you are done.'}
   else if(k==='del'){FB.splice(+t.dataset.i,1);fbSave();fbList()}
   else if(k==='copy'){if(!FB.length){msg.textContent='No comments yet.';return}const txt='Order Resolution Centre draft: comments\n\n'+FB.map((c,i)=>(i+1)+'. ['+c.where+']\n   '+c.text).join('\n\n');
     (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>msg.textContent='Copied. Paste it in a message or email to the project owner.',()=>{msg.textContent='Could not copy automatically. Select the comments below and copy them.'})}}
+
 document.addEventListener('click',e=>{
   const f=e.target.closest('[data-fb]');if(f){fbClick(f);return}
   if(e.target.closest('#fbp'))return;
-  const um=document.getElementById('userMenu'),uc=document.getElementById('userChip');
-  if(e.target.closest('#userChip')){const o=!um.classList.contains('open');um.classList.toggle('open',o);uc.classList.toggle('on',o);return}
-  um.classList.remove('open');uc.classList.remove('on');
+  const um=$('userMenu'),uc=$('userChip');
+  if(e.target.closest('#userChip')){um.classList.toggle('open');return}
+  um.classList.remove('open');
   const t=e.target.closest('[data-act],[data-tab],[data-cty],[data-set]');if(!t)return;
   if(t.classList.contains('modal')&&e.target!==t)return;
-  if(t.dataset.tab){S.tab=t.dataset.tab;S.rf='Pending'}
+  if(t.dataset.tab){S.tab=t.dataset.tab;S.view=null;S.rf='Pending'}
   else if(t.dataset.cty)S.cty=t.dataset.cty;
   else if(t.dataset.set)S[t.dataset.set]=t.dataset.v;
   else{const r=ACT[t.dataset.act](t.dataset.id?get(t.dataset.id):undefined,t);if(r===false)return}
   render();
 });
 document.addEventListener('change',e=>{
-  const t=e.target;
-  if(t.id==='role'){S.role=t.value;S.tab=ROLES[S.role].tabs[0];S.out=false;S.view=null;S.logOpen=false;render()}
-  else if(t.dataset.draft){const c=get(t.dataset.id);c.draft[t.dataset.draft]=t.value;if(t.tagName==='SELECT')render()}
-  else if(t.dataset.up){const c=get(t.dataset.up),f=t.files[0];if(f){c.refund.proof=URL.createObjectURL(f);log(c,'E-commerce','Picture uploaded: '+f.name+'.');render()}}
-  else if(t.dataset.perm){RPERM[t.dataset.r][+t.dataset.perm]=t.checked;sysLog(`Role "${t.dataset.r}": ${t.checked?'allowed':'removed'} "${PERMS[+t.dataset.perm]}".`)}
-  else if(t.dataset.urole){const u=USERS[+t.dataset.urole];u.role=t.value;sysLog(`Changed ${u.e} to role ${t.value}.`)}
+  const t=e.target,d=t.dataset;
+  if(d.draft){const c=get(d.id);c.draft[d.draft]=t.value;if(t.tagName==='SELECT')render()}
+  else if(d.f){S.f[d.f]=t.value;render()}
+  else if(d.fcty!==undefined){S.cty=t.value;render()}
+  else if(d.up){const c=get(d.up),fl=t.files[0];if(fl){c.refund.proof=URL.createObjectURL(fl);log(c,'E-commerce','Picture uploaded: '+fl.name+'.');render()}}
+  else if(d.perm){RPERM[d.r][+d.perm]=t.checked;sysLog(`Role "${d.r}": ${t.checked?'allowed':'removed'} "${PERMS[+d.perm]}".`)}
+  else if(d.u){const u=USERS[+d.i];u[d.u]=t.value;sysLog(`Changed ${u.e}: ${d.u==='role'?'role':d.u==='cty'?'region':'brands'} = ${t.value}.`)}
 });
+document.addEventListener('input',e=>{const k=e.target.dataset&&e.target.dataset.live;if(k){S[k]=e.target.value;$('res-'+k).innerHTML=finderRes(k)}});
+
 const q=new URLSearchParams(location.search);
-S.out=true;
 if(ROLES[q.get('role')]){S.role=q.get('role');S.tab=ROLES[S.role].tabs[0];S.out=false}
-if(q.get('boot'))document.getElementById('bootMsg').textContent='Getting the draft ready…';else setTimeout(()=>document.getElementById('boot').classList.add('hide'),q.get('role')?0:1300);
 if(q.get('cty')==='MY')S.cty='MY';
 if(q.get('tab'))S.tab=q.get('tab');
 if(q.get('set'))S.set=q.get('set');
 if(q.get('view'))S.view=q.get('view');
-if(q.get('menu'))document.getElementById('userMenu').classList.add('open');
+if(q.get('sq'))S.sq=q.get('sq');
+if(q.get('rf'))S.rf=q.get('rf');
 if(q.get('theme')==='dark')document.documentElement.dataset.theme='dark';
+if(!q.get('boot'))setTimeout(()=>$('boot').classList.add('hide'),q.get('role')?0:1300);
 render();
 </script>
 </body>
