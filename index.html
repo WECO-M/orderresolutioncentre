@@ -277,7 +277,7 @@ label.f input,label.f select,label.f textarea,.inp{display:block;width:100%;marg
 </div>
 <div id="modal"></div>
 <div class="card fbp" id="fbp">
-  <b>Give a comment on this draft</b>
+  <div class="row"><b style="flex:1">Give a comment on this draft</b><button class="btn sm" data-fb="toggle" aria-label="Close the comment box">✕ Close</button></div>
   <p class="small mut" id="fbctx" style="margin:4px 0 10px"></p>
   <label class="f">What should we add or change here?<textarea id="fbt" rows="4" placeholder="For example: we also need a column for the courier name"></textarea></label>
   <label class="f">Your name (optional)<input id="fbn"></label>
@@ -781,7 +781,7 @@ let FB=[];try{FB=JSON.parse(localStorage.getItem('orc.comments')||'[]')}catch(e)
 const fbSave=()=>{try{localStorage.setItem('orc.comments',JSON.stringify(FB))}catch(e){}};
 const fbList=()=>{$('fbl').innerHTML=FB.length?`<p class="small" style="margin:10px 0 2px"><b>My comments (${FB.length})</b></p>`+FB.map((c,i)=>`<div class="fbi"><span class="mut small">${esc(c.where)}</span><br>${esc(c.text)} <button class="btn sm" data-fb="del" data-i="${i}" style="float:right">Remove</button></div>`).join(''):''};
 function fbClick(t){const k=t.dataset.fb,msg=$('fbmsg');
-  if(k==='toggle'){$('fbp').classList.toggle('open');fbList()}
+  if(k==='toggle'){$('fbp').classList.toggle('open');$('userMenu').classList.remove('open');fbList()}
   else if(k==='add'){const x=val('fbt');if(!x)return;const nm=val('fbn');FB.push({where:$('fbctx').textContent+(nm?' · From: '+nm:''),text:x});$('fbt').value='';fbSave();fbList();msg.textContent='Added. Press "Copy all my comments" when you are done.'}
   else if(k==='del'){FB.splice(+t.dataset.i,1);fbSave();fbList()}
   else if(k==='copy'){if(!FB.length){msg.textContent='No comments yet.';return}const txt='Order Resolution Centre draft: comments\n\n'+FB.map((c,i)=>(i+1)+'. ['+c.where+']\n   '+c.text).join('\n\n');
@@ -790,6 +790,7 @@ function fbClick(t){const k=t.dataset.fb,msg=$('fbmsg');
 document.addEventListener('click',e=>{
   const f=e.target.closest('[data-fb]');if(f){fbClick(f);return}
   if(e.target.closest('#fbp'))return;
+  $('fbp').classList.remove('open'); /* any click outside the comment box closes it */
   const um=$('userMenu'),uc=$('userChip');
   if(e.target.closest('#userChip')){um.classList.toggle('open');return}
   um.classList.remove('open');
