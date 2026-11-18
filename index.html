@@ -175,6 +175,16 @@ label.f input,label.f select,label.f textarea{display:block;width:100%;margin-to
 .lgl .jc{background:rgba(255,255,255,.16);color:#fff}.lgl .jn::after{border-color:#fff!important}
 .lgl .jn:nth-child(3)::after{display:none}.lgl .jn .t{font-weight:600;font-size:13px}
 .lgr{padding:30px}
+.lg{min-height:560px;margin-top:10px}
+.lgl{position:relative;overflow:hidden}.lgl>*{position:relative}
+.lgdeco{position:absolute!important;right:-70px;bottom:-60px;opacity:.09;color:#fff}
+.facts{display:flex;gap:10px;margin-top:8px}
+.facts div{flex:1;background:rgba(255,255,255,.13);border-radius:14px;padding:10px 12px;font-size:12.5px;line-height:1.3}
+.facts b{display:block;font:700 26px/1.1 var(--disp)}
+.depc.on{border-color:var(--acc);box-shadow:0 0 0 3px var(--acc-soft)}
+.feat{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.feat .card{display:flex;gap:12px;align-items:flex-start}
+@media(max-width:860px){.feat{grid-template-columns:1fr}}
 .dep{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .depc{display:flex;gap:12px;align-items:center;text-align:left;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s}
 .depc:hover{transform:translateY(-2px);border-color:var(--acc);box-shadow:var(--shadow)}
@@ -242,14 +252,18 @@ const HERO={overview:['chart','grey',[]],
   investigate:['search','acc',['Read the clue and the tag history','Choose why it was not found','Save the action taken']]};
 const hero=(tab,title,sub)=>{const h=HERO[tab];return `<section class="hero"><span class="hi t-${h[1]}">${ico(h[0],26)}</span><div><h1>${title}</h1><p class="sub">${sub}</p>${h[2].length?`<div class="how">${h[2].map((s,i)=>`<span><i>${i+1}</i>${s}</span>`).join('')}</div>`:''}</div><div class="deco">${ico(h[0],170)}</div></section>`};
 const ROLES={
-  admin:{name:'Administrator',ini:'AD',tabs:['overview','warehouse','merch','cs','refunds','investigate']},
+  admin:{name:'Administrator',ini:'AD',tabs:['overview','warehouse','merch','stock','cs','refund','credit','investigate','epc']},
   warehouse:{name:'Warehouse',ini:'WH',tabs:['warehouse']},
-  merch:{name:'Merchandiser',ini:'MD',tabs:['merch','overview']},
-  inventory:{name:'Inventory',ini:'IN',tabs:['investigate','overview']},
+  merch:{name:'Merchandiser',ini:'MD',tabs:['merch','stock','overview']},
+  inventory:{name:'Inventory',ini:'IN',tabs:['investigate','epc','overview']},
   cs:{name:'Customer Service',ini:'CS',tabs:['cs','overview']},
-  ecom:{name:'E-commerce',ini:'EC',tabs:['refunds','overview']}
+  ecom:{name:'E-commerce',ini:'EC',tabs:['refund','credit','overview']}
 };
-const TABS={overview:'Overview',warehouse:'Warehouse',merch:'Stock check & transfer',cs:'Customer service',refunds:'Store credit & refunds',investigate:'Why not found',settings:'Settings'};
+const TABS={overview:'Overview',warehouse:'Warehouse',merch:'Stock check & transfer',stock:'Stock search',cs:'Customer service',refund:'Refunds',credit:'Store credit',investigate:'Why not found',epc:'EPC search',settings:'Settings'};
+HERO.refund=['card','red',['Read the checks','Refund in Shopify and upload the picture','If it fails, press Refund failed: a Lark request is sent for you']];
+HERO.credit=['card','blu',['Read the checks','Create the store credit code','Enter the code and mark as issued']];
+HERO.stock=['search','blu',['Type a SKU or scan an EPC','See the stock in HQ and every store','No need to load a file from SWIMS']];
+HERO.epc=['search','acc',['Type or scan an EPC','See where it is now','Read its full history']];
 const STAGE={
   merch:{t:'Stock check',who:'Merchandiser',c:'blue'},
   search:{t:'Warehouse search',who:'Warehouse',c:'amber'},
@@ -274,7 +288,7 @@ function seed(){
   return [
     mk({cty:'SG',brand:'TRT',order:'#TRTSG90001',date:'16 Nov',age:2,channel:'Online store',cust:'J*** T.',phone:'+65 ****1234',email:'j***@gmail.com',pay:'Visa ending 4411',
       items:[{sku:'TFKS0099001JS-EME-M',d:'Knit top, emerald, M',q:1,p:39.9,disc:4},{sku:'TFPL0099002AG-BLK-M',d:'Pants, black, M',q:1,p:49.9,disc:5}],bad:0,reason:'Cannot find item',
-      locs:[['Warehouse (H)',1],['Store A',2],['Store B',0]],
+      locs:[['Warehouse (H)',1],['Store A',2],['Store B',0],['Store C',4],['Store E',1]],
       inv:{status:'Open',clue:'Tag was seen at H-12-03 on 12 Nov. System shows 1 in the warehouse. No sale and no transfer since then.'},
       epc:{id:'BB0000000000000001900041',hist:[H('12 Nov 14:20','H-12-03 (warehouse active)','Seen in cycle count'),H('3 Nov 09:05','H-12-03 (warehouse active)','Put away'),H('1 Nov 16:40','Receiving','Received from supplier')]},
       log:[{t:'16 Nov 10:12',w:'Warehouse',x:'Reported: cannot find item when packing.'}]}),
@@ -322,9 +336,16 @@ function seed(){
       refund:{type:'Refund to original payment',amount:99,status:'Done',doneAt:'13 Nov',by:'E-commerce (sample user)',ref:'RF-SAMPLE-0113'},
       inv:{status:'Closed',cause:CAUSES[1],fix:FIXES[1],note:'',at:'14 Nov'},
       log:[{t:'10 Nov 10:00',w:'Warehouse',x:'Reported: cannot find item.'},{t:'11 Nov 09:00',w:'Merchandiser',x:'Out of stock, sent to Customer Service.'},{t:'12 Nov 10:00',w:'Customer Service',x:'Customer chose to cancel and refund.'},{t:'13 Nov 14:12',w:'E-commerce',x:'Refunded S$99.00 to Visa ending 3004. Ref RF-SAMPLE-0113.'},{t:'14 Nov 09:20',w:'Inventory',x:'Why not found: sold but stock not deducted. Reported to IT.'}]}),
+    mk({cty:'SG',brand:'iORA',order:'#iSG190015',date:'11 Nov',age:7,channel:'Online store',cust:'R*** N.',phone:'+65 ****4410',email:'r***@gmail.com',pay:'Visa ending 2209',
+      items:[{sku:'AFDQ0099019YS-BLK-S',d:'Dress, black, S',q:1,p:69.9,disc:0}],bad:0,reason:'Cannot find item',stage:'action',shopify:0,needShip:false,
+      cs:{want:'Cancel the whole order',by:'CS (sample user)',at:'13 Nov 15:00',via:'WhatsApp'},
+      refund:{type:'Refund to original payment',amount:69.9,status:'Failed',failWhy:'Card expired or closed',failAt:'14 Nov 10:20',lark:'LARK-RF-0009'},
+      inv:{status:'Closed',cause:CAUSES[0],fix:FIXES[2],note:'',at:'13 Nov'},
+      epc:{id:'BB0000000000000001900350',hist:[H('5 Nov 11:00','Store A','Received by transfer, not scanned at dispatch')]},
+      log:[{t:'11 Nov 10:00',w:'Warehouse',x:'Reported: cannot find item.'},{t:'11 Nov 14:00',w:'Merchandiser',x:'No stock in any store. Out of stock, sent to Customer Service.'},{t:'13 Nov 15:00',w:'Customer Service',x:'Customer chose to cancel and refund.'},{t:'14 Nov 10:20',w:'E-commerce',x:'Refund failed in Shopify: card expired or closed. Flagged.'},{t:'14 Nov 10:20',w:'System',x:'Refund request LARK-RF-0009 sent to Lark automatically.'}]}),
     mk({cty:'MY',brand:'iORA',order:'#iMY990001',date:'16 Nov',age:2,channel:'Online store',cust:'N*** A.',phone:'+60 ****5512',email:'n***@gmail.com',pay:'FPX online banking',
       items:[{sku:'AFBS0099012WR-CRE-S',d:'Blouse, cream, S',q:1,p:59,disc:0},{sku:'AFDQ0099013YS-NVS-M',d:'Dress, navy, M',q:1,p:99,disc:0}],bad:0,reason:'Cannot find item',
-      locs:[['Warehouse (H)',0],['Store C',1],['Store D',2]],
+      locs:[['Warehouse (H)',0],['Store C',1],['Store D',2],['Store F',3]],
       inv:{status:'Open',clue:'SWIMS shows 0 in the warehouse but Shopify still shows 1 for sale. The two quantities are not in line.'},
       epc:{id:'BB0000000000000001900257',hist:[H('11 Nov 10:20','Store C','Seen in cycle count'),H('2 Nov 12:00','Store C','Received by transfer')]},
       log:[{t:'16 Nov 11:00',w:'Warehouse',x:'Reported: cannot find item when packing.'}]}),
@@ -350,7 +371,7 @@ function resetAll(){CASES=seed();USERS=seedUsers();RPERM=seedPerm();
   AUDIT=[];CASES.forEach(c=>c.log.forEach(l=>AUDIT.push({t:l.t,w:l.w,x:l.x,o:c.order,cty:c.cty})));
   AUDIT.sort((a,b)=>parseInt(b.t)-parseInt(a.t)||b.t.localeCompare(a.t));}
 resetAll();
-const S={role:'admin',cty:'SG',tab:'overview',sel:{},rf:'Pending',rtype:'All',form:false,whf:'all',view:null,logOpen:false,color:'#3547a8',set:'Users',invf:'Open',out:false,reg:false};
+const S={role:'admin',cty:'SG',tab:'overview',sel:{},rf:'Pending',rtype:'All',form:false,whf:'all',dep:'warehouse',rec:'qty',sq:'',eq:'',view:null,logOpen:false,color:'#3547a8',set:'Users',invf:'Open',out:false,reg:false};
 
 /* ---------- helpers ---------- */
 const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
@@ -373,7 +394,7 @@ function finish(c){if(c.stage==='action'&&(!c.needShip||c.shipped)&&(!c.refund||
 const whSearch=()=>mine().filter(c=>c.stage==='search');
 const whPack=()=>mine().filter(c=>c.stage==='action'&&c.needShip&&!c.shipped);
 const refunds=()=>mine().filter(c=>c.refund);
-const counts=()=>({warehouse:whSearch().length+whPack().length,merch:mine().filter(c=>c.stage==='merch'||c.stage==='transfer').length,cs:mine().filter(c=>c.stage==='cs').length,refunds:refunds().filter(c=>c.refund.status!=='Done').length,investigate:mine().filter(c=>c.inv.status==='Open').length});
+const counts=()=>({warehouse:whSearch().length+whPack().length,merch:mine().filter(c=>c.stage==='merch'||c.stage==='transfer').length,cs:mine().filter(c=>c.stage==='cs').length,refund:refunds().filter(c=>c.refund.type!=='Store credit'&&c.refund.status!=='Done').length,credit:refunds().filter(c=>c.refund.type==='Store credit'&&c.refund.status!=='Done').length,investigate:mine().filter(c=>c.inv.status==='Open').length});
 const canSeeCustomer=()=>['admin','cs','ecom'].includes(S.role);
 const bars=rows=>{const mx=Math.max(1,...rows.map(r=>r[1]));return `<div class="bars">${rows.map(r=>`<div>${esc(r[0])}</div><div class="bg"><div class="bar" style="width:${r[1]/mx*100}%"></div></div><div class="num"><b>${r[1]}</b></div>`).join('')}</div>`};
 
@@ -433,7 +454,7 @@ function vWarehouse(){
 function twoPane(tab,list,detail,emptyMsg){
   if(!list.length)return `<div class="card empty">${emptyMsg}</div>`;
   let sel=list.find(c=>c.id===S.sel[tab])||list[0];
-  return `<div class="two"><div class="list">${list.map(c=>`<div class="li ${c===sel?'on':''}" data-act="sel" data-id="${c.id}"><div class="o">${esc(c.order)}</div><div class="small mut">${c.brand} · ${esc(c.reason)}</div><div class="small">${tab==='investigate'?chip(c.inv.status==='Open'?'To investigate':'Closed',c.inv.status==='Open'?'amber':'green'):stageChip(c)} <span class="mut">${c.age} day${c.age===1?'':'s'}</span></div></div>`).join('')}</div><div class="card">${detail(sel)}</div></div>`;
+  return `<div class="two"><div class="list">${list.map(c=>`<div class="li ${c===sel?'on':''}" data-act="sel" data-id="${c.id}"><div class="o">${esc(c.order)}</div><div class="small mut">${c.brand} · ${esc(c.reason)}</div><div class="small">${tab==='investigate'?chip(c.inv.status==='Open'?'To investigate':'Closed',c.inv.status==='Open'?'amber':'green'):stageChip(c)} <span class="mut">${c.age} day${c.age===1?'':'s'}</span></div></div>`).join('')}</div><div class="card">${detail(sel)}<div style="margin-top:16px;border-top:1px solid var(--line);padding-top:12px"><button class="btn sm" data-act="open" data-id="${sel.id}">✎ Edit or move this order</button> <span class="small mut">if plans change after it was passed on</span></div></div></div>`;
 }
 const epcTable=c=>`<div class="tw"><table><thead><tr><th>When</th><th>Where</th><th>What happened</th></tr></thead><tbody>${c.epc.hist.map(h=>`<tr><td>${h.w}</td><td>${esc(h.l)}</td><td>${esc(h.e)}</td></tr>`).join('')||'<tr><td colspan="3" class="mut">No tag history found.</td></tr>'}</tbody></table></div>`;
 const timeline=c=>`<ul class="tl">${c.log.map(l=>`<li><b>${esc(l.w)}</b> <span class="mut small">${l.t}</span><br>${esc(l.x)}</li>`).join('')}</ul>`;
@@ -446,8 +467,8 @@ function vMerch(){
     <p class="mut">${esc(bad(c).d)} · need ${need} · reported: ${esc(c.reason)}</p>
     ${c.notFoundAt?`<div class="warn">Warehouse searched ${esc(c.notFoundAt)} and did not find it.</div>`:''}
     ${c.stage==='transfer'?`<div class="note">Outlet transfer requested from <b>${esc(c.transferFrom)}</b>. Waiting for the stock to arrive.</div><div class="row"><button class="btn pri" data-act="arrived" data-id="${c.id}">Transfer arrived, send to warehouse to pack</button><button class="btn" data-act="oos" data-id="${c.id}">Transfer failed, out of stock</button></div>`
-    :`<h2>Stock by location <span class="mut small">looked up from BigQuery (SWIMS)</span></h2>
-    <div class="tw"><table><thead><tr><th>Location</th><th class="num">Quantity</th><th></th></tr></thead><tbody>${c.locs.map((l,i)=>`<tr><td>${esc(l[0])}</td><td class="num"><b>${l[1]}</b></td><td>${/^Store/.test(l[0])?(l[1]>0?`<button class="btn sm" data-act="totransfer" data-id="${c.id}" data-loc="${i}">Request transfer from ${esc(l[0])}</button>`:'<span class="mut">no stock</span>'):(l[1]>0?'<span class="mut">search below</span>':'<span class="mut">no stock</span>')}</td></tr>`).join('')}</tbody></table></div>
+    :`
+    ${distTable(c,true)}<div class="tw" style="display:none"><table><thead><tr><th>Location</th><th class="num">Quantity</th><th></th></tr></thead><tbody>${c.locs.map((l,i)=>`<tr><td>${esc(l[0])}</td><td class="num"><b>${l[1]}</b></td><td>${/^Store/.test(l[0])?(l[1]>0?`<button class="btn sm" data-act="totransfer" data-id="${c.id}" data-loc="${i}">Request transfer from ${esc(l[0])}</button>`:'<span class="mut">no stock</span>'):(l[1]>0?'<span class="mut">search below</span>':'<span class="mut">no stock</span>')}</td></tr>`).join('')}</tbody></table></div>
     <div class="grid" style="margin-top:10px;max-width:420px"><div class="tile"><div class="l">Shopify quantity</div><div class="v">${c.shopify}</div></div><div class="tile"><div class="l">Marketplace quantity</div><div class="v">${c.market}</div></div></div>
     ${last?`<div class="note">Tag last seen: <b>${esc(last.l)}</b>, ${last.w}.</div>`:''}
     <label class="f" style="max-width:360px;margin-top:12px">Where should the warehouse look?<input id="loc" value="${esc(whLoc)}" placeholder="Warehouse location"></label>
@@ -562,21 +583,66 @@ function vProfile(){
 }
 
 function detailModal(c){
-  return `<div class="modal" data-act="close"><div class="card" onclick="event.stopPropagation()"><div class="row"><h1 style="flex:1;font-size:19px">${esc(c.order)}</h1>${stageChip(c)}<button class="btn" data-act="close">Close</button></div>
+  return `<div class="modal" data-act="close"><div class="card"><div class="row"><h1 style="flex:1;font-size:19px">${esc(c.order)}</h1>${stageChip(c)}<button class="btn" data-act="close">Close</button></div>
   <p class="mut">${c.brand} · ${c.channel} · reported ${c.date} · ${esc(c.reason)}${waiting(c)?' · waiting for <b>'+waiting(c)+'</b>':''}</p>
   ${canSeeCustomer()?`<h2>Customer</h2>${custBlock(c)}<h2>Order items</h2>${itemsTable(c)}`:`<h2>Item not found</h2><p><span class="mono">${esc(bad(c).sku)}</span> · ${esc(bad(c).d)} · quantity ${bad(c).q}</p>`}
   ${c.refund&&canSeeCustomer()?`<h2>${c.refund.type}</h2><p><b>${money(c,c.refund.amount)}</b> · ${c.refund.status==='Done'?'done '+c.refund.doneAt+', ref '+esc(c.refund.ref):'pending with E-commerce'}</p>`:''}
   <h2>Why not found</h2><p>${c.inv.status==='Closed'?`<b>${esc(c.inv.cause)}</b> · ${esc(c.inv.fix)}`:'<span class="mut">Inventory is still checking.</span>'}</p>
+  ${S.role==='warehouse'?'':`<h2>Edit or move this order</h2><p class="small mut" style="margin-top:0">Plans change: the customer changes their mind, a store finds the item, stock must come from another store, a refund fails. Move the order to the right step. Every change is logged.</p>
+  <div class="grid" style="grid-template-columns:1fr 1fr"><label class="f">Move to<select id="mvStep"><option value="">Choose a step</option><option value="merch">Stock check (Merchandiser)</option><option value="search">Warehouse search</option><option value="cs">Customer Service, ask the customer again</option></select></label>
+  <label class="f">Reason<select id="mvWhy"><option>Customer changed their mind</option><option>Store or warehouse found the item</option><option>Need to order from another store</option><option>Refund failed</option><option>Entered by mistake</option></select></label></div>
+  <label class="f">Note<input id="mvNote" placeholder="Optional"></label><button class="btn pri" data-act="move" data-id="${c.id}">Save change</button>`}
   <h2>History</h2>${timeline(c)}</div></div>`;
 }
 
 /* ---------- render + events ---------- */
-const VIEWS={overview:vOverview,warehouse:vWarehouse,merch:vMerch,cs:vCS,refunds:vRefunds,investigate:vInvestigate,settings:vSettings};
+/* ---------- refunds / store credit as two pages ---------- */
+function vPay(kind){
+  const sc=kind==='Store credit',mk=refunds().filter(c=>(c.refund.type==='Store credit')===sc);
+  const tv=sc?['Pending','Done']:['Pending','Failed','Done'];if(!tv.includes(S.rf))S.rf='Pending';
+  const all=mk.filter(c=>c.refund.status===S.rf),cnt=v=>mk.filter(c=>c.refund.status===v).length;
+  const inp='padding:9px 10px;border:1px solid var(--line);border-radius:10px;background:var(--card);flex:1;min-width:190px';
+  const up=c=>`<label class="btn" style="cursor:pointer">📎 ${c.refund.proof?'Change picture':'Upload picture'}<input type="file" accept="image/*" hidden data-up="${c.id}"></label>${c.refund.proof?`<a href="${c.refund.proof}" target="_blank" rel="noopener"><img src="${c.refund.proof}" alt="Uploaded proof" style="height:44px;border-radius:8px;border:1px solid var(--line);vertical-align:middle"></a>`:'<span class="mut small">no picture yet</span>'}`;
+  return `<h1>${sc?'Store credit':'Refunds'}</h1><p class="sub">Created automatically when Customer Service confirms the customer's decision. Amounts come from Shopify.</p>
+  <div class="seg" style="margin-bottom:14px">${tv.map(v=>`<button class="${S.rf===v?'on':''}" data-set="rf" data-v="${v}">${v==='Failed'?'⚑ Failed, sent to Lark':v} (${cnt(v)})</button>`).join('')}</div>
+  ${all.map(c=>{const r=c.refund,ch=checks(c),w=ch.some(x=>x[0]==='w'),b=bad(c),whole=c.cs.want==='Cancel the whole order';
+    return `<div class="card rf"><div class="hd"><div style="flex:1"><b style="font-size:16px">${esc(c.order)}</b> <span class="mut">· ${c.brand} · order date ${c.date}</span><br>${r.status==='Done'?chip('Done '+r.doneAt,'green'):r.status==='Failed'?chip('⚑ Failed, Lark request sent','red'):chip('Pending','amber')} <button class="btn sm" data-act="open" data-id="${c.id}">✎ Edit or move this order</button></div><div class="amt">${money(c,r.amount)}</div></div>
+    <div class="cols"><div><h3>Customer and payment</h3>${custBlock(c)}<dl class="kv"><dt>Order total paid</dt><dd>${money(c,total(c))}</dd></dl></div>
+    <div><h3>What to pay back</h3><dl class="kv"><dt>Out of stock</dt><dd class="mono">${esc(b.sku)}</dd><dt>Item price</dt><dd>${money(c,b.p*b.q)}</dd><dt>Discount share</dt><dd>${b.disc?'-'+money(c,b.disc):'none'}</dd><dt>Customer chose</dt><dd>${esc(c.cs.want)}</dd><dt>${sc?'Store credit':'Refund'}</dt><dd><b>${money(c,r.amount)}</b>${whole?' (whole order)':''}</dd><dt>Pay to</dt><dd>${sc?'Store credit code to '+c.email:esc(c.pay)}</dd></dl></div>
+    <div><h3>Checks before paying</h3><ul class="checks">${ch.map(x=>`<li class="${x[0]}">${esc(x[1])}</li>`).join('')}</ul></div></div>
+    ${r.status==='Done'?`<div class="note">Done on ${r.doneAt} by ${esc(r.by)}${r.lark?' through Lark request '+r.lark:''}. Reference: <span class="mono">${esc(r.ref)}</span> ${r.proof?`<a href="${r.proof}" target="_blank" rel="noopener">view picture</a>`:''}</div>`
+    :r.status==='Failed'?`<div class="warn">⚑ Refund failed in Shopify: ${esc(r.failWhy)}. A refund request was sent to Lark automatically (${r.lark}, ${r.failAt}). Customer Service can see this flag.</div>
+      <div class="row">${up(c)}<input id="ref${c.id}" placeholder="Lark approval or bank reference" style="${inp}"><button class="btn pri" data-act="paid" data-id="${c.id}">Lark refund paid, mark as done</button></div>`
+    :`${w?`<div class="warn">Possible double refund. <label style="font-weight:400"><input type="checkbox" data-act="ack" data-id="${c.id}" ${c.ack?'checked':''}> I checked Shopify and this payment is still needed</label></div>`:''}
+    <div class="row">${up(c)}<input id="ref${c.id}" placeholder="${sc?'Store credit code':'Shopify refund reference'}" style="${inp}"><button class="btn pri" data-act="paid" data-id="${c.id}" ${w&&!c.ack?'disabled':''}>Mark as ${sc?'issued':'refunded'}</button></div>
+    ${sc?'':`<div class="row" style="margin-top:10px"><span class="mut small">Refund did not go through?</span><select id="fw${c.id}"><option>Payment gateway error</option><option>Card expired or closed</option><option>Past the refund time limit</option><option>Other</option></select><button class="btn no sm" data-act="failed" data-id="${c.id}">Refund failed, send Lark request</button>${w?`<button class="btn sm" data-act="dup" data-id="${c.id}">Already refunded, close without paying</button>`:''}</div>`}`}
+    </div>`}).join('')||'<div class="card empty">Nothing here.</div>'}`;
+}
+/* ---------- stock distribution (merchandiser) ---------- */
+const locName=l=>/^Warehouse/.test(l)?'HQ warehouse (H) · shared with the online store':l;
+const sold30=(c,l)=>{let h=0;for(const ch of bad(c).sku+l)h=(h*7+ch.charCodeAt(0))%13;return h};
+function recIdx(c){const need=bad(c).q;let best=-1;c.locs.forEach((l,i)=>{if(!/^Store/.test(l[0])||l[1]<1)return;const ok=l[1]>=need,s=sold30(c,l[0]);
+  const score=S.rec==='sales'?[ok?1:0,-s,l[1]]:[ok?1:0,l[1],-s];if(best<0){best=i;recIdx.s=score;return}
+  for(let k=0;k<3;k++){if(score[k]>recIdx.s[k]){best=i;recIdx.s=score;break}if(score[k]<recIdx.s[k])break}});return best}
+function distTable(c,btn){const r=recIdx(c);
+  return `<div class="row" style="margin-bottom:8px"><h2 style="margin:0;flex:1">Stock by location <span class="mut small">looked up from BigQuery, no SWIMS file needed</span></h2><span class="small mut">Recommend the store with</span><div class="seg">${[['qty','highest quantity'],['sales','lowest sales']].map(v=>`<button class="${S.rec===v[0]?'on':''}" data-set="rec" data-v="${v[0]}">${v[1]}</button>`).join('')}</div></div>
+  <div class="tw"><table><thead><tr><th>Location</th><th class="num">Quantity</th><th class="num">Sold, last 30 days</th><th></th></tr></thead><tbody>${c.locs.map((l,i)=>{const st=/^Store/.test(l[0]);return `<tr><td>${esc(locName(l[0]))} ${i===r?chip('★ Recommended','green'):''}</td><td class="num"><b>${l[1]}</b></td><td class="num">${st?sold30(c,l[0]):'<span class="mut">online orders</span>'}</td><td>${l[1]<1?'<span class="mut">no stock</span>':st?(btn?`<button class="btn sm ${i===r?'pri':''}" data-act="totransfer" data-id="${c.id}" data-loc="${i}">Order from ${esc(l[0])}</button>`:''):'<span class="mut">warehouse search</span>'}</td></tr>`}).join('')}</tbody></table></div>`}
+function finder(tab,key,ph,match,show){
+  const q=(S[key]||'').toLowerCase(),hit=q?mine().find(c=>match(c).some(v=>v.toLowerCase().includes(q))):null;
+  return `<div class="card" style="margin-bottom:14px"><div class="row"><input id="${key}" value="${esc(S[key]||'')}" placeholder="${ph}" style="padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--card);flex:1;min-width:220px"><button class="btn pri" data-act="find" data-k="${key}">Search</button></div>
+  <div class="row small" style="margin-top:10px"><span class="mut">Try a sample:</span>${mine().slice(0,3).map(c=>`<button class="btn sm mono" data-act="find" data-k="${key}" data-v="${esc(match(c)[0])}">${esc(match(c)[0])}</button>`).join('')}</div></div>
+  ${!q?'':hit?`<div class="card">${show(hit)}</div>`:'<div class="card"><p class="mut" style="margin:0">Nothing found for that in the sample data. In the real version this searches all of BigQuery.</p></div>'}`}
+function vStock(){return `<h1>Stock search</h1><p class="sub">Where is the stock right now? Search by SKU or EPC.</p>`+finder('stock','sq','SKU or EPC, for example TFKS0099001JS-EME-M',c=>[bad(c).sku,c.epc.id],c=>`<div class="row"><h1 style="font-size:18px;flex:1" class="mono">${esc(bad(c).sku)}</h1>${chip('Total '+c.locs.reduce((a,l)=>a+l[1],0)+' pcs','blue')}</div><p class="mut">${esc(bad(c).d)} · Shopify shows ${c.shopify} · marketplace shows ${c.market}</p>${distTable(c,false)}<p class="small mut" style="margin-bottom:0">To order stock for a customer's order, open the order in "Stock check & transfer".</p>`)}
+function vEpc(){return `<h1>EPC search</h1><p class="sub">Where is this tag now, and where has it been? Looked up from BigQuery.</p>`+finder('epc','eq','EPC or SKU, for example BB0000000000000001900041',c=>[c.epc.id,bad(c).sku],c=>{const h=c.epc.hist[0],sold=h&&/Sold/.test(h.e);
+  return `<div class="row"><h1 style="font-size:18px;flex:1" class="mono">${c.epc.id}</h1>${chip(sold?'Sold':'In stock (system)',sold?'red':'green')}</div><p class="mut"><span class="mono">${esc(bad(c).sku)}</span> · ${esc(bad(c).d)}</p>
+  <div class="grid"><div class="tile"><div class="l">Last seen at</div><div class="v" style="font-size:16px">${esc(h?h.l:'unknown')}</div></div><div class="tile"><div class="l">Last seen on</div><div class="v" style="font-size:16px">${h?h.w:'unknown'}</div></div><div class="tile"><div class="l">POS sale found</div><div class="v" style="font-size:16px">${sold?'Yes':'No'}</div></div><div class="tile"><div class="l">Deducted in SWIMS</div><div class="v" style="font-size:16px">${sold?'No ⚑':'n/a'}</div></div></div>
+  <h2>History</h2>${epcTable(c)}`})}
+const VIEWS={overview:vOverview,warehouse:vWarehouse,merch:vMerch,stock:vStock,cs:vCS,refund:()=>vPay('Refund'),credit:()=>vPay('Store credit'),investigate:vInvestigate,epc:vEpc,settings:vSettings};
 function render(){
   const R=ROLES[S.role];if(!R.tabs.includes(S.tab))S.tab=R.tabs[0];
   document.querySelector('.top').style.display=S.out?'none':'';
   document.getElementById('fbb').style.display=S.out?'none':'';
-  if(S.out){document.getElementById('fbp').classList.remove('open');
+  if(S.out){document.getElementById('fbp').classList.remove('open');document.getElementById('app').innerHTML=loginHtml();return;
     const J=[['box','Warehouse reports'],['swap','Stock check'],['search','Search or transfer'],['chat','Customer decides'],['card','Credit or refund'],['check','Resolved']];
     document.getElementById('app').innerHTML=`<div class="lg"><div class="lgl"><span><span class="chip c-amber">DRAFT</span></span><h1>Order Resolution Centre</h1><p>One place for every order that cannot be packed, from the missing item to the customer's store credit or refund.</p><div class="journey">${J.map(j=>`<div class="jn"><span class="jc">${ico(j[0],22)}</span><div class="t">${j[1]}</div></div>`).join('')}</div></div>
     <div class="lgr"><h2 style="margin-top:0;font-size:20px">Choose your department to sign in</h2><p class="sub">This is a draft: one click signs you in, no password. In the real version everyone signs in with their own email and password.</p>
@@ -605,7 +671,8 @@ const ACT={
   openlog(){S.logOpen=true;sysLog('Opened the activity log.')},
   color(_,t){S.color=t.dataset.v},
   saveprofile(){sysLog('Updated own profile.')},
-  signin(_,t){S.role=t.dataset.v;S.tab=ROLES[S.role].tabs[0];S.out=false;S.view=null;boot('Signing you in…',900);sysLog('Signed in.')},
+  dep(_,t){S.dep=t.dataset.v},
+  signin(_,t){S.role=t.dataset.v||S.dep;S.tab=ROLES[S.role].tabs[0];S.out=false;S.view=null;boot('Signing you in…',900);sysLog('Signed in.')},
   form(){S.form=!S.form},
   reg(){S.reg=!S.reg},
   add(){const o=val('fOrder'),s=val('fSku'),r=val('fReason');if(!o||!s)return false;
@@ -615,7 +682,7 @@ const ACT={
   close(){document.getElementById('modal').innerHTML='';return false},
   sel(c){S.sel[S.tab]=c.id},
   tosearch(c){const l=val('loc');if(!l){document.getElementById('loc').focus();return false}c.searchLoc=l;c.stage='search';log(c,'Merchandiser','Asked warehouse to search '+l+'.')},
-  totransfer(c,t){c.transferFrom=c.locs[+t.dataset.loc][0];c.stage='transfer';log(c,'Merchandiser','Outlet transfer requested from '+c.transferFrom+'.')},
+  totransfer(c,t){c.transferFrom=c.locs[+t.dataset.loc][0];c.stage='transfer';log(c,'Merchandiser','Stock ordered from '+c.transferFrom+' (outlet transfer).')},
   arrived(c){c.stage='action';c.needShip=true;c.cs={at:now()};c.whTask='Transfer stock has arrived. Pack the full order.';log(c,'Merchandiser','Transfer arrived. Sent to warehouse to pack.')},
   oos(c){c.stage='cs';log(c,'Merchandiser','Out of stock. Sent to Customer Service.')},
   found(c){c.stage='done';c.inv.guess=CAUSES[2];c.inv.clue='Warehouse found it at '+c.searchLoc+' on the second search. It was probably missed when picking.';log(c,'Warehouse','Item found at '+c.searchLoc+'. Packed and sent.')},
@@ -629,8 +696,13 @@ const ACT={
     Object.assign(c.cs,{by:'CS (sample user)',at:now(),via:d.via});c.stage='action';
     log(c,'Customer Service',`Customer confirmed by ${d.via}: ${c.cs.want.toLowerCase()}${c.refund?', '+c.refund.type.toLowerCase()+' '+money(c,c.refund.amount):''}.`);finish(c)},
   ack(c){c.ack=!c.ack},
+  find(_,t){S[t.dataset.k]=t.dataset.v??val(t.dataset.k)},
+  failed(c){const r=c.refund;Object.assign(r,{status:'Failed',failWhy:val('fw'+c.id),failAt:now(),lark:'LARK-RF-'+String(c.id).slice(-4).padStart(4,'0')});log(c,'E-commerce','Refund failed in Shopify: '+r.failWhy.toLowerCase()+'. Flagged.');log(c,'System','Refund request '+r.lark+' sent to Lark automatically.');S.rf='Failed'},
+  move(c){const s=val('mvStep');if(!s){document.getElementById('mvStep').focus();return false}const why=val('mvWhy'),n=val('mvNote');
+    if(c.refund&&c.refund.status!=='Done')delete c.refund;delete c.cs;c.draft=null;c.needShip=false;c.shipped=false;c.whTask='';c.notFoundAt='';
+    if(s==='search')c.searchLoc=c.searchLoc||'HQ warehouse';c.stage=s;log(c,ROLES[S.role].name,`Order edited: moved to ${STAGE[s].t.toLowerCase()}. Reason: ${why.toLowerCase()}${n?'. '+n:''}.`);document.getElementById('modal').innerHTML=''},
   paid(c){const ref=val('ref'+c.id);if(!ref){document.getElementById('ref'+c.id).focus();return false}
-    Object.assign(c.refund,{status:'Done',doneAt:'18 Nov',by:'E-commerce (sample user)',ref});log(c,'E-commerce',`${c.refund.type} ${money(c,c.refund.amount)} done. Ref ${ref}.`);finish(c)},
+    Object.assign(c.refund,{status:'Done',doneAt:'18 Nov',by:'E-commerce (sample user)',ref});log(c,'E-commerce',`${c.refund.type} ${money(c,c.refund.amount)} done${c.refund.lark?' through Lark request '+c.refund.lark:''}. Ref ${ref}.${c.refund.proof?' Picture attached.':''}`);S.rf='Done';finish(c)},
   dup(c){Object.assign(c.refund,{status:'Done',doneAt:'18 Nov',by:'E-commerce (sample user)',ref:'Already refunded earlier, not paid again'});log(c,'E-commerce','Found an earlier refund in Shopify. Closed without paying again.');finish(c)},
   closeinv(c){Object.assign(c.inv,{status:'Closed',cause:val('iCause'),fix:val('iFix'),note:val('iNote'),at:'18 Nov'});log(c,'Inventory',`Why not found: ${c.inv.cause.toLowerCase()}. ${c.inv.fix}.`)},
   reopen(c){c.inv.status='Open';log(c,'Inventory','Finding reopened.')},
@@ -638,6 +710,23 @@ const ACT={
   toggleuser(_,t){const u=USERS[+t.dataset.i];u.st=u.st==='Deactivated'?'Active':'Deactivated';sysLog(`${u.st==='Active'?'Reactivated':'Deactivated'} user ${u.e}.`)},
   addrole(){const r=val('newRole');if(!r||RPERM[r])return false;RPERM[r]=PERMS.map(()=>false);sysLog(`Added role "${r}".`)}
 };
+function loginHtml(){
+  const J=[['box','Warehouse reports'],['swap','Stock check'],['search','Search or transfer'],['chat','Customer decides'],['card','Credit or refund'],['check','Resolved']];
+  const F=[['chart','Everyone sees the same status','No more separate sheets per team. One list, always up to date.'],['card','Amounts worked out for you','Store credit and refund amounts come from Shopify, with checks against double refunds.'],['shield','Every change is logged','Who did what and when, with access set per department and country.']];
+  const d=S.dep;
+  return `<div class="lg"><div class="lgl"><div class="lgdeco">${ico('box',300)}</div><span><span class="chip c-amber">DRAFT FOR REVIEW</span></span><h1>Order Resolution Centre</h1><p>One place for every order that cannot be packed, from the missing item to the customer's store credit or refund.</p>
+    <div class="facts"><div><b>5</b>departments working on one list</div><div><b>6</b>steps from report to resolved</div><div><b>0</b>files to load from SWIMS</div></div>
+    <div class="journey">${J.map(j=>`<div class="jn"><span class="jc">${ico(j[0],22)}</span><div class="t">${j[1]}</div></div>`).join('')}</div></div>
+  <div class="lgr"><h2 style="margin-top:0;font-size:22px">Sign in</h2><p class="sub">Draft login: pick your department, the email and password are filled in for you, then press Sign in.</p>
+    <div class="small mut" style="margin-bottom:6px;font-weight:600">1. Your department</div>
+    <div class="dep">${Object.keys(ROLES).filter(k=>k!=='admin').concat('admin').map(k=>`<button class="depc ${d===k?'on':''}" data-act="dep" data-v="${k}"><span class="hi t-${RMETA[k][1]}">${ico(RMETA[k][0],20)}</span><span><b>${ROLES[k].name}</b><small>${RMETA[k][2]}</small></span></button>`).join('')}</div>
+    <div class="small mut" style="margin:16px 0 6px;font-weight:600">2. Email and password</div>
+    <div class="grid" style="grid-template-columns:1fr 1fr"><label class="f" style="margin:0">Email<input value="${d}@draft.example" readonly></label><label class="f" style="margin:0">Password<input type="password" value="draftdraft" readonly></label></div>
+    <button class="btn pri" style="width:100%;margin-top:14px;padding:12px;font-size:15px" data-act="signin">Sign in as ${ROLES[d].name}</button>
+    <p class="small mut" style="margin:12px 0 0">In the real version everyone has their own email and password, registered by the administrator. All orders, names and amounts in this draft are made up.</p></div></div>
+  <div class="feat">${F.map(f=>`<div class="card"><span class="hi t-acc" style="width:42px;height:42px;border-radius:12px">${ico(f[0],20)}</span><div><b>${f[1]}</b><div class="small mut">${f[2]}</div></div></div>`).join('')}</div>
+  <p class="small mut" style="text-align:center;margin-top:18px">IORA Group · internal draft · tell us what to add with the 💬 Give comment button after you sign in</p>`;
+}
 function boot(msg,ms){const b=document.getElementById('boot');document.getElementById('bootMsg').textContent=msg;b.classList.remove('hide');setTimeout(()=>b.classList.add('hide'),ms)}
 /* ---------- comments (kept on this device) ---------- */
 let FB=[];try{FB=JSON.parse(localStorage.getItem('orc.comments')||'[]')}catch(e){}
@@ -656,7 +745,8 @@ document.addEventListener('click',e=>{
   if(e.target.closest('#userChip')){const o=!um.classList.contains('open');um.classList.toggle('open',o);uc.classList.toggle('on',o);return}
   um.classList.remove('open');uc.classList.remove('on');
   const t=e.target.closest('[data-act],[data-tab],[data-cty],[data-set]');if(!t)return;
-  if(t.dataset.tab)S.tab=t.dataset.tab;
+  if(t.classList.contains('modal')&&e.target!==t)return;
+  if(t.dataset.tab){S.tab=t.dataset.tab;S.rf='Pending'}
   else if(t.dataset.cty)S.cty=t.dataset.cty;
   else if(t.dataset.set)S[t.dataset.set]=t.dataset.v;
   else{const r=ACT[t.dataset.act](t.dataset.id?get(t.dataset.id):undefined,t);if(r===false)return}
@@ -666,6 +756,7 @@ document.addEventListener('change',e=>{
   const t=e.target;
   if(t.id==='role'){S.role=t.value;S.tab=ROLES[S.role].tabs[0];S.out=false;S.view=null;S.logOpen=false;render()}
   else if(t.dataset.draft){const c=get(t.dataset.id);c.draft[t.dataset.draft]=t.value;if(t.tagName==='SELECT')render()}
+  else if(t.dataset.up){const c=get(t.dataset.up),f=t.files[0];if(f){c.refund.proof=URL.createObjectURL(f);log(c,'E-commerce','Picture uploaded: '+f.name+'.');render()}}
   else if(t.dataset.perm){RPERM[t.dataset.r][+t.dataset.perm]=t.checked;sysLog(`Role "${t.dataset.r}": ${t.checked?'allowed':'removed'} "${PERMS[+t.dataset.perm]}".`)}
   else if(t.dataset.urole){const u=USERS[+t.dataset.urole];u.role=t.value;sysLog(`Changed ${u.e} to role ${t.value}.`)}
 });
