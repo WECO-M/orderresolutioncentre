@@ -441,7 +441,8 @@ const iso=c=>{const p=c.date.split(' ');return '2026-'+String(MON.indexOf(p[1])+
 const mine0=()=>CASES.filter(c=>c.cty===S.cty);
 const mine=()=>{const f=S.f;return mine0().filter(c=>(!f.brand||c.brand===f.brand)&&(!f.year||iso(c).startsWith(f.year))&&(!f.month||iso(c).slice(5,7)===f.month)&&(!f.date||iso(c)===f.date))
   .sort((x,y)=>f.sort==='brand'?x.brand.localeCompare(y.brand)||iso(y).localeCompare(iso(x)):f.sort==='old'?iso(x).localeCompare(iso(y)):iso(y).localeCompare(iso(x)))};
-const now=()=>'18 Nov '+new Date().toTimeString().slice(0,5);
+const TODAY=new Date().getDate()+' '+MON[new Date().getMonth()];const now=()=>TODAY+' '+new Date().toTimeString().slice(0,5);
+const whoName=w=>w==='System'?'Automatic':(USERS.find(u=>u.role===w)||{}).n||'Sample user';
 const chip=(t,c)=>`<span class="chip k-${c}">${esc(t)}</span>`;
 const stageChip=c=>chip(STAGE[c.stage].t,STAGE[c.stage].c);
 const brand=c=>`<span class="dot" style="background:${BRAND_C[c.brand]||'#7b8499'}"></span>${esc(c.brand)}`;
@@ -541,7 +542,7 @@ function twoPane(tab,list,detail,emptyMsg){
   <div class="card">${detail(sel)}<div style="margin-top:16px;border-top:1px solid var(--line);padding-top:12px"><button class="btn sm" data-act="open" data-id="${sel.id}">✎ Edit or move this order</button> <span class="small mut">if plans change after it was passed on</span></div></div></div>`;
 }
 const epcTable=c=>`<div class="tw"><table><thead><tr><th>When</th><th>Where</th><th>What happened</th></tr></thead><tbody>${c.epc.hist.map(h=>`<tr><td style="white-space:nowrap">${h.w}</td><td>${esc(h.l)}</td><td>${esc(h.e)}</td></tr>`).join('')||'<tr><td colspan="3" class="mut">No tag history found.</td></tr>'}</tbody></table></div>`;
-const timeline=c=>`<ul class="tl">${c.log.map(l=>`<li><b>${esc(l.w)}</b> <span class="mut small">${l.t}</span><br>${esc(l.x)}</li>`).join('')}</ul>`;
+const timeline=c=>`<ul class="tl">${c.log.map(l=>`<li><b>${esc(whoName(l.w))}</b> <span class="mut small">${esc(l.w)} · ${l.t}</span><br>${esc(l.x)}</li>`).join('')}</ul>`;
 
 /* stock by location, with a recommended store */
 const locName=l=>/^Warehouse/.test(l)?'HQ warehouse (H) · shared with the online store':l;
@@ -698,8 +699,8 @@ function vSettings(){
     <div class="row" style="margin-top:12px"><input class="inp" id="newRole" placeholder="New role name, for example Store viewer" style="margin:0;width:280px"><button class="btn" data-act="addrole">+ Add role</button></div>
     <p class="small mut">In this draft the ticks are recorded in the activity log but the pages stay fixed.</p>`;
   else if(!S.logOpen)body=`<div class="card" style="max-width:420px"><b>🔒 Activity log</b><p class="mut">Enter the same password you use to sign in to this dashboard.</p><label class="f">Password<input type="password" value="draftdraft" readonly></label><button class="btn pri" data-act="openlog">Open the activity log</button></div>`;
-  else body=`<p class="sub">Every change is recorded: who, when, what. Only the owner can open this page, after typing their password again.</p>
-    <div class="card tw" style="padding:6px"><table><thead><tr><th>When</th><th>Who</th><th>Order</th><th>What</th></tr></thead><tbody>${AUDIT.slice(0,80).map(a=>`<tr><td style="white-space:nowrap">${a.t}</td><td>${esc(a.w)}</td><td style="white-space:nowrap">${esc(a.o)}${a.cty?' <span class="mut small">'+a.cty+'</span>':''}</td><td>${esc(a.x)}</td></tr>`).join('')}</tbody></table></div>`;
+  else body=`<p class="sub">Every change is recorded: when, who (the person's name), their role, and what they did. Only the owner can open this page, after typing their password again.</p>
+    <div class="card tw" style="padding:6px"><table><thead><tr><th>When</th><th>Who</th><th>Role</th><th>Order</th><th>What</th></tr></thead><tbody>${AUDIT.slice(0,80).map(a=>`<tr><td style="white-space:nowrap">${a.t}</td><td><b>${esc(whoName(a.w))}</b></td><td>${esc(a.w)}</td><td style="white-space:nowrap">${esc(a.o)}${a.cty?' <span class="mut small">'+a.cty+'</span>':''}</td><td>${esc(a.x)}</td></tr>`).join('')}</tbody></table></div>`;
   return `<button class="back" data-act="goto" data-v="">← Back to the dashboard</button><div class="banner g-navy"><span class="bi">${ico('shield',26)}</span><div><h1>Settings</h1><p>Administrator only: users, roles and the activity log.</p></div>${art('shield')}</div>
   <div style="margin-bottom:14px">${seg('set',[['Users','Users'],['Roles','Roles'],['Activity log','🔒 Activity log']])}</div>${body}`;
 }
@@ -752,7 +753,7 @@ function render(){
     <button class="tog" data-act="mini" title="${S.mini?'Show the menu names':'Minimise the menu'}" aria-label="${S.mini?'Show the menu names':'Minimise the menu'}">${S.mini?'»':'«'}</button><div class="cap">${R.name}</div>`
     +R.tabs.map(t=>`<a class="nav ${!S.view&&S.tab===t?'on':''}" href="?tab=${t}&cty=${S.cty}" data-tab="${t}" title="${PAGE[t].t}"><span class="ni c-${PAGE[t].g}">${ico(PAGE[t].i,16)}</span><span class="lbl">${PAGE[t].t}</span>${n[t]?`<span class="n">${n[t]}</span>`:''}</a>`).join('')
     +`<div class="foot">Sample data only.<br>Nothing is saved.</div>`;
-  $('hello').innerHTML=`${R.name}<span>${S.cty==='SG'?'Singapore':'Malaysia'} · 18 Nov 2026</span>`;
+  $('hello').innerHTML=`${R.name}<span>${S.cty==='SG'?'Singapore':'Malaysia'} · ${TODAY} 2026</span>`;
   const ini=$('ini');ini.textContent=R.ini;ini.style.background=S.color;$('urole').textContent=R.name;
   document.querySelectorAll('#userMenu .adm').forEach(b=>b.style.display=S.role==='admin'?'':'none');
   document.querySelectorAll('#cty button').forEach(b=>b.classList.toggle('on',b.dataset.cty===S.cty));
@@ -788,7 +789,7 @@ const ACT={
   reg(){S.reg=!S.reg},
   find(_,t){S[t.dataset.k]=t.dataset.v},
   add(){const o=val('fOrder'),s=val('fSku'),r=val('fReason');if(!o||!s)return false;
-    const c={id:Date.now(),cty:S.cty,brand:'iORA',order:o,date:'18 Nov',age:0,channel:'Online store',cust:'(from Shopify)',phone:'(from Shopify)',email:'(from Shopify)',pay:'(from Shopify)',items:[{sku:s,d:'Details come from Shopify',q:1,p:0,disc:0}],bad:0,reason:r,stage:'merch',contacts:[],ship:0,shopify:0,market:0,locs:[['Warehouse (H)',0]],inv:{status:'Open',clue:''},epc:{id:'(looked up from BigQuery)',hist:[]},log:[]};
+    const c={id:Date.now(),cty:S.cty,brand:'iORA',order:o,date:TODAY,age:0,channel:'Online store',cust:'(from Shopify)',phone:'(from Shopify)',email:'(from Shopify)',pay:'(from Shopify)',items:[{sku:s,d:'Details come from Shopify',q:1,p:0,disc:0}],bad:0,reason:r,stage:'merch',contacts:[],ship:0,shopify:0,market:0,locs:[['Warehouse (H)',0]],inv:{status:'Open',clue:''},epc:{id:'(looked up from BigQuery)',hist:[]},log:[]};
     CASES.unshift(c);log(c,'Warehouse','Reported: '+r.toLowerCase()+'.');S.form=false},
   open(c){$('modal').innerHTML=detailModal(c);return false},
   close(){$('modal').innerHTML='';return false},
@@ -810,11 +811,11 @@ const ACT={
     Object.assign(c.cs,{by:'CS (sample user)',at:now(),via:d.via});c.stage='action';
     log(c,'Customer Service',`Customer confirmed by ${d.via}: ${c.cs.want.toLowerCase()}${c.refund?', '+c.refund.type.toLowerCase()+' '+money(c,c.refund.amount)+'. Reason: '+d.why.toLowerCase():''}.`);finish(c)},
   ack(c){c.ack=!c.ack},
-  paid(c){const ref=val('ref'+c.id),r=c.refund;Object.assign(r,{status:'Done',doneAt:'18 Nov',by:'E-commerce (sample user)',ref});
+  paid(c){const ref=val('ref'+c.id),r=c.refund;Object.assign(r,{status:'Done',doneAt:TODAY,by:'E-commerce (sample user)',ref});
     log(c,'E-commerce',`${r.type} ${money(c,r.amount)} done${r.lark?' through Lark request '+r.lark:''}.${ref?' Remark: '+ref+'.':''}${r.proof?' Picture attached.':''}`);S.rf='Done';finish(c)},
   failed(c){const r=c.refund;Object.assign(r,{status:'Failed',failWhy:val('fw'+c.id),failAt:now(),lark:'LARK-RF-'+String(c.id).slice(-4).padStart(4,'0')});log(c,'E-commerce','Refund failed in Shopify: '+r.failWhy.toLowerCase()+'. Flagged.');log(c,'System','Refund request '+r.lark+' sent to Lark automatically.');S.rf='Failed'},
-  dup(c){Object.assign(c.refund,{status:'Done',doneAt:'18 Nov',by:'E-commerce (sample user)',ref:'Already refunded earlier, not paid again'});log(c,'E-commerce','Found an earlier refund in Shopify. Closed without paying again.');S.rf='Done';finish(c)},
-  closeinv(c){Object.assign(c.inv,{status:'Closed',cause:val('iCause'),fix:val('iFix'),note:val('iNote'),at:'18 Nov'});log(c,'Inventory',`Why not found: ${c.inv.cause.toLowerCase()}. ${c.inv.fix}.`)},
+  dup(c){Object.assign(c.refund,{status:'Done',doneAt:TODAY,by:'E-commerce (sample user)',ref:'Already refunded earlier, not paid again'});log(c,'E-commerce','Found an earlier refund in Shopify. Closed without paying again.');S.rf='Done';finish(c)},
+  closeinv(c){Object.assign(c.inv,{status:'Closed',cause:val('iCause'),fix:val('iFix'),note:val('iNote'),at:TODAY});log(c,'Inventory',`Why not found: ${c.inv.cause.toLowerCase()}. ${c.inv.fix}.`)},
   reopen(c){c.inv.status='Open';log(c,'Inventory','Finding reopened.')},
   move(c){const s=val('mvStep');if(!s){$('mvStep').focus();return false}const why=val('mvWhy'),nt=val('mvNote');
     if(c.refund&&c.refund.status!=='Done')delete c.refund;delete c.cs;c.draft=null;c.needShip=false;c.shipped=false;c.whTask='';c.notFoundAt='';
