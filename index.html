@@ -307,11 +307,11 @@ const PAGE={
 };
 const ROLES={
   admin:{name:'Administrator',ini:'AD',i:'shield',g:'navy',blurb:'See everything, manage users and roles',tabs:['overview','warehouse','merch','stock','cs','orders','refund','credit','investigate','epc']},
-  warehouse:{name:'Warehouse',ini:'WH',i:'box',g:'amber',blurb:'Report, search and pack parcels',tabs:['warehouse','epc']},
+  warehouse:{name:'Warehouse',ini:'WH',i:'box',g:'amber',blurb:'Report, search and pack parcels',tabs:['warehouse','epc','orders']},
   merch:{name:'Merchandiser',ini:'MD',i:'swap',g:'blue',blurb:'Check stock, order from stores',tabs:['merch','stock']},
-  inventory:{name:'Inventory',ini:'IN',i:'search',g:'indigo',blurb:'Find out why an item was not found',tabs:['investigate','epc']},
+  inventory:{name:'Inventory',ini:'IN',i:'search',g:'indigo',blurb:'Find out why an item was not found',tabs:['investigate','epc','orders']},
   cs:{name:'Customer Service',ini:'CS',i:'chat',g:'green',blurb:'Contact the customer, record their decision',tabs:['cs','orders']},
-  ecom:{name:'E-commerce',ini:'EC',i:'card',g:'red',blurb:'Refunds and store credit, safely',tabs:['refund','credit']}
+  ecom:{name:'E-commerce',ini:'EC',i:'card',g:'red',blurb:'Refunds and store credit, safely',tabs:['refund','credit','orders']}
 };
 const STAGE={
   merch:{t:'Stock check',who:'Merchandiser',c:'blue'},
@@ -333,7 +333,7 @@ const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','De
 const PERMS=['Report a problem parcel','Find item and pack','Stock by location, order from stores, mark out of stock','Tag (EPC) search and history','Record why an item was not found, send a remark to the warehouse','Customer contact (masked), record decision and reason, exchange item search','Refunds and store credit: full details, upload picture, mark as done','Order record: every order and its status','Overview: totals and charts of everything','Filter and sort by brand, region and date','Edit or move an order after it was passed on','Users, roles and activity log'];
 
 /* ============ sample data (all made up) ============ */
-function seedPerm(){const m=(...on)=>PERMS.map((_,i)=>on.includes(i));return{Administrator:PERMS.map(()=>true),Warehouse:m(0,1,3,7,9),Merchandiser:m(0,2,9,10),Inventory:m(3,4,9,10),'Customer Service':m(5,7,9,10),'E-commerce':m(6,9,10)}}
+function seedPerm(){const m=(...on)=>PERMS.map((_,i)=>on.includes(i));return{Administrator:PERMS.map(()=>true),Warehouse:m(0,1,3,7,9),Merchandiser:m(0,2,9,10),Inventory:m(3,4,7,9,10),'Customer Service':m(5,7,9,10),'E-commerce':m(6,7,9,10)}}
 function seedUsers(){return[['Sample owner','o***@iora.example','Administrator','SG + MY','All brands'],['Sample user 1','w***@iora.example','Warehouse','SG','All brands'],['Sample user 2','w***@iora.example','Warehouse','MY','All brands'],['Sample user 3','m***@iora.example','Merchandiser','SG + MY','iORA'],['Sample user 4','m***@iora.example','Merchandiser','SG + MY','TRT'],['Sample user 5','i***@iora.example','Inventory','SG + MY','All brands'],['Sample user 6','c***@iora.example','Customer Service','SG','All brands'],['Sample user 7','e***@iora.example','E-commerce','SG + MY','All brands']].map(u=>({n:u[0],e:u[1],role:u[2],cty:u[3],br:u[4],st:'Active'}))}
 function seed(){
   let n=0;const H=(w,l,e)=>({w,l,e});
