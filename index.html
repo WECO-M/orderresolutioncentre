@@ -250,7 +250,7 @@ label.f input,label.f select,label.f textarea,.inp{display:block;width:100%;marg
   <div class="track"><span class="pk"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3.5 8.5 12 4l8.5 4.5v8L12 21l-8.5-4.5z"/><path d="M3.5 8.5 12 13l8.5-4.5M12 13v8"/></svg></span><span class="pin"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="m8 12.5 3 3 5-6"/></svg></span></div>
   <div class="mut" id="bootMsg">Getting the draft ready…</div>
 </div></div>
-<div class="ribbon"><b>DRAFT</b> · sample data only, nothing is saved · use the <b>💬 Give comment</b> button to tell us what to add or change</div>
+<div class="ribbon"><b>DRAFT</b> · sample data only, nothing is saved · use the <b>💬 Give comment</b> button to tell us what to add or change (it is sent to the project owner)</div>
 <div class="app">
   <aside class="side" id="side"></aside>
   <div class="main">
@@ -281,8 +281,8 @@ label.f input,label.f select,label.f textarea,.inp{display:block;width:100%;marg
   <p class="small mut" id="fbctx" style="margin:4px 0 10px"></p>
   <label class="f">What should we add or change here?<textarea id="fbt" rows="4" placeholder="For example: we also need a column for the courier name"></textarea></label>
   <label class="f">Your name (optional)<input id="fbn"></label>
-  <div class="row"><button class="btn pri" data-fb="add">Add comment</button><button class="btn" data-fb="copy">Copy all my comments</button></div>
-  <p class="small mut" id="fbmsg" style="margin:8px 0 0">Comments stay on this device. Press "Copy all my comments" and paste them to the project owner.</p>
+  <div class="row"><button class="btn pri" data-fb="add">Send comment</button><button class="btn" data-fb="copy">Copy all my comments</button></div>
+  <p class="small mut" id="fbmsg" style="margin:8px 0 0">Your comment is sent straight to the project owner. Please do not type customer names or phone numbers.</p>
   <div id="fbl"></div>
 </div>
 
@@ -779,10 +779,16 @@ const ACT={
 /* comments, kept on this device */
 let FB=[];try{FB=JSON.parse(localStorage.getItem('orc.comments')||'[]')}catch(e){}
 const fbSave=()=>{try{localStorage.setItem('orc.comments',JSON.stringify(FB))}catch(e){}};
-const fbList=()=>{$('fbl').innerHTML=FB.length?`<p class="small" style="margin:10px 0 2px"><b>My comments (${FB.length})</b></p>`+FB.map((c,i)=>`<div class="fbi"><span class="mut small">${esc(c.where)}</span><br>${esc(c.text)} <button class="btn sm" data-fb="del" data-i="${i}" style="float:right">Remove</button></div>`).join(''):''};
+const fbList=()=>{$('fbl').innerHTML=FB.length?`<p class="small" style="margin:10px 0 2px"><b>My comments (${FB.length})</b></p>`+FB.map((c,i)=>`<div class="fbi"><span class="mut small">${esc(c.where)} · ${c.sent?'<b style="color:var(--grn)">✓ sent</b>':'not sent yet'}</span><br>${esc(c.text)} <button class="btn sm" data-fb="del" data-i="${i}" style="float:right">Hide</button></div>`).join(''):''};
+/* every comment goes to the project owner's Google Sheet (through a Google Form); unsent ones are retried on the next visit */
+const FB_FORM='https://docs.google.com/forms/d/e/1FAIpQLSfNdUlsYzSsHxtzQY7YMz9dR9R5KyDFjIKAgrRKD3DM0h8AzA/formResponse';
+function fbSend(){FB.filter(c=>!c.sent&&!c.busy).forEach(c=>{c.busy=true;const p=k=>((c.where||'').match(new RegExp(k+': ([^·]+)'))||[])[1]?.trim()||'';
+  fetch(FB_FORM,{method:'POST',mode:'no-cors',body:new URLSearchParams({'entry.530970766':p('Department'),'entry.1590273998':p('Page'),'entry.1939204720':p('From'),'entry.2085620805':c.text})})
+    .then(()=>{c.sent=true;delete c.busy;fbSave();fbList();$('fbmsg').textContent='Sent. Thank you, your comment has reached the project owner.'})
+    .catch(()=>{delete c.busy;$('fbmsg').textContent='Could not send just now (no connection?). It is kept here and will be sent next time you open this page.'})})}
 function fbClick(t){const k=t.dataset.fb,msg=$('fbmsg');
   if(k==='toggle'){$('fbp').classList.toggle('open');$('userMenu').classList.remove('open');fbList()}
-  else if(k==='add'){const x=val('fbt');if(!x)return;const nm=val('fbn');FB.push({where:$('fbctx').textContent+(nm?' · From: '+nm:''),text:x});$('fbt').value='';fbSave();fbList();msg.textContent='Added. Press "Copy all my comments" when you are done.'}
+  else if(k==='add'){const x=val('fbt');if(!x)return;const nm=val('fbn');FB.push({where:$('fbctx').textContent+(nm?' · From: '+nm:''),text:x});$('fbt').value='';fbSave();fbList();msg.textContent='Sending…';fbSend()}
   else if(k==='del'){FB.splice(+t.dataset.i,1);fbSave();fbList()}
   else if(k==='copy'){if(!FB.length){msg.textContent='No comments yet.';return}const txt='Order Resolution Centre draft: comments\n\n'+FB.map((c,i)=>(i+1)+'. ['+c.where+']\n   '+c.text).join('\n\n');
     (navigator.clipboard?navigator.clipboard.writeText(txt):Promise.reject()).then(()=>msg.textContent='Copied. Paste it in a message or email to the project owner.',()=>{msg.textContent='Could not copy automatically. Select the comments below and copy them.'})}}
@@ -824,6 +830,7 @@ if(q.get('view'))S.view=q.get('view');
 if(q.get('sq'))S.sq=q.get('sq');
 if(q.get('rf'))S.rf=q.get('rf');
 if(q.get('theme')==='dark')document.documentElement.dataset.theme='dark';
+if(!q.get('nosend'))setTimeout(fbSend,1500); /* send comments saved before this update */
 if(!q.get('boot'))setTimeout(()=>$('boot').classList.add('hide'),q.get('role')?0:1300);
 render();
 </script>
