@@ -745,12 +745,12 @@ const VIEWS={orders:vOrders,overview:vOverview,warehouse:vWarehouse,merch:vMerch
 function render(){
   const R=ROLES[S.role];if(!R.tabs.includes(S.tab))S.tab=R.tabs[0];
   document.body.classList.toggle('out',S.out);$('fbb').style.display=S.out?'none':'';
-  if(S.out){$('fbp').classList.remove('open');$('app').innerHTML=loginHtml();return}
+  if(S.out){try{history.replaceState(null,'',location.pathname)}catch(e){}$('fbp').classList.remove('open');$('app').innerHTML=loginHtml();return}
   const n=counts();
   document.querySelector('.app').classList.toggle('mini',S.mini);
   $('side').innerHTML=`<div class="logo"><span class="mark">${ico('orc',24)}</span><div><div class="t1">Order Resolution Centre</div><div class="t2">IORA GROUP · DRAFT</div></div></div>
     <button class="tog" data-act="mini" title="${S.mini?'Show the menu names':'Minimise the menu'}" aria-label="${S.mini?'Show the menu names':'Minimise the menu'}">${S.mini?'»':'«'}</button><div class="cap">${R.name}</div>`
-    +R.tabs.map(t=>`<a class="nav ${!S.view&&S.tab===t?'on':''}" href="?role=${S.role}&tab=${t}&cty=${S.cty}" data-tab="${t}" title="${PAGE[t].t}"><span class="ni c-${PAGE[t].g}">${ico(PAGE[t].i,16)}</span><span class="lbl">${PAGE[t].t}</span>${n[t]?`<span class="n">${n[t]}</span>`:''}</a>`).join('')
+    +R.tabs.map(t=>`<a class="nav ${!S.view&&S.tab===t?'on':''}" href="?tab=${t}&cty=${S.cty}" data-tab="${t}" title="${PAGE[t].t}"><span class="ni c-${PAGE[t].g}">${ico(PAGE[t].i,16)}</span><span class="lbl">${PAGE[t].t}</span>${n[t]?`<span class="n">${n[t]}</span>`:''}</a>`).join('')
     +`<div class="foot">Sample data only.<br>Nothing is saved.</div>`;
   $('hello').innerHTML=`${R.name}<span>${S.cty==='SG'?'Singapore':'Malaysia'} · 18 Nov 2026</span>`;
   const ini=$('ini');ini.textContent=R.ini;ini.style.background=S.color;$('urole').textContent=R.name;
@@ -758,7 +758,7 @@ function render(){
   document.querySelectorAll('#cty button').forEach(b=>b.classList.toggle('on',b.dataset.cty===S.cty));
   if(S.view&&(S.view==='profile'||S.role==='admin')){$('app').innerHTML=S.view==='profile'?vProfile():vSettings();$('fbctx').textContent='Department: '+R.name+' · Page: '+(S.view==='profile'?'My profile':'Settings');return}
   S.view=null;const p=PAGE[S.tab];
-  try{history.replaceState(null,'',`?role=${S.role}&tab=${S.tab}&cty=${S.cty}`)}catch(e){}
+  try{history.replaceState(null,'',`?tab=${S.tab}&cty=${S.cty}`)}catch(e){}
   $('app').innerHTML=`<section class="banner g-${p.g}"><span class="bi">${ico(p.i,26)}</span><div><h1>${p.t}</h1><p>${p.s}</p>${p.how.length?`<div class="how">${p.how.map((s,i)=>`<span><i>${i+1}</i>${s}</span>`).join('')}</div>`:''}</div>${art(p.i)}</section>`
     +(['stock','epc'].includes(S.tab)?'':fbar())+VIEWS[S.tab]();
   $('fbctx').textContent='Department: '+R.name+' · Page: '+p.t;
@@ -776,8 +776,8 @@ const ACT={
   reset(){resetAll();S.sel={}},
   mini(){S.mini=!S.mini;try{localStorage.setItem('orc.mini',S.mini?'1':'')}catch(e){}},
   dep(_,t){S.dep=t.dataset.v},
-  signin(_,t){S.role=t.dataset.v||S.dep;S.tab=ROLES[S.role].tabs[0];S.out=false;S.view=null;boot('Signing you in…',900);sysLog('Signed in.')},
-  signout(){sysLog('Signed out.');S.out=true;S.view=null;S.logOpen=false},
+  signin(_,t){S.role=t.dataset.v||S.dep;S.tab=ROLES[S.role].tabs[0];S.out=false;S.view=null;try{localStorage.setItem('orc.role',S.role)}catch(e){}boot('Signing you in…',900);sysLog('Signed in.')},
+  signout(){try{localStorage.removeItem('orc.role')}catch(e){}sysLog('Signed out.');S.out=true;S.view=null;S.logOpen=false},
   goto(_,t){const v=t.dataset.v;if(v==='log'){S.view='settings';S.set='Activity log'}else{S.view=v||null;if(v==='settings')S.set='Users'}},
   openlog(){S.logOpen=true;sysLog('Opened the activity log.')},
   color(_,t){S.color=t.dataset.v},
@@ -871,7 +871,9 @@ document.addEventListener('input',e=>{const x=e.target.dataset&&e.target.dataset
 const q=new URLSearchParams(location.search);
 try{S.mini=!!localStorage.getItem('orc.mini')}catch(e){}
 if(q.get('mini'))S.mini=q.get('mini')==='1';
-if(ROLES[q.get('role')]){S.role=q.get('role');S.tab=ROLES[S.role].tabs[0];S.out=false}
+/* stay signed in after a refresh (this browser only); a role in the link is honoured only for local testing, so a shared link never skips the sign-in page */
+let R0=location.protocol==='file:'?q.get('role'):'';try{R0=R0||localStorage.getItem('orc.role')}catch(e){}
+if(ROLES[R0]){S.role=R0;S.tab=ROLES[S.role].tabs[0];S.out=false}
 if(q.get('cty')==='MY')S.cty='MY';
 if(q.get('tab'))S.tab=q.get('tab');
 if(q.get('set'))S.set=q.get('set');
@@ -880,7 +882,7 @@ if(q.get('sq'))S.sq=q.get('sq');
 if(q.get('rf'))S.rf=q.get('rf');
 if(q.get('theme')==='dark')document.documentElement.dataset.theme='dark';
 if(!q.get('nosend'))setTimeout(fbSend,1500); /* send comments saved before this update */
-if(!q.get('boot'))setTimeout(()=>$('boot').classList.add('hide'),q.get('role')?0:1300);
+if(!q.get('boot'))setTimeout(()=>$('boot').classList.add('hide'),ROLES[R0]?0:1300);
 render();
 </script>
 </body>
