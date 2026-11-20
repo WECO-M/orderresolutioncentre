@@ -164,7 +164,8 @@ label.f input,label.f select,label.f textarea,.inp{display:block;width:100%;marg
 .modal{position:fixed;inset:0;background:rgba(10,14,28,.55);display:grid;place-items:start center;padding:40px 12px;overflow:auto;z-index:60}
 .modal .card{max-width:660px;width:100%}
 .oos td{background:var(--red-soft)}
-.wt td,.wt th{padding:6px 9px;font-size:13px;vertical-align:middle}
+.wt td,.wt th{padding:6px 6px;font-size:12.5px;vertical-align:middle}.wt .mono{font-size:11.5px}.wt .chip{white-space:nowrap}.wt th{white-space:normal;line-height:1.2}
+@media(min-width:701px){.wt td:last-child,.wt th:last-child{position:sticky;right:0;background:var(--card);box-shadow:-8px 0 8px -8px rgba(0,0,0,.18)}}
 .wt td:nth-child(-n+3),.wt td:last-child{white-space:nowrap}
 .back{border:0;background:none;color:var(--mut);font-weight:600;padding:0;margin-bottom:10px}
 .sw{width:30px;height:30px;border-radius:50%;border:3px solid var(--card);box-shadow:0 0 0 1px var(--line)}
@@ -203,7 +204,7 @@ label.f input,label.f select,label.f textarea,.inp{display:block;width:100%;marg
 /* comments */
 .fbb{border:0;border-radius:11px;background:var(--ink);color:var(--bg);padding:9px 14px;font-weight:700}
 .fbp{position:fixed;right:18px;top:104px;z-index:55;width:min(370px,calc(100vw - 36px));max-height:72vh;overflow:auto;display:none}
-.wt td:nth-child(5){white-space:nowrap}.wt td:nth-child(6){min-width:190px}
+.wt td:nth-child(5){white-space:nowrap}.wt td:nth-child(6){min-width:130px}.wt td:nth-child(7),.wt td:nth-child(8){min-width:120px}
 .fbp.open{display:block}
 .fbi{border-top:1px solid var(--line);padding:8px 0;font-size:13px}
 @media(max-width:980px){
@@ -300,16 +301,17 @@ const PAGE={
   cs:{t:'Customer service',s:'Items confirmed out of stock. Contact the customer and record what they want.',i:'chat',g:'green',how:['Contact the customer','Record their decision and the reason','Warehouse and E-commerce are told automatically']},
   refund:{t:'Refunds',s:'Created automatically when Customer Service confirms. Amounts come from Shopify.',i:'card',g:'red',how:['Read the checks','Refund in Shopify, upload the picture','If it fails: a Lark request is sent for you']},
   credit:{t:'Store credit',s:'Created automatically when Customer Service confirms. Amounts come from Shopify.',i:'gift',g:'slate',how:['Read the checks','Issue the store credit, upload the picture','Mark as issued, add a remark if needed']},
-  investigate:{t:'Why not found',s:'The system said the item was there. Find the reason and record it. This does not hold up the order.',i:'search',g:'indigo',how:['Read the clue and tag history','Choose why it was not found','Save the action taken']},
+  investigate:{t:'Why not found',s:'The system said the item was there. Find the reason and record it. This does not hold up the order.',i:'search',g:'indigo',how:['Read the clue and tag history','Tell the warehouse where to look','Choose why it was not found and save']},
+  orders:{t:'Order record',s:'Every order that could not be packed, and which department has it now.',i:'clock',g:'slate',how:['See every order and its status','Click a row for the full history','Edit or move it if plans change']},
   epc:{t:'EPC search',s:'Where is this tag now, and where has it been? Looked up from BigQuery.',i:'tag',g:'indigo',how:['Type or scan an EPC','Results appear as you type','Read its full history']}
 };
 const ROLES={
-  admin:{name:'Administrator',ini:'AD',i:'shield',g:'navy',blurb:'See everything, manage users and roles',tabs:['overview','warehouse','merch','stock','cs','refund','credit','investigate','epc']},
-  warehouse:{name:'Warehouse',ini:'WH',i:'box',g:'amber',blurb:'Report, search and pack parcels',tabs:['warehouse']},
-  merch:{name:'Merchandiser',ini:'MD',i:'swap',g:'blue',blurb:'Check stock, order from stores',tabs:['merch','stock','overview']},
-  inventory:{name:'Inventory',ini:'IN',i:'search',g:'indigo',blurb:'Find out why an item was not found',tabs:['investigate','epc','overview']},
-  cs:{name:'Customer Service',ini:'CS',i:'chat',g:'green',blurb:'Contact the customer, record their decision',tabs:['cs','overview']},
-  ecom:{name:'E-commerce',ini:'EC',i:'card',g:'red',blurb:'Refunds and store credit, safely',tabs:['refund','credit','overview']}
+  admin:{name:'Administrator',ini:'AD',i:'shield',g:'navy',blurb:'See everything, manage users and roles',tabs:['overview','warehouse','merch','stock','cs','orders','refund','credit','investigate','epc']},
+  warehouse:{name:'Warehouse',ini:'WH',i:'box',g:'amber',blurb:'Report, search and pack parcels',tabs:['warehouse','epc']},
+  merch:{name:'Merchandiser',ini:'MD',i:'swap',g:'blue',blurb:'Check stock, order from stores',tabs:['merch','stock']},
+  inventory:{name:'Inventory',ini:'IN',i:'search',g:'indigo',blurb:'Find out why an item was not found',tabs:['investigate','epc']},
+  cs:{name:'Customer Service',ini:'CS',i:'chat',g:'green',blurb:'Contact the customer, record their decision',tabs:['cs','orders']},
+  ecom:{name:'E-commerce',ini:'EC',i:'card',g:'red',blurb:'Refunds and store credit, safely',tabs:['refund','credit']}
 };
 const STAGE={
   merch:{t:'Stock check',who:'Merchandiser',c:'blue'},
@@ -319,7 +321,7 @@ const STAGE={
   action:{t:'Decision confirmed',who:'',c:'amber'},
   done:{t:'Completed',who:'',c:'green'}
 };
-const WHO_C={Warehouse:'#c9801a',Merchandiser:'#2f86d6','Customer Service':'#2a9a62','E-commerce':'#d0564a'};
+const WHO_C={Warehouse:'#c9801a',Merchandiser:'#2f86d6',Inventory:'#4d57c9','Customer Service':'#2a9a62','E-commerce':'#d0564a'};
 const BRAND_C={iORA:'#3350c4','SANS & SANS':'#2a9a62',TRT:'#c9801a',MONOLOQ:'#5a6485'};
 const REASONS=['Cannot find item','No tag on item','Wrong tag on item','Damaged item'];
 const CAUSES=['Transfer not scanned properly','Sold but stock not deducted (sync issue)','Warehouse missed it (human error)','Wrong tag or no tag','Not yet known'];
@@ -328,10 +330,10 @@ const FIXES=['Stock corrected in SWIMS','Reported to IT (sync break log)','Store
 const WHY=['Out of stock','Customer changed their mind','Wrong size or wrong item','Damaged or faulty item','Late delivery','Other'];
 const BASE={SG:[9,6,5,4,2],MY:[7,3,6,2,1]};
 const MON=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'],BRANDS=['iORA','SANS & SANS','TRT','MONOLOQ'];
-const PERMS=['Report a problem parcel','Find item and pack','Stock by location, order from stores, mark out of stock','Tag (EPC) search and history, record why not found','Customer contact (masked), record decision and reason','Refunds and store credit: full details, upload picture, mark as done','Overview of all cases','Filter and sort by brand, region and date','Edit or move an order after it was passed on','Users, roles and activity log'];
+const PERMS=['Report a problem parcel','Find item and pack','Stock by location, order from stores, mark out of stock','Tag (EPC) search and history','Record why an item was not found, send a remark to the warehouse','Customer contact (masked), record decision and reason, exchange item search','Refunds and store credit: full details, upload picture, mark as done','Order record: every order and its status','Overview: totals and charts of everything','Filter and sort by brand, region and date','Edit or move an order after it was passed on','Users, roles and activity log'];
 
 /* ============ sample data (all made up) ============ */
-function seedPerm(){const m=(...on)=>PERMS.map((_,i)=>on.includes(i));return{Administrator:PERMS.map(()=>true),Warehouse:m(0,1,7),Merchandiser:m(0,2,6,7,8),Inventory:m(3,6,7,8),'Customer Service':m(4,6,7,8),'E-commerce':m(5,6,7,8)}}
+function seedPerm(){const m=(...on)=>PERMS.map((_,i)=>on.includes(i));return{Administrator:PERMS.map(()=>true),Warehouse:m(0,1,3,7,9),Merchandiser:m(0,2,9,10),Inventory:m(3,4,9,10),'Customer Service':m(5,7,9,10),'E-commerce':m(6,9,10)}}
 function seedUsers(){return[['Sample owner','o***@iora.example','Administrator','SG + MY','All brands'],['Sample user 1','w***@iora.example','Warehouse','SG','All brands'],['Sample user 2','w***@iora.example','Warehouse','MY','All brands'],['Sample user 3','m***@iora.example','Merchandiser','SG + MY','iORA'],['Sample user 4','m***@iora.example','Merchandiser','SG + MY','TRT'],['Sample user 5','i***@iora.example','Inventory','SG + MY','All brands'],['Sample user 6','c***@iora.example','Customer Service','SG','All brands'],['Sample user 7','e***@iora.example','E-commerce','SG + MY','All brands']].map(u=>({n:u[0],e:u[1],role:u[2],cty:u[3],br:u[4],st:'Active'}))}
 function seed(){
   let n=0;const H=(w,l,e)=>({w,l,e});
@@ -345,13 +347,13 @@ function seed(){
       epc:{id:'BB0000000000000001900041',hist:[H('12 Nov 14:20','H-12-03 (warehouse active)','Seen in cycle count'),H('3 Nov 09:05','H-12-03 (warehouse active)','Put away'),H('1 Nov 16:40','Receiving','Received from supplier')]},
       log:[{t:'16 Nov 10:12',w:'Warehouse',x:'Reported: cannot find item when packing.'}]}),
     mk({cty:'SG',brand:'MONOLOQ',order:'#M49001SG',date:'17 Nov',age:1,cust:'P*** S.',phone:'+65 ****8821',email:'p***@yahoo.com',pay:'PayNow',
-      items:[{sku:'MFJK0099003FG-TPE-L',d:'Jacket, taupe, L',q:1,p:139,disc:0}],stage:'search',searchLoc:'H-04-11',
+      items:[{sku:'MFJK0099003FG-TPE-L',d:'Jacket, taupe, L',q:1,p:139,disc:0}],stage:'search',searchLoc:'H-04-11',mdRemark:'Look in H-04-11. System shows 1 piece there.',invRemark:'Look in H-04-11. Tag was last read there in the 14 Nov stock take, check the boxes beside it too.',
       locs:[['Warehouse (H)',1],['Store B',1]],
       inv:{status:'Open',clue:'Tag was seen at H-04-11 in the 14 Nov stock take. Warehouse is searching again.'},
       epc:{id:'BB0000000000000001900078',hist:[H('14 Nov 11:02','H-04-11 (warehouse active)','Seen in stock take, count 2'),H('20 Oct 10:30','H-04-11 (warehouse active)','Put away')]},
       log:[{t:'17 Nov 09:40',w:'Warehouse',x:'Reported: cannot find item when packing.'},{t:'17 Nov 11:15',w:'Merchandiser',x:'Asked warehouse to search H-04-11.'}]}),
     mk({cty:'SG',brand:'iORA',order:'#iSG190002',date:'17 Nov',age:1,cust:'L*** S.',phone:'+65 ****0456',email:'l***@gmail.com',pay:'Mastercard ending 0932',
-      items:[{sku:'AFTS0099004DN-PAQ-L',d:'Tee, aqua, L',q:2,p:19.9,disc:0}],reason:'No tag on item',stage:'search',searchLoc:'Z-staging, rack 2',shopify:2,
+      items:[{sku:'AFTS0099004DN-PAQ-L',d:'Tee, aqua, L',q:2,p:19.9,disc:0}],reason:'No tag on item',stage:'search',searchLoc:'Z-staging, rack 2',mdRemark:'Look in Z-staging, rack 2. 2 pieces came back from a store.',shopify:2,
       locs:[['Warehouse (H)',0],['Z-staging',2],['Store A',1]],
       inv:{status:'Open',clue:'Pieces came back from a store on 15 Nov and are still in Z-staging, not yet moved to H.'},
       epc:{id:'BB0000000000000001900102',hist:[H('15 Nov 17:48','Z-staging','Moved from store return'),H('9 Nov 13:10','Store A','Seen in cycle count')]},
@@ -423,7 +425,7 @@ function resetAll(){CASES=seed();USERS=seedUsers();RPERM=seedPerm();AUDIT=[];
   CASES.forEach(c=>c.log.forEach(l=>AUDIT.push({t:l.t,w:l.w,x:l.x,o:c.order,cty:c.cty})));
   AUDIT.sort((a,b)=>parseInt(b.t)-parseInt(a.t)||b.t.localeCompare(a.t))}
 resetAll();
-const S={role:'admin',dep:'warehouse',cty:'SG',tab:'overview',sel:{},rf:'Pending',form:false,whf:'all',rec:'qty',sq:'',eq:'',
+const S={role:'admin',dep:'warehouse',cty:'SG',tab:'overview',sel:{},rf:'Pending',form:false,whf:'all',of:'open',rec:'qty',sq:'',eq:'',
   f:{brand:'',year:'',month:'',date:'',sort:'new'},view:null,set:'Users',invf:'Open',logOpen:false,reg:false,out:true,color:'#3350c4'};
 
 /* ============ helpers ============ */
@@ -447,8 +449,15 @@ const log=(c,w,x)=>{c.log.push({t:now(),w,x});AUDIT.unshift({t:now(),w,x,o:c.ord
 const sysLog=x=>AUDIT.unshift({t:now(),w:ROLES[S.role].name,x,o:'',cty:''});
 function waiting(c){
   if(c.stage==='action'){const a=[];if(c.needShip&&!c.shipped)a.push('Warehouse');if(c.refund&&c.refund.status!=='Done')a.push('E-commerce');return a.join(' + ')}
+  if(c.stage==='merch'&&c.notFoundAt&&c.inv.status==='Open')return 'Merchandiser + Inventory';
   return STAGE[c.stage].who||'';
 }
+const lastWh=c=>{const l=c.epc.hist[0];return l&&/^[HZ]/.test(l.l)?l.l.replace(/ \(.*/,''):''};
+const caseTable=all=>`<div class="card tw" style="padding:6px"><table><thead><tr><th>Date</th><th>Order</th><th>Brand</th><th>Item not found</th><th>Problem</th><th>Step</th><th>Now with</th><th>Why not found</th><th class="num">Days</th></tr></thead><tbody>
+  ${all.map(c=>`<tr class="click" data-act="open" data-id="${c.id}"><td style="white-space:nowrap">${c.date}</td><td><b>${esc(c.order)}</b></td><td style="white-space:nowrap">${brand(c)}</td><td class="mono">${esc(bad(c).sku)}</td><td>${esc(c.reason)}</td><td>${stageChip(c)}</td><td>${waiting(c)||'<span class="mut">none</span>'}</td><td>${c.inv.status==='Closed'?esc(c.inv.cause):'<span class="mut">checking</span>'}</td><td class="num">${c.stage==='done'?'<span class="mut">closed</span>':c.age}</td></tr>`).join('')||'<tr><td colspan="9" class="mut ctr" style="padding:22px">No orders match.</td></tr>'}
+  </tbody></table></div><p class="small mut">Click a row to see its full history, or to edit or move the order.</p>`;
+function vOrders(){const all=mine(),n=k=>all.filter(c=>k==='all'||(k==='done')===(c.stage==='done'));
+  return `<div style="margin-bottom:14px">${seg('of',[['open','Open ('+n('open').length+')'],['done','Completed ('+n('done').length+')'],['all','All ('+all.length+')']])}</div>`+caseTable(n(S.of))}
 function finish(c){if(c.stage==='action'&&(!c.needShip||c.shipped)&&(!c.refund||c.refund.status==='Done')){c.stage='done';log(c,'System','All steps done. Case completed.')}}
 const whSearch=()=>mine().filter(c=>c.stage==='search');
 const whPack=()=>mine().filter(c=>c.stage==='action'&&c.needShip&&!c.shipped);
@@ -484,31 +493,45 @@ function vOverview(){
     <div class="card"><h2 style="margin-top:0">Who is holding the open cases</h2>${hr.length?`<div class="bars">${hr.map(r=>`<div>${esc(r[0])}</div><div class="bg"><div class="bar" style="width:${r[1]/hm*100}%;background:${WHO_C[r[0]]||'#7b8499'}"></div></div><div class="num"><b>${r[1]}</b></div>`).join('')}</div>`:'<p class="mut">No open cases.</p>'}</div>
   </div>
   <h2>All cases</h2>
-  <div class="card tw" style="padding:6px"><table><thead><tr><th>Date</th><th>Order</th><th>Brand</th><th>Item not found</th><th>Problem</th><th>Step</th><th>Waiting for</th><th>Why not found</th><th class="num">Days</th></tr></thead><tbody>
-  ${all.map(c=>`<tr class="click" data-act="open" data-id="${c.id}"><td style="white-space:nowrap">${c.date}</td><td><b>${esc(c.order)}</b></td><td style="white-space:nowrap">${brand(c)}</td><td class="mono">${esc(bad(c).sku)}</td><td>${esc(c.reason)}</td><td>${stageChip(c)}</td><td>${waiting(c)||'<span class="mut">none</span>'}</td><td>${c.inv.status==='Closed'?esc(c.inv.cause):'<span class="mut">checking</span>'}</td><td class="num">${c.stage==='done'?'<span class="mut">closed</span>':c.age}</td></tr>`).join('')||'<tr><td colspan="9" class="mut ctr" style="padding:22px">No cases match the filters.</td></tr>'}
-  </tbody></table></div><p class="small mut">Click a row to see its full history, or to edit or move the order.</p>`;
+  ${caseTable(all)}`;
 }
 
 function whReason(c){
-  if(c.stage==='search')return['SEARCH','amber','Look in '+c.searchLoc];
+  if(c.stage==='search')return['SEARCH','amber',c.mdRemark||c.invRemark?'':'Look in '+c.searchLoc];
   if(c.stage==='transfer')return['TRANSFER','blue','from '+c.transferFrom];
-  if(c.stage==='merch')return['STOCK CHECK','blue','with Merchandiser'];
-  if(c.stage==='cs')return['NO STOCK','red','waiting for customer'];
+  if(c.stage==='merch')return['STOCK CHECK','blue',c.notFoundAt?'with Merchandiser and Inventory':'with Merchandiser'];
+  if(c.stage==='cs')return['NO STOCK','red','with Customer Service, waiting for customer'];
+  if(c.stage==='done')return['COMPLETED','green',''];
   if(c.needShip&&!c.shipped)return['PACK','green',c.whTask];
   return['REFUND','grey','with E-commerce'];
 }
+/* what happens to the parcel, and the money, each in its own column */
+function whProceed(c){
+  if(c.stage!=='action'&&c.stage!=='done')return '<span class="mut">–</span>';
+  const w=c.cs&&c.cs.want||'';
+  if(/Cancel/.test(w))return chip('Do not send','red');
+  if(c.shipped||c.stage==='done')return chip('Sent','green');
+  if(/Exchange/.test(w))return chip('Send exchange item','green');
+  if(/Remove/.test(w))return c.needShip?chip('Send without the item','green'):chip('Nothing to send','grey');
+  return chip('Send full order','green');
+}
+function whRefund(c){const r=c.refund;
+  if(!r)return c.stage==='action'||c.stage==='done'?'<span class="mut small">no refund</span>':'<span class="mut">–</span>';
+  return chip((r.type==='Store credit'?'Store credit':'Refund')+': '+(r.status==='Done'?'done':r.status==='Failed'?'failed':'pending'),r.status==='Done'?'green':r.status==='Failed'?'red':'amber');
+}
 function vWarehouse(){
-  const a=whSearch(),b=whPack(),oth=mine().filter(c=>['merch','transfer','cs'].includes(c.stage)),wait=mine().filter(c=>c.stage==='action'&&!(c.needShip&&!c.shipped));
-  const rows=S.whf==='todo'?[...a,...b]:[...a,...b,...oth,...wait];
-  return `<div class="row" style="margin-bottom:12px">${seg('whf',[['todo','To do ('+(a.length+b.length)+')'],['all','All pending ('+(a.length+b.length+oth.length+wait.length)+')']])}<span class="sp"></span><button class="btn pri" data-act="form">+ Report a problem parcel</button></div>
+  const a=whSearch(),b=whPack(),oth=mine().filter(c=>['merch','transfer','cs'].includes(c.stage)),wait=mine().filter(c=>c.stage==='action'&&!(c.needShip&&!c.shipped)),dn=mine().filter(c=>c.stage==='done');
+  const rows=S.whf==='todo'?[...a,...b]:S.whf==='done'?dn:[...a,...b,...oth,...wait];
+  const rmk=x=>x?`<span class="small">${esc(x)}</span>`:'<span class="mut">–</span>';
+  return `<div class="row" style="margin-bottom:12px">${seg('whf',[['todo','To do ('+(a.length+b.length)+')'],['all','All pending ('+(a.length+b.length+oth.length+wait.length)+')'],['done','Completed ('+dn.length+')']])}<span class="sp"></span><button class="btn pri" data-act="form">+ Report a problem parcel</button></div>
   ${S.form?`<div class="card" style="max-width:520px;margin-bottom:14px"><b>Report a problem parcel</b>
     <label class="f" style="margin-top:10px">Order number<input id="fOrder" placeholder="Scan or type the order number"></label>
     <label class="f">Item code (SKU)<input id="fSku" placeholder="Scan or type the item code"></label>
     <label class="f">What is wrong?<select id="fReason">${REASONS.map(r=>`<option>${r}</option>`).join('')}</select></label>
     <div class="row"><button class="btn pri" data-act="add">Send to Merchandiser</button><button class="btn" data-act="form">Cancel</button></div></div>`:''}
-  <div class="card tw" style="padding:4px"><table class="wt"><thead><tr><th>Date</th><th>Order</th><th>Item</th><th class="num">Qty</th><th>Brand</th><th>Reason pending</th><th>To do</th></tr></thead><tbody>
-  ${rows.map(c=>{const r=whReason(c);return `<tr><td>${c.date}</td><td><b>${esc(c.order)}</b></td><td class="mono">${esc(bad(c).sku)}</td><td class="num">${bad(c).q}</td><td>${brand(c)}</td><td>${chip(r[0],r[1])}${r[2]?` <span class="small">${esc(r[2])}</span>`:''}</td><td>${c.stage==='search'?`<button class="btn sm ok" data-act="found" data-id="${c.id}">Found</button> <button class="btn sm no" data-act="notfound" data-id="${c.id}">Not found</button>`:r[0]==='PACK'?`<button class="btn sm ok" data-act="packed" data-id="${c.id}">Done</button>`:'<span class="mut small">wait</span>'}</td></tr>`}).join('')||'<tr><td colspan="7" class="mut ctr" style="padding:22px">Nothing here.</td></tr>'}
-  </tbody></table></div>`;
+  <div class="card tw" style="padding:4px"><table class="wt"><thead><tr><th>Date</th><th>Order</th><th>Item</th><th class="num">Qty</th><th>Brand</th><th>Status</th><th>Merchandiser remark</th><th>Inventory remark</th><th>Proceed</th><th>Refund</th><th>To do</th></tr></thead><tbody>
+  ${rows.map(c=>{const r=whReason(c);return `<tr><td>${c.date}</td><td><b>${esc(c.order)}</b></td><td class="mono">${esc(bad(c).sku)}</td><td class="num">${bad(c).q}</td><td>${brand(c)}</td><td>${chip(r[0],r[1])}${r[2]?` <span class="small">${esc(r[2])}</span>`:''}</td><td>${rmk(c.mdRemark)}</td><td>${rmk(c.invRemark)}</td><td>${whProceed(c)}</td><td>${whRefund(c)}</td><td>${c.stage==='search'?`<button class="btn sm ok" data-act="found" data-id="${c.id}">Found</button> <button class="btn sm no" data-act="notfound" data-id="${c.id}">Not found</button>`:r[0]==='PACK'?`<button class="btn sm ok" data-act="packed" data-id="${c.id}">Done</button>`:c.stage==='done'?'<span class="mut small">closed</span>':'<span class="mut small">wait</span>'}</td></tr>`}).join('')||'<tr><td colspan="11" class="mut ctr" style="padding:22px">Nothing here.</td></tr>'}
+  </tbody></table></div><p class="small mut">Every order you reported stays on this list, also after it was passed to another department. "Not found" sends it to the Merchandiser and Inventory to follow up.</p>`;
 }
 
 function twoPane(tab,list,detail,emptyMsg){
@@ -532,7 +555,7 @@ function distTable(c,btn){const r=recIdx(c);
 function vMerch(){
   const list=mine().filter(c=>c.stage==='merch'||c.stage==='transfer');
   return twoPane('merch',list,c=>{
-    const last=c.epc.hist[0],whLoc=last&&/^[HZ]/.test(last.l)?last.l.replace(/ \(.*/,''):'';
+    const last=c.epc.hist[0],whLoc=lastWh(c);
     return `<div class="row"><h2 style="margin:0;flex:1;font-size:18px">${esc(c.order)} · <span class="mono">${esc(bad(c).sku)}</span></h2>${stageChip(c)}</div>
     <p class="mut" style="margin:4px 0 0">${esc(bad(c).d)} · need ${bad(c).q} · reported: ${esc(c.reason)}</p>
     ${c.notFoundAt?`<div class="warn">Warehouse searched ${esc(c.notFoundAt)} and did not find it.</div>`:''}
@@ -541,6 +564,8 @@ function vMerch(){
     <div class="grid" style="margin-top:10px;max-width:420px"><div class="tile"><div class="l">Shopify quantity</div><div class="v">${c.shopify}</div></div><div class="tile"><div class="l">Marketplace quantity</div><div class="v">${c.market}</div></div></div>
     ${last?`<div class="note">Tag last seen: <b>${esc(last.l)}</b>, ${last.w}.</div>`:''}
     <label class="f" style="max-width:360px;margin-top:12px">Where should the warehouse look?<input id="loc" value="${esc(whLoc)}" placeholder="Warehouse location"></label>
+    <label class="f" style="max-width:560px">Remark for the warehouse <span class="mut small">(optional, shown in the "Merchandiser remark" column)</span><input id="mdRem" placeholder="For example: system shows 1 piece, check the top shelf"></label>
+    ${c.invRemark?`<div class="note">Inventory's remark to the warehouse: ${esc(c.invRemark)}</div>`:''}
     <div class="row"><button class="btn pri" data-act="tosearch" data-id="${c.id}">Ask warehouse to search</button><button class="btn" data-act="oos" data-id="${c.id}">Out of stock, send to Customer Service</button></div>`}
     <h2>History</h2>${timeline(c)}`;
   },'No parcels waiting for a stock check.');
@@ -564,10 +589,19 @@ function vInvestigate(){
   return `<div style="margin-bottom:14px">${seg('invf',[['Open','To investigate'],['Closed','Closed']])}</div>`+twoPane('investigate',list,c=>{const v=c.inv;
     return `<div class="row"><h2 style="margin:0;flex:1;font-size:18px">${esc(c.order)} · <span class="mono">${esc(bad(c).sku)}</span></h2>${stageChip(c)}</div>
     <p class="mut" style="margin:4px 0 0">${esc(bad(c).d)} · reported: ${esc(c.reason)} · order is now: ${STAGE[c.stage].t.toLowerCase()}</p>
+    ${c.notFoundAt?`<div class="warn">Warehouse searched ${esc(c.notFoundAt)} and did not find it. Sent to you and the Merchandiser to follow up.</div>`:''}
     ${v.clue?`<div class="clue"><b>Clue from the records:</b> ${esc(v.clue)}</div>`:''}
     <div class="cols" style="grid-template-columns:1fr 1fr"><div><h3>System stock</h3><dl class="kv">${c.locs.map(l=>`<dt>${esc(l[0])}</dt><dd>${l[1]}</dd>`).join('')}<dt>Shopify</dt><dd>${c.shopify}</dd><dt>Marketplace</dt><dd>${c.market}</dd></dl></div>
     <div><h3>What the teams did</h3>${timeline(c)}</div></div>
     <h2>Tag (EPC) history <span class="mono mut small">${c.epc.id}</span> <span class="mut small">· from BigQuery</span></h2>${epcTable(c)}
+    <h2>Send back to the warehouse to find the EPC</h2>
+    ${c.mdRemark?`<div class="note">Merchandiser's remark to the warehouse: ${esc(c.mdRemark)}</div>`:''}
+    ${c.invRemark?`<div class="note">Your remark to the warehouse: ${esc(c.invRemark)}</div>`:''}
+    ${['merch','search'].includes(c.stage)?`<p class="small mut" style="margin-top:0">The warehouse sees your remark in its own column, separate from the Merchandiser's remark.</p>
+    <div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))"><label class="f">Where should the warehouse look?<input id="iLoc" value="${esc(c.searchLoc||lastWh(c))}" placeholder="Warehouse location"></label>
+    <label class="f">Remark for the warehouse<input id="iRem" placeholder="For example: tag last read here on 14 Nov"></label></div>
+    <button class="btn pri" data-act="invsearch" data-id="${c.id}">Send to warehouse to find the EPC</button>`
+    :`<p class="mut">This order is now at "${STAGE[c.stage].t.toLowerCase()}". To send it back for a search, use "Edit or move this order" below.</p>`}
     <h2>Finding</h2>
     ${v.status==='Closed'?`<dl class="kv"><dt>Why not found</dt><dd><b>${esc(v.cause)}</b></dd><dt>Action taken</dt><dd>${esc(v.fix)}</dd><dt>Note</dt><dd>${esc(v.note)||'<span class="mut">none</span>'}</dd><dt>Closed</dt><dd>${v.at}</dd></dl><button class="btn sm" style="margin-top:10px" data-act="reopen" data-id="${c.id}">Reopen</button>`
     :`<div class="grid" style="grid-template-columns:repeat(auto-fit,minmax(240px,1fr))">
@@ -581,6 +615,18 @@ function vInvestigate(){
 const custBlock=c=>`<dl class="kv"><dt>Customer</dt><dd>${c.cust}</dd><dt>Phone</dt><dd>${c.phone}</dd><dt>Email</dt><dd>${c.email}</dd><dt>Paid with</dt><dd>${esc(c.pay)}</dd><dt>Sales channel</dt><dd>${c.channel}</dd></dl>`;
 const itemsTable=c=>`<div class="tw"><table><thead><tr><th>Item</th><th class="num">Qty</th><th class="num">Price</th><th class="num">Discount</th><th class="num">Paid</th><th></th></tr></thead><tbody>${c.items.map((it,i)=>`<tr class="${i===c.bad?'oos':''}"><td><span class="mono">${esc(it.sku)}</span><br><span class="small mut">${esc(it.d)}</span></td><td class="num">${it.q}</td><td class="num">${money(c,it.p)}</td><td class="num">${it.disc?'-'+money(c,it.disc):'0'}</td><td class="num"><b>${money(c,line(it))}</b></td><td>${i===c.bad?chip('Out of stock','red'):chip('In stock','green')}</td></tr>`).join('')}<tr><td colspan="4" class="num mut">Order total paid (from Shopify)</td><td class="num"><b>${money(c,total(c))}</b></td><td></td></tr></tbody></table></div>`;
 const draftAmount=c=>c.draft.want==='exch'?0:c.draft.want==='cancel'?total(c):line(bad(c));
+
+/* exchange item: search by SKU or name, see price and stock, choose */
+const ALT={S:'M',M:'L',L:'XL',XL:'L'};
+function catalogue(){const m={};mine0().forEach(c=>c.items.forEach((it,i)=>{const h=[...it.sku].reduce((a,ch)=>(a*7+ch.charCodeAt(0))%11,0);
+  m[it.sku]={sku:it.sku,d:it.d,p:it.p,q:i===c.bad&&c.stage!=='done'?0:1+h%5};
+  const a=ALT[it.sku.split('-').pop()];if(a){const s2=it.sku.replace(/-[^-]+$/,'-'+a);m[s2]=m[s2]||{sku:s2,d:it.d.replace(/, [^,]+$/,', '+a),p:it.p,q:1+(h+3)%4}}}));return Object.values(m)}
+function xRes(c){const q=(c.draft.exch||'').trim().toLowerCase(),b=bad(c);
+  if(!q)return '<p class="small mut" style="margin:0">Type a SKU or part of the item name to see what is in stock.</p>';
+  const hit=catalogue().filter(x=>x.sku!==b.sku&&(x.sku.toLowerCase().includes(q)||x.d.toLowerCase().includes(q))).slice(0,6);
+  if(!hit.length)return '<p class="small mut" style="margin:0">No item found for that in the sample data. The real version searches all of BigQuery.</p>';
+  return `<div class="tw"><table><thead><tr><th>Item</th><th class="num">Price</th><th class="num">Difference</th><th class="num">In stock</th><th></th></tr></thead><tbody>${hit.map(x=>{const df=x.p-b.p,on=x.sku.toLowerCase()===q;
+    return `<tr><td><span class="mono">${esc(x.sku)}</span><br><span class="small mut">${esc(x.d)}</span></td><td class="num">${money(c,x.p)}</td><td class="num">${df?(df>0?'+':'-')+money(c,Math.abs(df)):'same price'}</td><td class="num"><b>${x.q}</b></td><td>${on?chip('✓ Chosen','green'):x.q<1?'<span class="mut">no stock</span>':`<button class="btn sm" data-act="pickx" data-id="${c.id}" data-v="${esc(x.sku)}">Choose</button>`}</td></tr>`}).join('')}</tbody></table></div>`}
 
 function vCS(){
   const list=mine().filter(c=>c.stage==='cs');
@@ -597,12 +643,12 @@ function vCS(){
         <option value="exch" ${d.want==='exch'?'selected':''}>Exchange for another item</option>
         <option value="rest" ${d.want==='rest'?'selected':''}>${multi?'Remove this item, send the rest':'Remove this item (order has only this item)'}</option>
         <option value="cancel" ${d.want==='cancel'?'selected':''}>Cancel the whole order</option></select></label>
-      ${d.want==='exch'?`<label class="f">Exchange item code<input data-draft="exch" data-id="${c.id}" value="${esc(d.exch)}" placeholder="Item code of the new item"></label>`
+      ${d.want==='exch'?`<label class="f">Exchange for (SKU search)<input data-xs="${c.id}" value="${esc(d.exch)}" placeholder="Type a SKU or item name, for example ${esc(bad(c).sku.split('-')[0])}" autocomplete="off"></label>`
       :`<label class="f">Money back as<select data-draft="money" data-id="${c.id}"><option ${d.money==='Store credit'?'selected':''}>Store credit</option><option ${d.money==='Refund to original payment'?'selected':''}>Refund to original payment</option></select></label>
         <label class="f">Reason for the ${kind}<select data-draft="why" data-id="${c.id}">${WHY.map(v=>`<option ${d.why===v?'selected':''}>${v}</option>`).join('')}</select></label>`}
       <label class="f">Confirmed by<select data-draft="via" data-id="${c.id}">${['WhatsApp','Phone call','Email'].map(v=>`<option ${d.via===v?'selected':''}>${v}</option>`).join('')}</select></label>
     </div>
-    ${d.want==='exch'?'<div class="note">No money back. Warehouse will be told to pack the exchange item.</div>'
+    ${d.want==='exch'?`<div id="xres" style="margin:2px 0 12px">${xRes(c)}</div><div class="note">Stock is looked up from BigQuery as you type, so you can tell the customer what is available. Warehouse will be told to pack the item you choose.</div>`
     :`<div class="note">Amount worked out from Shopify: <b>${money(c,draftAmount(c))}</b> as ${kind} ${d.want==='cancel'?'(whole order)':'(price '+money(c,bad(c).p*bad(c).q)+(bad(c).disc?' less discount '+money(c,bad(c).disc):'')+')'}. Reason: ${d.why.toLowerCase()}. E-commerce gets this automatically, nobody types the amount.</div>`}
     <button class="btn pri" data-act="confirm" data-id="${c.id}">Confirm customer's decision</button>`;
   },'No customers to contact.');
@@ -695,7 +741,7 @@ function loginHtml(){
 }
 
 /* ============ render ============ */
-const VIEWS={overview:vOverview,warehouse:vWarehouse,merch:vMerch,stock:vStock,cs:vCS,refund:()=>vPay(false),credit:()=>vPay(true),investigate:vInvestigate,epc:vEpc};
+const VIEWS={orders:vOrders,overview:vOverview,warehouse:vWarehouse,merch:vMerch,stock:vStock,cs:vCS,refund:()=>vPay(false),credit:()=>vPay(true),investigate:vInvestigate,epc:vEpc};
 function render(){
   const R=ROLES[S.role];if(!R.tabs.includes(S.tab))S.tab=R.tabs[0];
   document.body.classList.toggle('out',S.out);$('fbb').style.display=S.out?'none':'';
@@ -747,12 +793,14 @@ const ACT={
   open(c){$('modal').innerHTML=detailModal(c);return false},
   close(){$('modal').innerHTML='';return false},
   sel(c){S.sel[S.tab]=c.id},
-  tosearch(c){const l=val('loc');if(!l){$('loc').focus();return false}c.searchLoc=l;c.stage='search';log(c,'Merchandiser','Asked warehouse to search '+l+'.')},
+  tosearch(c){const l=val('loc');if(!l){$('loc').focus();return false}const rm=val('mdRem');c.searchLoc=l;c.mdRemark='Look in '+l+'.'+(rm?' '+rm:'');c.stage='search';log(c,'Merchandiser','Asked warehouse to search '+l+'.'+(rm?' Remark: '+rm:''))},
+  invsearch(c){const l=val('iLoc'),rm=val('iRem');if(!l){$('iLoc').focus();return false}c.searchLoc=l;c.invRemark='Look in '+l+'.'+(rm?' '+rm:'');c.stage='search';log(c,'Inventory','Sent back to warehouse to find the EPC at '+l+'.'+(rm?' Remark: '+rm:''))},
+  pickx(c,t){c.draft.exch=t.dataset.v},
   totransfer(c,t){c.transferFrom=c.locs[+t.dataset.loc][0];c.stage='transfer';log(c,'Merchandiser','Stock ordered from '+c.transferFrom+' (outlet transfer).')},
   arrived(c){c.stage='action';c.needShip=true;c.cs={at:now()};c.whTask='Stock has arrived. Pack the full order.';log(c,'Merchandiser','Stock arrived. Sent to warehouse to pack.')},
   oos(c){c.stage='cs';log(c,'Merchandiser','Out of stock. Sent to Customer Service.')},
   found(c){c.stage='done';c.inv.guess=CAUSES[2];c.inv.clue='Warehouse found it at '+c.searchLoc+' on the second search. It was probably missed when picking.';log(c,'Warehouse','Item found at '+c.searchLoc+'. Packed and sent.')},
-  notfound(c){c.stage='merch';c.notFoundAt=c.searchLoc;log(c,'Warehouse','Searched '+c.searchLoc+'. Not found.')},
+  notfound(c){c.stage='merch';c.notFoundAt=c.searchLoc;log(c,'Warehouse','Searched '+c.searchLoc+'. Not found. Sent to Merchandiser and Inventory to follow up.')},
   packed(c){c.shipped=true;log(c,'Warehouse','Packed and sent.');finish(c)},
   contact(c){const x=val('cvia');c.contacts.push({t:now(),x});log(c,'Customer Service','Contact attempt: '+x.toLowerCase()+'.')},
   confirm(c){const d=c.draft,b=bad(c),rest=c.items.length-1;
@@ -817,7 +865,8 @@ document.addEventListener('change',e=>{
   else if(d.perm){RPERM[d.r][+d.perm]=t.checked;sysLog(`Role "${d.r}": ${t.checked?'allowed':'removed'} "${PERMS[+d.perm]}".`)}
   else if(d.u){const u=USERS[+d.i];u[d.u]=t.value;sysLog(`Changed ${u.e}: ${d.u==='role'?'role':d.u==='cty'?'region':'brands'} = ${t.value}.`)}
 });
-document.addEventListener('input',e=>{const k=e.target.dataset&&e.target.dataset.live;if(k){S[k]=e.target.value;$('res-'+k).innerHTML=finderRes(k)}});
+document.addEventListener('input',e=>{const x=e.target.dataset&&e.target.dataset.xs;if(x){const c=get(x);c.draft.exch=e.target.value;$('xres').innerHTML=xRes(c);return}
+  const k=e.target.dataset&&e.target.dataset.live;if(k){S[k]=e.target.value;$('res-'+k).innerHTML=finderRes(k)}});
 
 const q=new URLSearchParams(location.search);
 try{S.mini=!!localStorage.getItem('orc.mini')}catch(e){}
