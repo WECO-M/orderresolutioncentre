@@ -465,7 +465,8 @@ const whPack=()=>mine().filter(c=>c.stage==='action'&&c.needShip&&!c.shipped);
 const pays=sc=>mine().filter(c=>c.refund&&(c.refund.type==='Store credit')===sc);
 const counts=()=>({warehouse:whSearch().length+whPack().length,merch:mine().filter(c=>c.stage==='merch'||c.stage==='transfer').length,cs:mine().filter(c=>c.stage==='cs').length,
   refund:pays(false).filter(c=>c.refund.status!=='Done').length,credit:pays(true).filter(c=>c.refund.status!=='Done').length,investigate:mine().filter(c=>c.inv.status==='Open').length});
-const canSeeCustomer=()=>['admin','cs','ecom'].includes(S.role);
+/* owner's decision 21 Nov: anyone who can open an order may view the customer details */
+const canSeeCustomer=()=>true;
 const seg=(k,vals)=>`<div class="seg">${vals.map(v=>`<button class="${S[k]===v[0]?'on':''}" data-set="${k}" data-v="${v[0]}">${v[1]}</button>`).join('')}</div>`;
 function fbar(){const f=S.f,sel=(k,o)=>`<select data-f="${k}" aria-label="${k}">${o.map(v=>`<option value="${v[0]}" ${f[k]===v[0]?'selected':''}>${v[1]}</option>`).join('')}</select>`;
   const on=[f.brand,f.year,f.month,f.date].filter(Boolean).length;
